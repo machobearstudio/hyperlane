@@ -1,0 +1,29 @@
+{
+  "name": "capillary",
+  "description": "Context-dependent pipeline computation",
+  "keywords": "comonad, pipeline, context, composition, continuation, command, point-free style",
+  "version": "1.0.0",
+  "scripts": {
+    "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
+    "test": "node examples/test-me.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/acvos/map.git"
+  },
+  "author": "Machobear Studio Inc.",
+  "dependencies": {
+    "array-flatten": "^2.1.1",
+    "curry": "^1.2.0"
+  },
+  "engines": {
+    "node": ">=4.0",
+    "npm": ">=2.0"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-env": "^1.6.0"
+  }
+}
