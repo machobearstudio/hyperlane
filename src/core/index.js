@@ -2,7 +2,7 @@ import { message, extract, extend, isMessage } from './message'
 import get from './get'
 import set from './set'
 import all from './all'
-import pipe from './pipe'
+import chain from './chain'
 
 export {
   isMessage,
@@ -12,5 +12,5 @@ export {
   get,
   set,
   all,
-  pipe
+  chain
 }

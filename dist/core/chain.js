@@ -14,7 +14,7 @@ var _callWith2 = _interopRequireDefault(_callWith);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var pipe = function pipe() {
+var chain = function chain() {
   for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
     args[_key] = arguments[_key];
   }
@@ -26,4 +26,4 @@ var pipe = function pipe() {
   };
 };
 
-exports.default = pipe;
+exports.default = chain;

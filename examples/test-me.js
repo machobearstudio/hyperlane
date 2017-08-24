@@ -7,7 +7,7 @@ var constant = system.constant
 var get = system.get
 var set = system.set
 var all = system.all
-var pipe = system.pipe
+var chain = system.chain
 var apply = system.apply
 var lift = system.lift
 
@@ -43,17 +43,17 @@ var test = message(
   state
 )
 
-const flow = set(
-  'a.summ',
-  summ(
-    get('a.b.c'),
-    get('a.d')
-  )
-)
-
-// var flow = pipe(
-//   all(get('a.b.c'), get('a.d')),
-//   summ
+// const flow = set(
+//   'a.summ',
+//   summ(
+//     get('a.b.c'),
+//     get('a.d')
+//   )
 // )
+
+var flow = chain(
+  all(get('a.b.c'), get('a.d')),
+  summ
+)
 
 log(flow(test))

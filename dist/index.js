@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.lift = exports.apply = exports.constant = exports.pipe = exports.all = exports.set = exports.get = exports.extend = exports.extract = exports.message = undefined;
+exports.lift = exports.apply = exports.constant = exports.chain = exports.all = exports.set = exports.get = exports.extend = exports.extract = exports.message = undefined;
 
 var _autoConstants = require('./auto-constants');
 
@@ -28,7 +28,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var get = (0, _autoConstants2.default)(_core.get);
 var set = (0, _autoConstants2.default)(_core.set);
 var all = (0, _autoConstants2.default)(_core.all);
-var pipe = (0, _autoConstants2.default)(_core.pipe);
+var chain = (0, _autoConstants2.default)(_core.chain);
 
 var lift = function lift(func) {
   return (0, _autoConstants2.default)((0, _lift2.default)(func));
@@ -40,7 +40,7 @@ exports.extend = _core.extend;
 exports.get = get;
 exports.set = set;
 exports.all = all;
-exports.pipe = pipe;
+exports.chain = chain;
 exports.constant = _constant2.default;
 exports.apply = _apply2.default;
 exports.lift = lift;

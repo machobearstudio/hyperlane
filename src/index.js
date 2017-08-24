@@ -9,14 +9,14 @@ import {
   get as pureGet,
   set as pureSet,
   all as pureAll,
-  pipe as purePipe
+  chain as pureChain
 } from './core'
 
 
 const get = autoConstants(pureGet)
 const set = autoConstants(pureSet)
 const all = autoConstants(pureAll)
-const pipe = autoConstants(purePipe)
+const chain = autoConstants(pureChain)
 
 const lift = func => autoConstants(liftToMessage(func))
 
@@ -27,7 +27,7 @@ export {
   get,
   set,
   all,
-  pipe,
+  chain,
   constant,
   apply,
   lift

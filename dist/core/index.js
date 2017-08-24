@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.pipe = exports.all = exports.set = exports.get = exports.extend = exports.extract = exports.message = exports.isMessage = undefined;
+exports.chain = exports.all = exports.set = exports.get = exports.extend = exports.extract = exports.message = exports.isMessage = undefined;
 
 var _message = require('./message');
 
@@ -19,9 +19,9 @@ var _all = require('./all');
 
 var _all2 = _interopRequireDefault(_all);
 
-var _pipe = require('./pipe');
+var _chain = require('./chain');
 
-var _pipe2 = _interopRequireDefault(_pipe);
+var _chain2 = _interopRequireDefault(_chain);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32,4 +32,4 @@ exports.extend = _message.extend;
 exports.get = _get2.default;
 exports.set = _set2.default;
 exports.all = _all2.default;
-exports.pipe = _pipe2.default;
+exports.chain = _chain2.default;

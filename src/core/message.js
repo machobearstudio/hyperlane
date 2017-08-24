@@ -21,7 +21,7 @@ export const extract = (input) => {
   return input
 }
 
-export const extend = func => (input) => {
+export const extend = func => input => {
   const output = message(func(input))
 
   return message(
