@@ -16,7 +16,7 @@ var _message = require('./message');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var glass = function glass(x) {
+var identity = function identity(x) {
   return x;
 };
 
@@ -28,7 +28,7 @@ var lift = function lift(func) {
       return applicator.apply(undefined, arguments);
     }
 
-    var collector = arguments.length ? _all2.default.apply(undefined, arguments) : glass;
+    var collector = arguments.length ? _all2.default.apply(undefined, arguments) : identity;
 
     return function (input) {
       return applicator(collector(input));

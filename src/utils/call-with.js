@@ -1,7 +1,5 @@
-var curry = require('curry')
+import curry from 'curry'
 
-function callWith(input, handler) {
-  return handler(input)
-}
+const callWith = (input, handler) => handler(input)
 
-module.exports = curry(callWith);
+export default curry(callWith)

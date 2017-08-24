@@ -1,9 +1,17 @@
 'use strict';
 
-var curry = require('curry');
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
-function callWith(input, handler) {
+var _curry = require('curry');
+
+var _curry2 = _interopRequireDefault(_curry);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var callWith = function callWith(input, handler) {
   return handler(input);
-}
+};
 
-module.exports = curry(callWith);
+exports.default = (0, _curry2.default)(callWith);

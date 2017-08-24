@@ -1,6 +1,6 @@
 {
   "name": "capillary",
-  "description": "Context-dependent pipeline computation",
+  "description": "Context-dependent functional style computation",
   "keywords": "comonad, pipeline, context, composition, continuation, command, point-free style",
   "version": "1.0.0",
   "scripts": {
