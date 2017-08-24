@@ -1,4 +1,4 @@
-import { extend } from './message'
+import { extend } from './core'
 
 const constant = value => extend(() => value)
 

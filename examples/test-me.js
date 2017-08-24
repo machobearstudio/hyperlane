@@ -44,18 +44,15 @@ var test = message(
 )
 
 const flow = set(
-  constant('a.summ'),
+  'a.summ',
   summ(
-    get(constant('a.b.c')),
-    get(constant('a.d'))
+    get('a.b.c'),
+    get('a.d')
   )
 )
 
 // var flow = pipe(
-//   all(
-//     get(constant('a.b.c')),
-//     get(constant('a.d'))
-//   ),
+//   all(get('a.b.c'), get('a.d')),
 //   summ
 // )
 

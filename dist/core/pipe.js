@@ -8,7 +8,7 @@ var _arrayFlatten = require('array-flatten');
 
 var _arrayFlatten2 = _interopRequireDefault(_arrayFlatten);
 
-var _callWith = require('./utils/call-with');
+var _callWith = require('../utils/call-with');
 
 var _callWith2 = _interopRequireDefault(_callWith);
 

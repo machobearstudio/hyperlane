@@ -1,4 +1,4 @@
-import { write } from './path'
+import { write } from '../path'
 import { message } from './message'
 
 const set = (path, value) => (input) => {

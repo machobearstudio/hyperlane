@@ -1,4 +1,4 @@
-import { read } from './path'
+import { read } from '../path'
 import { message } from './message'
 
 const get = path => (input) => {

@@ -1,4 +1,4 @@
-import { extract, extend } from './message'
+import { extract, extend } from './core'
 
 const apply = handler => extend(input =>
   handler.apply(undefined, extract(input))

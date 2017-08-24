@@ -12,7 +12,7 @@ var _arrayFlatten2 = _interopRequireDefault(_arrayFlatten);
 
 var _message = require('./message');
 
-var _callWith = require('./utils/call-with');
+var _callWith = require('../utils/call-with');
 
 var _callWith2 = _interopRequireDefault(_callWith);
 

@@ -1,6 +1,5 @@
-import all from './all'
+import { isMessage, all } from './core'
 import apply from './apply'
-import { isMessage } from './message'
 
 const identity = x => x
 

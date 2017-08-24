@@ -1,6 +1,6 @@
 import flatten from 'array-flatten'
 import { message } from './message'
-import callWith from './utils/call-with'
+import callWith from '../utils/call-with'
 
 const collect = messages => messages.reduce(
   (acc, next) => {

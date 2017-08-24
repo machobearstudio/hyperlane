@@ -1,5 +1,5 @@
 import flatten from 'array-flatten'
-import callWith from './utils/call-with'
+import callWith from '../utils/call-with'
 
 const pipe = (...args) => {
   const handlers = flatten(args)

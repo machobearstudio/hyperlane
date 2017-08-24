@@ -1,11 +1,24 @@
-import { message, extract, extend } from './message'
-import get from './get'
-import set from './set'
-import all from './all'
-import pipe from './pipe'
-import apply from './apply'
+import autoConstants from './auto-constants'
+import liftToMessage from './lift'
 import constant from './constant'
-import lift from './lift'
+import apply from './apply'
+import {
+  message,
+  extract,
+  extend,
+  get as pureGet,
+  set as pureSet,
+  all as pureAll,
+  pipe as purePipe
+} from './core'
+
+
+const get = autoConstants(pureGet)
+const set = autoConstants(pureSet)
+const all = autoConstants(pureAll)
+const pipe = autoConstants(purePipe)
+
+const lift = func => autoConstants(liftToMessage(func))
 
 export {
   message,
@@ -15,7 +28,7 @@ export {
   set,
   all,
   pipe,
-  apply,
   constant,
+  apply,
   lift
 }
