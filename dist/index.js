@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.lift = exports.apply = exports.constant = exports.chain = exports.all = exports.set = exports.get = exports.extend = exports.extract = exports.message = undefined;
+exports.lift = exports.choice = exports.when = exports.apply = exports.constant = exports.chain = exports.all = exports.set = exports.get = exports.extend = exports.extract = exports.message = undefined;
 
 var _autoConstants = require('./auto-constants');
 
@@ -23,12 +23,22 @@ var _apply2 = _interopRequireDefault(_apply);
 
 var _core = require('./core');
 
+var _when = require('./flow-control/when');
+
+var _when2 = _interopRequireDefault(_when);
+
+var _choice = require('./flow-control/choice');
+
+var _choice2 = _interopRequireDefault(_choice);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var get = (0, _autoConstants2.default)(_core.get);
 var set = (0, _autoConstants2.default)(_core.set);
 var all = (0, _autoConstants2.default)(_core.all);
 var chain = (0, _autoConstants2.default)(_core.chain);
+var when = (0, _autoConstants2.default)(_when2.default);
+var choice = (0, _autoConstants2.default)(_choice2.default);
 
 var lift = function lift(func) {
   return (0, _autoConstants2.default)((0, _lift2.default)(func));
@@ -43,4 +53,6 @@ exports.all = all;
 exports.chain = chain;
 exports.constant = _constant2.default;
 exports.apply = _apply2.default;
+exports.when = when;
+exports.choice = choice;
 exports.lift = lift;

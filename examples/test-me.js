@@ -7,6 +7,8 @@ var constant = system.constant
 var get = system.get
 var set = system.set
 var all = system.all
+var when = system.when
+var choice = system.choice
 var chain = system.chain
 var apply = system.apply
 var lift = system.lift
@@ -51,9 +53,11 @@ var test = message(
 //   )
 // )
 
-var flow = chain(
-  all(get('a.b.c'), get('a.d')),
-  summ
-)
+// var flow = chain(
+//   all(get('a.b.c'), get('a.d')),
+//   summ
+// )
+
+const flow = choice(get('a.b.c'), { 100: 'adsdasd' })
 
 log(flow(test))
