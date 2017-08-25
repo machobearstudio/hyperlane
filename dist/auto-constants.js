@@ -25,7 +25,7 @@ var autoConstants = function autoConstants(func) {
     }
 
     return func.apply(undefined, _toConsumableArray(args.map(function (arg) {
-      return typeof arg !== 'function' ? (0, _constant2.default)(arg) : arg;
+      return typeof arg === 'function' ? arg : (0, _constant2.default)(arg);
     })));
   };
 };

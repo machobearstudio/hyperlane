@@ -8,7 +8,7 @@ const autoConstants = func => (...args) => {
 
   return func(
     ...args.map(arg => (
-      typeof arg !== 'function' ? constant(arg) : arg
+      typeof arg === 'function' ? arg : constant(arg)
     ))
   )
 }
