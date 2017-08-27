@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
-    "test": "node examples/test-me.js"
+    "example": "babel-node --presets env --plugins transform-object-rest-spread examples/test-me.js"
   },
   "repository": {
     "type": "git",

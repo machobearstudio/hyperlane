@@ -1,37 +1,18 @@
-var util = require('util')
-var system = require('../dist')
-var message = system.message
-var extend = system.extend
-var extract = system.extract
-var constant = system.constant
-var get = system.get
-var set = system.set
-var all = system.all
-var when = system.when
-var choice = system.choice
-var chain = system.chain
-var apply = system.apply
-var lift = system.lift
+import util from 'util'
+import { message, extend, extract, constant, get, set, all, when, choice, chain, apply, lift } from '../dist'
 
-function log(object) {
-  console.log(util.inspect(object, {
-    depth: null,
-    colors: true
-  }))
-}
+const log = object => console.log(util.inspect(object, {
+  depth: null,
+  colors: true
+}))
 
-function toUpperCase(s) {
-  return s.toUpperCase()
-}
+const toUpperCase = s => s.toUpperCase()
+const summate = (x, y) => x + y
 
-function summate(x, y) {
-  return x + y
-}
+const toUpper = lift(toUpperCase)
+const summ = lift(summate)
 
-var toUpper = lift(toUpperCase)
-var summ = lift(summate)
-
-var state = {
+const state = {
   a: {
     b: {
       c: 100
@@ -40,7 +21,7 @@ var state = {
   }
 }
 
-var test = message(
+const test = message(
   'doge',
   state
 )
