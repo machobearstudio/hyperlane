@@ -23,18 +23,18 @@ const fetchGithub = lift(() =>
   fetch('https://github.com/').then(res => res.text())
 );
 
-// const flow = set(
-//   'a.summ',
-//   summ(
-//     get('a'),
-//     get('b')
-//   )
-// )
-
-var flow = chain(
-  all(get('a'), get('b')),
-  summ
+const flow = set(
+  'a.summ',
+  summ(
+    get('a'),
+    get('b')
+  )
 )
+
+// var flow = chain(
+//   all(get('a'), get('b')),
+//   summ
+// )
 
 // const flow = chain(
 //   fetchGithub,
