@@ -1,10 +1,13 @@
 import autoConstants from './auto-constants'
 import liftToMessage from './lift'
 import constant from './constant'
-import apply from './apply'
-import { message, extract, extend, get as pureGet, set as pureSet, all as pureAll, chain as pureChain } from './core'
+import { message, extract, extend, apply } from './message'
+import pureGet from './get'
+import pureSet from './set'
+import pureAll from './flow-control/all'
 import pureWhen from './flow-control/when'
 import pureChoice from './flow-control/choice'
+import pureChain from './flow-control/chain'
 
 const get = autoConstants(pureGet)
 const set = autoConstants(pureSet)

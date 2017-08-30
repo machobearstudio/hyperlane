@@ -8,7 +8,7 @@ var _constant = require('./constant');
 
 var _constant2 = _interopRequireDefault(_constant);
 
-var _core = require('./core');
+var _message = require('./message');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -20,7 +20,7 @@ var autoConstants = function autoConstants(func) {
       args[_key] = arguments[_key];
     }
 
-    if ((0, _core.isMessage)(args[0])) {
+    if ((0, _message.isMessage)(args[0])) {
       return func.apply(undefined, args);
     }
 

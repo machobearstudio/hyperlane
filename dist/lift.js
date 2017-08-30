@@ -4,30 +4,30 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _core = require('./core');
+var _message = require('./message');
 
-var _apply = require('./apply');
-
-var _apply2 = _interopRequireDefault(_apply);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var identity = function identity(x) {
-  return x;
-};
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var lift = function lift(func) {
   return function () {
-    var applicator = (0, _apply2.default)(func);
-
-    if ((0, _core.isMessage)(arguments.length <= 0 ? undefined : arguments[0])) {
-      return applicator.apply(undefined, arguments);
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    var collector = arguments.length ? _core.all.apply(undefined, arguments) : identity;
+    var applicator = (0, _message.apply)(func);
+
+    if ((0, _message.isMessage)(args[0])) {
+      return applicator(args[0]);
+    }
+
+    var collector = function collector(input) {
+      return args.length ? args.map(function (arg) {
+        return arg(input);
+      }) : [input];
+    };
 
     return function (input) {
-      return applicator(collector(input));
+      return applicator.apply(undefined, _toConsumableArray(collector(input)));
     };
   };
 };

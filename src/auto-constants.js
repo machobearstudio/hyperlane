@@ -1,5 +1,5 @@
 import constant from './constant'
-import { isMessage } from './core'
+import { isMessage } from './message'
 
 const autoConstants = func => (...args) => {
   if (isMessage(args[0])) {

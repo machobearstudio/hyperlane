@@ -6,17 +6,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _path = require('../path');
+var _path = require('./path');
 
 var _message = require('./message');
 
-var get = function get(path) {
+var set = function set(path, value) {
   return function (input) {
     var location = path(input);
-    var value = (0, _path.read)(location.data, _extends({}, location.scope, input.data));
+    var output = value(input);
 
-    return (0, _message.message)(value, location.scope);
+    var newScope = (0, _path.write)(location.data, output.data, _extends({}, location.scope, output.scope));
+
+    return (0, _message.message)(undefined, newScope);
   };
 };
 
-exports.default = get;
+exports.default = set;

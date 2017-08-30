@@ -1,4 +1,4 @@
-import { extract, extend } from '../core'
+import { extract, extend } from '../message'
 
 const evaluate = (predicate, input) => (
   typeof predicate === 'function' ? predicate(input) : predicate

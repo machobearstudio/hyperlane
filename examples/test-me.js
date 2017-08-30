@@ -1,5 +1,6 @@
 import util from 'util'
-import { message, extend, extract, constant, get, set, all, when, choice, chain, apply, lift } from '../dist'
+import { message, extend, extract, constant, get, set, all, when, choice, chain, apply, lift } from '../src'
+import fetch from 'node-fetch';
 
 const log = object => console.log(util.inspect(object, {
   depth: null,
@@ -11,34 +12,46 @@ const summate = (x, y) => x + y
 
 const toUpper = lift(toUpperCase)
 const summ = lift(summate)
+const identity = lift(x => x)
 
 const state = {
-  a: {
-    b: {
-      c: 100
-    },
-    d: 500
-  }
+  isLoading: false,
+  results: [1, 2, 3]
 }
 
-const test = message(
-  'doge',
-  state
+const fetchGithub = lift(() =>
+  fetch('https://github.com/').then(res => res.text())
+);
+
+const flow = set(
+  'a.summ',
+  summ(
+    get('a'),
+    get('b')
+  )
 )
 
-// const flow = set(
-//   'a.summ',
-//   summ(
-//     get('a.b.c'),
-//     get('a.d')
-//   )
-// )
-
 // var flow = chain(
-//   all(get('a.b.c'), get('a.d')),
+//   all(get('a'), get('b')),
 //   summ
 // )
 
-const flow = choice(get('a.b.c'), { 100: 'adsdasd' })
+// const flow = chain(
+//   fetchGithub,
+//   toUpper,
+//   log
+// )
 
+// const searchContext = choice(get('type'), {
+//   clearResults: set('results', []),
+//   searchAddress: set('results', fetchGithub())
+// })
+
+// const flow = all(searchContext)
+
+const clear = message({ type: 'clearResults' }, state)
+const search = message({ type: 'searchAddress' }, state)
+const test = message({ a: 100, b: 200 }, state)
+
+log(test)
 log(flow(test))
