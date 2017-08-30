@@ -1,20 +1,15 @@
 import { isMessage, apply } from './message'
+import all from './flow-control/all'
+import chain from './flow-control/chain'
 
-const lift = func => (...args) => {
-  var applicator = apply(func)
+const lift = func => {
+  const applicator = apply(func)
 
-  if (isMessage(args[0])) {
-    return applicator(args[0])
-  }
-
-  var collector = input => (args.length
-      ? args.map(arg => arg(input))
-      : [input]
+  return  (...args) => (
+    isMessage(args[0])
+      ? applicator(args[0])
+      : chain(all(args), applicator)
   )
-
-  return input => {
-    return applicator(...collector(input))
-  }
 }
 
 export default lift

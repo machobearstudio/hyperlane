@@ -58,14 +58,14 @@ var extend = exports.extend = function extend(func) {
   };
 };
 
+var fmap = exports.fmap = function fmap(func) {
+  return extend(function (input) {
+    return func(extract(input));
+  });
+};
+
 var apply = exports.apply = function apply(func) {
-  return function () {
-    for (var _len = arguments.length, inputs = Array(_len), _key = 0; _key < _len; _key++) {
-      inputs[_key] = arguments[_key];
-    }
-
-    var input = collect(inputs);
-
-    return merge(input, message(func.apply(undefined, input.data)));
-  };
+  return extend(function (input) {
+    return func.apply(undefined, extract(input));
+  });
 };

@@ -42,8 +42,8 @@ export const collect = messages => messages.reduce(
 export const extend = func => input =>
   merge(input, message(func(input)))
 
-export const apply = func => (...inputs) => {
-  const input = collect(inputs)
+export const fmap = func =>
+  extend(input => func(extract(input)))
 
-  return merge(input, message(func.apply(undefined, input.data)))
-}
+export const apply = func =>
+  extend(input => func.apply(undefined, extract(input)))

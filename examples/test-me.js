@@ -23,18 +23,18 @@ const fetchGithub = lift(() =>
   fetch('https://github.com/').then(res => res.text())
 );
 
-const flow = set(
-  'a.summ',
-  summ(
-    get('a'),
-    get('b')
-  )
-)
-
-// var flow = chain(
-//   all(get('a'), get('b')),
-//   summ
+// const flow = set(
+//   'a.summ',
+//   summ(
+//     get('a'),
+//     get('b')
+//   )
 // )
+
+var flow = chain(
+  all(get('a'), get('b')),
+  summ
+)
 
 // const flow = chain(
 //   fetchGithub,
@@ -53,5 +53,5 @@ const clear = message({ type: 'clearResults' }, state)
 const search = message({ type: 'searchAddress' }, state)
 const test = message({ a: 100, b: 200 }, state)
 
-log(test)
+// log(test)
 log(flow(test))

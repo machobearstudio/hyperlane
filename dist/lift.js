@@ -6,29 +6,25 @@ Object.defineProperty(exports, "__esModule", {
 
 var _message = require('./message');
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+var _all = require('./flow-control/all');
+
+var _all2 = _interopRequireDefault(_all);
+
+var _chain = require('./flow-control/chain');
+
+var _chain2 = _interopRequireDefault(_chain);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var lift = function lift(func) {
+  var applicator = (0, _message.apply)(func);
+
   return function () {
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    var applicator = (0, _message.apply)(func);
-
-    if ((0, _message.isMessage)(args[0])) {
-      return applicator(args[0]);
-    }
-
-    var collector = function collector(input) {
-      return args.length ? args.map(function (arg) {
-        return arg(input);
-      }) : [input];
-    };
-
-    return function (input) {
-      return applicator.apply(undefined, _toConsumableArray(collector(input)));
-    };
+    return (0, _message.isMessage)(args[0]) ? applicator(args[0]) : (0, _chain2.default)((0, _all2.default)(args), applicator);
   };
 };
 
