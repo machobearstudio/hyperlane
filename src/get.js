@@ -1,15 +1,8 @@
 import { read } from './path'
-import { message, extend, extract } from './message'
+import { message, extend, extract, collapse } from './message'
 
-const get = path => extend((input) => {
-  const location = extract(path(input))
-
-  let value = read(location, input.data)
-  if (value === undefined) {
-    value = read(location, input.scope)
-  }
-
-  return value
-})
+const get = path => extend(input =>
+  read(extract(path(input)), collapse(input))
+)
 
 export default get
