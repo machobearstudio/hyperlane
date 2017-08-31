@@ -25,13 +25,13 @@ export const merge = (input, output) =>
   construct(output.data, { ...input.scope, ...output.scope })
 
 export const extend = func => {
-  const wrappedFunc = (...inputs) => inputs
+  const Wrapper = (...inputs) => inputs
     .concat([construct(func(...inputs))])
     .reduce(merge, construct())
 
-  wrappedFunc.arity = func.length
+  Wrapper.arity = func.length
 
-  return wrappedFunc
+  return Wrapper
 }
 
 export const lift = func => extend((...inputs) =>
