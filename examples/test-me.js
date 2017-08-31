@@ -1,57 +1,30 @@
-import util from 'util'
-import { message, extend, extract, constant, get, set, all, when, choice, chain, apply, lift } from '../src'
 import fetch from 'node-fetch';
+import remap from 'retransform';
+import { message, get, set, flow } from '../src'
+import log from './log'
 
-const log = object => console.log(util.inspect(object, {
-  depth: null,
-  colors: true
-}))
-
-const toUpperCase = s => s.toUpperCase()
-const summate = (x, y) => x + y
-
-const toUpper = lift(toUpperCase)
-const summ = lift(summate)
-const identity = lift(x => x)
-
+// Test data
 const state = {
   isLoading: false,
   results: [1, 2, 3]
 }
 
-const fetchGithub = lift(() =>
-  fetch('https://github.com/').then(res => res.text())
-);
+const clear = message.construct({ type: 'clearResults' }, state)
+const search = message.construct({ type: 'searchAddress' }, state)
+const test = message.construct({ a: 100, b: 200 }, state)
 
-const flow = set(
-  'a.summ',
-  summ(
+// Lenses
+const summate = message.lift((x, y) => x + y)
+const sum = flow(summate)
+
+// Test flows
+const testFlow = set(
+  'summ',
+  sum(
     get('a'),
     get('b')
   )
 )
 
-// var flow = chain(
-//   all(get('a'), get('b')),
-//   summ
-// )
-
-// const flow = chain(
-//   fetchGithub,
-//   toUpper,
-//   log
-// )
-
-// const searchContext = choice(get('type'), {
-//   clearResults: set('results', []),
-//   searchAddress: set('results', fetchGithub())
-// })
-
-// const flow = all(searchContext)
-
-const clear = message({ type: 'clearResults' }, state)
-const search = message({ type: 'searchAddress' }, state)
-const test = message({ a: 100, b: 200 }, state)
-
-// log(test)
-log(flow(test))
+log(test)
+log(testFlow(test))
