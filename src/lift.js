@@ -1,15 +1,11 @@
-import { isMessage, apply } from './message'
+import { isMessage, apply, fmap } from './message'
+import chain from './utils/chain'
 import all from './flow-control/all'
-import chain from './flow-control/chain'
 
-const lift = func => {
-  const applicator = apply(func)
-
-  return (...args) => (
-    isMessage(args[0])
-      ? applicator(args[0])
-      : chain(all(args), applicator)
-  )
-}
+const lift = func => (...args) => (
+  isMessage(args[0])
+    ? fmap(func)(args[0])
+    : chain(all(args), apply(func))
+)
 
 export default lift
