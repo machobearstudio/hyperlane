@@ -10,6 +10,10 @@ export const construct = (data, scope) => {
     return data
   }
 
+  if (data instanceof Promise) {
+    return data.next(message)
+  }
+
   return new Message(data, scope)
 }
 
