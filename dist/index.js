@@ -9,6 +9,10 @@ var _message = require('./message');
 
 var message = _interopRequireWildcard(_message);
 
+var _flow = require('./flow');
+
+var builtInFlows = _interopRequireWildcard(_flow);
+
 var _get = require('./get');
 
 var _get2 = _interopRequireDefault(_get);
@@ -17,27 +21,17 @@ var _set = require('./set');
 
 var _set2 = _interopRequireDefault(_set);
 
-var _asyncFlow = require('./async-flow');
-
-var _asyncFlow2 = _interopRequireDefault(_asyncFlow);
-
-var _syncFlow = require('./sync-flow');
-
-var _syncFlow2 = _interopRequireDefault(_syncFlow);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var flow = _asyncFlow2.default;
+var flow = builtInFlows.async;
 
 var configure = function configure(conf) {
-  if (conf.flow === 'sync') {
-    flow = _syncFlow2.default;
-  } else if (conf.flow === 'async') {
-    flow = _asyncFlow2.default;
-  } else if (typeof conf.flow === 'function') {
+  if (typeof conf.flow === 'function') {
     flow = conf.flow;
+  } else {
+    flow = builtInFlows[conf.flow];
   }
 };
 

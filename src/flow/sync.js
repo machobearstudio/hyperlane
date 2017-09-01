@@ -1,4 +1,4 @@
-import { construct } from './message'
+import { construct } from '../message'
 
 const apply = arg => predicate => (
   typeof predicate === 'function' ? predicate(arg) : predicate

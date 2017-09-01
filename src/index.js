@@ -1,18 +1,15 @@
 import * as message from './message'
+import * as builtInFlows from './flow'
 import getM from './get'
 import setM from './set'
-import asyncFlow from './async-flow'
-import syncFlow from './sync-flow'
 
-let flow = asyncFlow
+let flow = builtInFlows.async
 
 const configure = conf => {
-  if (conf.flow === 'sync') {
-    flow = syncFlow
-  } else if (conf.flow === 'async') {
-    flow = asyncFlow
-  } else if (typeof conf.flow === 'function') {
+  if (typeof conf.flow === 'function') {
     flow = conf.flow
+  } else {
+    flow = builtInFlows[conf.flow]
   }
 }
 
