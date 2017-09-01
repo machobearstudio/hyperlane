@@ -38,7 +38,7 @@ var merge = exports.merge = function merge(input, output) {
 };
 
 var extend = exports.extend = function extend(func) {
-  var wrappedFunc = function wrappedFunc() {
+  var Wrapper = function Wrapper() {
     for (var _len = arguments.length, inputs = Array(_len), _key = 0; _key < _len; _key++) {
       inputs[_key] = arguments[_key];
     }
@@ -46,9 +46,9 @@ var extend = exports.extend = function extend(func) {
     return inputs.concat([construct(func.apply(undefined, inputs))]).reduce(merge, construct());
   };
 
-  wrappedFunc.arity = func.length;
+  Wrapper.arity = func.length;
 
-  return wrappedFunc;
+  return Wrapper;
 };
 
 var lift = exports.lift = function lift(func) {

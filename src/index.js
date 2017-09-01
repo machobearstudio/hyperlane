@@ -1,4 +1,6 @@
-import { message, get as getM, set as setM } from './message'
+import * as message from './message'
+import getM from './get'
+import setM from './set'
 import flow from './flow'
 
 const get = flow(getM)

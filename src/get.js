@@ -1,4 +1,4 @@
-import { read } from '../path'
+import { read } from './path'
 import { extend, extract } from './message'
 
 const get = extend((location, object) =>

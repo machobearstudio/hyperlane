@@ -1,4 +1,4 @@
-import { write } from '../path'
+import { write } from './path'
 import { construct, extend, extract } from './message'
 
 const set = extend((location, value, object) =>

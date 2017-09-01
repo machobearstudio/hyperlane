@@ -13,7 +13,7 @@ const clear = message.construct({ type: 'clearResults' }, state)
 const search = message.construct({ type: 'searchAddress' }, state)
 const test = message.construct({ a: 100, b: 200 }, state)
 
-// const getGithub = flow(() => fetch('https://github.com/').then(res => res.text()))
+const getGithub = flow(() => fetch('https://github.com/').then(res => res.text()))
 
 // Lenses
 const summate = message.lift((x, y) => x + y)
