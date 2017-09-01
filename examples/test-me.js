@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 import remap from 'retransform';
-import { message, get, set, flow } from '../src'
+import { configure, message, get, set, lift } from '../src'
 import log from './log'
 
 // Test data
@@ -9,15 +9,19 @@ const state = {
   results: [1, 2, 3]
 }
 
+configure({
+  flow: 'sync'
+})
+
 const clear = message.construct({ type: 'clearResults' }, state)
 const search = message.construct({ type: 'searchAddress' }, state)
 const test = message.construct({ a: 100, b: 200 }, state)
 
-const getGithub = flow(() => fetch('https://github.com/').then(res => res.text()))
+const getGithub = lift(() => fetch('https://github.com/').then(res => res.text()))
 
 // Lenses
-const summate = message.lift((x, y) => x + y)
-const sum = flow(summate)
+const summate = (x, y) => x + y
+const sum = lift(summate)
 
 // Test flows
 const testFlow = set(

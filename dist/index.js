@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.flow = exports.set = exports.get = exports.message = undefined;
+exports.lift = exports.set = exports.get = exports.message = exports.configure = undefined;
 
 var _message = require('./message');
 
@@ -17,18 +17,45 @@ var _set = require('./set');
 
 var _set2 = _interopRequireDefault(_set);
 
-var _flow = require('./flow');
+var _asyncFlow = require('./async-flow');
 
-var _flow2 = _interopRequireDefault(_flow);
+var _asyncFlow2 = _interopRequireDefault(_asyncFlow);
+
+var _syncFlow = require('./sync-flow');
+
+var _syncFlow2 = _interopRequireDefault(_syncFlow);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var get = (0, _flow2.default)(_get2.default);
-var set = (0, _flow2.default)(_set2.default);
+var flow = _asyncFlow2.default;
 
+var configure = function configure(conf) {
+  if (conf.flow === 'sync') {
+    flow = _syncFlow2.default;
+  } else if (conf.flow === 'async') {
+    flow = _asyncFlow2.default;
+  } else if (typeof conf.flow === 'function') {
+    flow = conf.flow;
+  }
+};
+
+var dynamicFlow = function dynamicFlow(func) {
+  return function () {
+    return flow(func).apply(undefined, arguments);
+  };
+};
+
+var get = dynamicFlow(_get2.default);
+var set = dynamicFlow(_set2.default);
+
+var lift = function lift(func) {
+  return flow(message.lift(func));
+};
+
+exports.configure = configure;
 exports.message = message;
 exports.get = get;
 exports.set = set;
-exports.flow = _flow2.default;
+exports.lift = lift;
