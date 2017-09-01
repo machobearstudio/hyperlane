@@ -1,10 +1,10 @@
 import { write } from './path'
-import { construct, extend, extract } from './message'
+import { construct, lift } from './message'
 
-const set = extend((location, value, object) =>
+const set = lift((location, value, object) =>
   construct(
     undefined,
-    write(extract(location), extract(value), {})
+    write(location, value, {})
   )
 )
 
