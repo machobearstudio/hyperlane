@@ -9,9 +9,16 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/acvos/map.git"
+    "url": "https://github.com/machobearstudio/capillary"
   },
   "author": "Machobear Studio Inc.",
+  "contributors": [
+    {
+      "name": "Anton Chernikov",
+      "email": "achernikov@acvos.com",
+      "url": "https://github.com/acvos"
+    }
+  ],
   "dependencies": {
     "array-flatten": "^2.1.1",
     "curry": "^1.2.0",
