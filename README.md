@@ -1,4 +1,4 @@
-# capillary
+# hyperlane
 Context-dependent functional style computation
 
 ## Description
@@ -12,13 +12,13 @@ This tool allows to construct computation pipelines heavily inspired by Haskell'
 ## Installation
 
 ```
-npm install capillary
+npm install hyperlane
 ```
 
 ## Usage
 
 ```javascript
-import { message, get, set, lift } from 'capillary'
+import { message, get, set, lift } from 'hyperlane'
 
 const summate = (x, y) => x + y
 const sum = lift(summate)
