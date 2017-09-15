@@ -6,7 +6,9 @@ import log from './log'
 // Test data
 const state = {
   isLoading: false,
-  results: [1, 2, 3]
+  result: {
+    t: 'b'
+  }
 }
 
 configure({
@@ -25,7 +27,7 @@ const sum = lift(summate)
 
 // Test flows
 const testFlow = set(
-  'summ',
+  'result.summ',
   sum(get('a'), get('b'))
 )
 

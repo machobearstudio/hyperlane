@@ -1,3 +1,5 @@
+import merge from 'merge';
+
 function Message(data, scope) {
   this.data = data
   this.scope = scope || {}
@@ -21,13 +23,13 @@ export const extract = (input) => {
   return input
 }
 
-export const merge = (input, output) =>
-  construct(output.data, { ...input.scope, ...output.scope })
+export const combine = (input, output) =>
+  construct(output.data, merge.recursive(input.scope, output.scope))
 
 export const extend = func => {
   const Wrapper = (...inputs) => inputs
     .concat([construct(func(...inputs))])
-    .reduce(merge, construct())
+    .reduce(combine, construct())
 
   Wrapper.arity = func.length
 
