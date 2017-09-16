@@ -1,5 +1,4 @@
 import fetch from 'node-fetch';
-import remap from 'retransform';
 import { configure, message, get, set, lift } from '../src'
 import log from './log'
 
