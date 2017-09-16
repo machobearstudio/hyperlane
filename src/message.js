@@ -1,5 +1,3 @@
-import merge from 'merge';
-
 function Message(data, scope) {
   this.data = data
   this.scope = scope || {}
@@ -24,7 +22,7 @@ export const extract = (input) => {
 }
 
 export const combine = (input, output) =>
-  construct(output.data, merge.recursive(input.scope, output.scope))
+  construct(output.data, { ...input.scope, ...output.scope })
 
 export const extend = func => {
   const Wrapper = (...inputs) => inputs

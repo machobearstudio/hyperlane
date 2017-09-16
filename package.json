@@ -22,8 +22,7 @@
   ],
   "dependencies": {
     "array-flatten": "^2.1.1",
-    "curry": "^1.2.0",
-    "merge": "^1.2.0"
+    "curry": "^1.2.0"
   },
   "engines": {
     "node": ">=4.0",

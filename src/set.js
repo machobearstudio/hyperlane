@@ -1,8 +1,8 @@
 import { write } from './path'
-import { construct, lift } from './message'
+import { construct, extract, extend } from './message'
 
-const set = lift((location, value, object) =>
-  construct(undefined, write(location, value, {}))
+const set = extend((location, value, object) =>
+  construct(undefined, write(extract(location), extract(value), object.scope))
 )
 
 export default set
