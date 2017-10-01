@@ -1,7 +1,4 @@
-var read = require('./read')
-var write = require('./write')
+import read from './read'
+import write from './write'
 
-module.exports = {
-  read: read,
-  write: write
-};
+export { read, write }

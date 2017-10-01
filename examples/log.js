@@ -2,7 +2,6 @@ import util from 'util'
 
 const log = object => {
   if (object instanceof Promise) {
-    console.log('async!!!')
     return object.then(log)
   }
 

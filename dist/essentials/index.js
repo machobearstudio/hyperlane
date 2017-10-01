@@ -4,14 +4,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _async = require('./async');
+var _logic = require('./logic');
 
-Object.keys(_async).forEach(function (key) {
+Object.keys(_logic).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _async[key];
+      return _logic[key];
     }
   });
 });

@@ -1,11 +1,11 @@
-var curry = require('curry')
-var normalize = require('./normalize')
+import normalize from './normalize'
 
-function read(path, data) {
-  var location = normalize(path)
-  var value = data
+const read = (path, data) => {
+  const location = normalize(path)
+  let value = data
+  let i
 
-  for (var i = 0; i < location.length; i++) {
+  for (let i = 0; i < location.length; i++) {
     value = value[location[i]]
 
     if (value === undefined) {
@@ -13,7 +13,7 @@ function read(path, data) {
     }
   }
 
-  return value;
+  return value
 }
 
-module.exports = curry(read)
+export default read

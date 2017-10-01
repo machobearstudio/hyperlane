@@ -21,7 +21,7 @@ var flow = function flow(func) {
     }
 
     return function (input) {
-      return func.apply(undefined, _toConsumableArray(parameters.map(apply(input))).concat([input]));
+      return func.arity > parameters.length ? func.apply(undefined, _toConsumableArray(parameters.map(apply(input))).concat([input])) : func.apply(undefined, _toConsumableArray(parameters.map(apply(input))));
     };
   };
 };

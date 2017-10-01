@@ -16,7 +16,11 @@ const wrapPromise = input => {
 
 const flow = func => (...parameters) => input =>
   wrapPromise(input)
-  .then(x => Promise.all(parameters.map(apply(x))))
-  .then(params => func(...params, input))
+    .then(x => Promise.all(parameters.map(apply(x))))
+    .then(params => (
+      func.arity > parameters.length
+        ? func(...params, input)
+        : func(...params)
+    ))
 
 export default flow

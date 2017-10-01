@@ -1,6 +1,6 @@
-var flatten = require('array-flatten')
+import flatten from 'array-flatten'
 
-function normalize(location) {
+const normalize = location => {
   if (typeof location === 'string') {
     return location.split('.')
   }
@@ -12,4 +12,4 @@ function normalize(location) {
   throw new Error('Incorrect location type: ' + location)
 }
 
-module.exports = normalize
+export default normalize

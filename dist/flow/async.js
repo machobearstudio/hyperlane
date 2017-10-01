@@ -34,7 +34,7 @@ var flow = function flow(func) {
       return wrapPromise(input).then(function (x) {
         return Promise.all(parameters.map(apply(x)));
       }).then(function (params) {
-        return func.apply(undefined, _toConsumableArray(params).concat([input]));
+        return func.arity > parameters.length ? func.apply(undefined, _toConsumableArray(params).concat([input])) : func.apply(undefined, _toConsumableArray(params));
       });
     };
   };
