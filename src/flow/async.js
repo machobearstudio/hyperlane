@@ -8,7 +8,7 @@ const wrapPromise = input => {
   const inputMessage = construct(input)
 
   if (inputMessage.data instanceof Promise) {
-    return inputMessage.data.next(construct)
+    return inputMessage.data.then(construct)
   }
 
   return Promise.resolve(inputMessage)
