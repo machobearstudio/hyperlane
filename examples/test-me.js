@@ -5,9 +5,11 @@ import log from './log'
 // Test data
 const state = {}
 
-const test = message.construct({ a: true, b: false }, state)
+const test = message.construct(true, state)
 
 const getGithub = lift(() => fetch('https://github.com/').then(res => res.text()))
+
+const constant = x => message.extend(() => x)
 
 const all = (...handlers) => message.extend(input =>
   handlers
@@ -22,18 +24,25 @@ const chain = (...handlers) => message.extend(input =>
   handlers.reduce((prev, handler) => handler(prev), input)
 )
 
-// Lenses
-const summate = (x, y) => x + y
-const sum = lift(summate)
+const choice = (check, handlers) => message.extend(input => {
+  const value = message.extract(check(input))
+  const handler = handlers[value]
+
+  if (handler) {
+    return handler(input)
+  }
+
+  return undefined
+})
+
+const when = (check, success, failure) => message.extend(input => (
+  message.extract(check(input))
+    ? success(input)
+    : failure(input)
+))
 
 // Test flows
-const testFlow = chain(
-  all(
-    and(get('a'), get('b')),
-    or(get('a'), get('b'))
-  ),
-  set('result', get(''))
-)
+const testFlow = when(get(''), constant('wow!'), constant('much'))
 
 log(test)
 log(testFlow(test))
