@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { message, get, set, gte, lift } from '../src/sync'
+import { message, get, set, lift } from '../src/sync'
 import log from './log'
 
 // Test data
