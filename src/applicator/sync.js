@@ -1,11 +1,16 @@
+import pipe from 'function-pipe'
 import { construct } from '../message'
+import applyAll from './apply-all'
+import normalizeArguments from './normalize-arguments'
 
-const apply = arg => predicate => (
-  typeof predicate === 'function' ? predicate(arg) : predicate
-)
+const call = func => inputs => func(...inputs)
 
 const applicator = func => (...parameters) => {
-  const Applicator = input => func(...parameters.map(apply(construct(input))))
+  const Applicator = pipe(
+    construct,
+    applyAll(normalizeArguments(func.arity, parameters)),
+    call(func)
+  )
 
   return Applicator
 }

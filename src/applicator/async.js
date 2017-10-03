@@ -1,22 +1,26 @@
 import { construct } from '../message'
+import applyAll from './apply-all'
+import normalizeArguments from './normalize-arguments'
 
-const apply = arg => predicate => (
-  typeof predicate === 'function' ? predicate(arg) : predicate
-)
+const message = (input) => {
+  if (input instanceof Promise) {
+    return input.then(message)
+  }
 
-const wrapPromise = input => {
   if (input.data instanceof Promise) {
-    return input.data
+    return input.data.then(data => construct(data, input.scope))
   }
 
   return Promise.resolve(input)
 }
 
+const call = func => inputs => Promise.all(inputs.map(message)).then(xs => func(...xs))
+
 const applicator = func => (...parameters) => {
   const Applicator = input =>
-    wrapPromise(construct(input))
-      .then(x => Promise.all(parameters.map(apply(x))))
-      .then(params => func(...params))
+    message(input)
+      .then(applyAll(normalizeArguments(func.arity, parameters)))
+      .then(call(func))
 
   return Applicator
 }

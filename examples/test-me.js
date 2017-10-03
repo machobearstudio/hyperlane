@@ -12,7 +12,6 @@ const getGithub = lift(() => fetch('https://github.com/').then(res => res.text()
 const uppercase = lift(x => String(x).toUpperCase())
 
 // Test flows
-const testFlow = uppercase(get('a'))
+const testFlow = uppercase(getGithub())
 
-log(test)
 log(testFlow(test))
