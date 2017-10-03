@@ -1,5 +1,6 @@
 import { lift } from '../message'
 
 export const not = lift(x => !x)
-export const and = lift((...xs) => xs.reduce((acc, next) => acc && next, true))
-export const or = lift((...xs) => xs.reduce((acc, next) => acc || next, false))
+export const and = lift((x, y) => x && y)
+export const or = lift((x, y) => x || y)
+export const xor = lift((x, y) => (x || y) && !(x && y))

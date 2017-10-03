@@ -34,6 +34,10 @@ export const extend = func => {
   return Wrapper
 }
 
-export const lift = func => extend((...inputs) =>
-  func(...inputs.map(extract))
-)
+export const lift = func => {
+  const Wrapper = extend((...inputs) => func(...inputs.map(extract)))
+
+  Wrapper.arity = func.length
+
+  return Wrapper
+}
