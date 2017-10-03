@@ -8,6 +8,6 @@ const createApplicator = flowProvider => func => {
   return handler
 }
 
-const createFlow = type => createApplicator(type === 'sync' ? sync : async)
+const applicator = type => createApplicator(type === 'sync' ? sync : async)
 
-export default createFlow
+export default applicator

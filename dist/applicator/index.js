@@ -23,8 +23,8 @@ var createApplicator = function createApplicator(flowProvider) {
   };
 };
 
-var createFlow = function createFlow(type) {
+var applicator = function applicator(type) {
   return createApplicator(type === 'sync' ? _sync2.default : _async2.default);
 };
 
-exports.default = createFlow;
+exports.default = applicator;

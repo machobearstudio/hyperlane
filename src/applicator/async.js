@@ -12,9 +12,13 @@ const wrapPromise = input => {
   return Promise.resolve(input)
 }
 
-const applicator = func => (...parameters) => input =>
-  wrapPromise(construct(input))
-    .then(x => Promise.all(parameters.map(apply(x))))
-    .then(params => func(...params))
+const applicator = func => (...parameters) => {
+  const Applicator = input =>
+    wrapPromise(construct(input))
+      .then(x => Promise.all(parameters.map(apply(x))))
+      .then(params => func(...params))
+
+  return Applicator
+}
 
 export default applicator

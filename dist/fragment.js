@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.fragment = exports.isFragment = undefined;
 
 var _functionPipe = require('function-pipe');
 
@@ -16,37 +17,24 @@ var identity = function identity(x) {
   return x;
 };
 
-var normalizeArguments = function normalizeArguments(func, params) {
-  return func.arity > params.length ? params.concat([identity]) : params;
+var normalizeArguments = function normalizeArguments(arity, params) {
+  return arity > params.length ? params.concat([identity]) : params;
 };
 
-var isFragment = function isFragment(func) {
+var isFragment = exports.isFragment = function isFragment(func) {
   return typeof func === 'function' && func.type !== undefined;
 };
 
-var fragment = function fragment() {
-  for (var _len = arguments.length, funcs = Array(_len), _key = 0; _key < _len; _key++) {
-    funcs[_key] = arguments[_key];
-  }
-
-  if (funcs.length > 1) {
-    return (0, _functionPipe2.default)(funcs.map(function (func) {
-      return isFragment(func) ? func() : func;
-    }));
-  }
-
-  var func = funcs[0];
+var fragment = exports.fragment = function fragment(func) {
   var Fragment = function Fragment() {
-    for (var _len2 = arguments.length, params = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      params[_key2] = arguments[_key2];
+    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
+      params[_key] = arguments[_key];
     }
 
-    return func.apply(undefined, _toConsumableArray(normalizeArguments(func, params)));
+    return func.apply(undefined, _toConsumableArray(normalizeArguments(func.arity, params)));
   };
 
-  Fragment.type = 'fragment';
+  Fragment.type = 'call';
 
   return Fragment;
 };
-
-exports.default = fragment;

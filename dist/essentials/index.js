@@ -40,14 +40,14 @@ Object.keys(_comparison).forEach(function (key) {
   });
 });
 
-var _controlFlow = require('./control-flow');
+var _aggregation = require('./aggregation');
 
-Object.keys(_controlFlow).forEach(function (key) {
+Object.keys(_aggregation).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   Object.defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
-      return _controlFlow[key];
+      return _aggregation[key];
     }
   });
 });

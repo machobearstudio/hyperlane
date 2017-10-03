@@ -24,7 +24,8 @@
     "array-flatten": "^2.1.1",
     "curry": "^1.2.0",
     "function-pipe": "^1.0.0",
-    "poly-map": "^1.1.0"
+    "poly-map": "^1.1.0",
+    "retransform": "^1.0.0"
   },
   "engines": {
     "node": ">=4.0",

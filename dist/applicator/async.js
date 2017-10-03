@@ -14,15 +14,29 @@ var apply = function apply(arg) {
   };
 };
 
+var wrapPromise = function wrapPromise(input) {
+  if (input.data instanceof Promise) {
+    return input.data;
+  }
+
+  return Promise.resolve(input);
+};
+
 var applicator = function applicator(func) {
   return function () {
     for (var _len = arguments.length, parameters = Array(_len), _key = 0; _key < _len; _key++) {
       parameters[_key] = arguments[_key];
     }
 
-    return function (input) {
-      return func.apply(undefined, _toConsumableArray(parameters.map(apply((0, _message.construct)(input)))));
+    var Applicator = function Applicator(input) {
+      return wrapPromise((0, _message.construct)(input)).then(function (x) {
+        return Promise.all(parameters.map(apply(x)));
+      }).then(function (params) {
+        return func.apply(undefined, _toConsumableArray(params));
+      });
     };
+
+    return Applicator;
   };
 };
 

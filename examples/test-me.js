@@ -1,10 +1,10 @@
 import fetch from 'node-fetch'
 import map from 'poly-map'
-import { message, get, set, lift, all, pipe } from '../src/sync'
+import { message, get, set, lift, all } from '../src'
 import log from './log'
 
 // Test data
-const test = { a: 'asd' }
+const test = message.construct({ a: 'asd' }, { doge: 'wow' })
 
 const getGithub = lift(() => fetch('https://github.com/').then(res => res.text()))
 
@@ -12,10 +12,7 @@ const getGithub = lift(() => fetch('https://github.com/').then(res => res.text()
 const uppercase = lift(x => String(x).toUpperCase())
 
 // Test flows
-const testFlow = all(
-  pipe(get('a'), uppercase),
-  uppercase(get('a'))
-)
+const testFlow = uppercase(get('a'))
 
 log(test)
 log(testFlow(test))
