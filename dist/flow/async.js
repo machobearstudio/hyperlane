@@ -29,7 +29,7 @@ var applicator = function applicator(func) {
     }
 
     return function (input) {
-      return wrapPromise(input).then(function (x) {
+      return wrapPromise((0, _message.construct)(input)).then(function (x) {
         return Promise.all(parameters.map(apply(x)));
       }).then(function (params) {
         return func.apply(undefined, _toConsumableArray(params));

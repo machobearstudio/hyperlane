@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 import map from 'poly-map'
-import { message, get, set, lift, all, fragment } from '../src/sync'
+import { message, get, set, lift, all, pipe } from '../src/sync'
 import log from './log'
 
 // Test data
@@ -13,7 +13,7 @@ const uppercase = lift(x => String(x).toUpperCase())
 
 // Test flows
 const testFlow = all(
-  get('a'),
+  pipe(get('a'), uppercase),
   uppercase(get('a'))
 )
 

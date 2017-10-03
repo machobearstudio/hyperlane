@@ -16,6 +16,10 @@ var _functionPipe2 = _interopRequireDefault(_functionPipe);
 
 var _message = require('./message');
 
+var _fragment = require('./fragment');
+
+var _fragment2 = _interopRequireDefault(_fragment);
+
 var _core = require('./core');
 
 var core = _interopRequireWildcard(_core);
@@ -35,9 +39,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var createDictionary = function createDictionary(conf) {
   var flow = typeof conf.flow === 'function' ? conf.flow : (0, _flow2.default)(conf.flow);
 
-  return _extends({}, (0, _polyMap2.default)(flow, core), (0, _polyMap2.default)(flow, essentials), {
-    fragment: flow,
-    lift: (0, _functionPipe2.default)(_message.lift, flow)
+  return _extends({}, (0, _polyMap2.default)((0, _functionPipe2.default)(flow, _fragment2.default), core), (0, _polyMap2.default)((0, _functionPipe2.default)(flow, _fragment2.default), essentials), {
+    fragment: _fragment2.default,
+    pipe: _fragment2.default,
+    flow: flow,
+    lift: (0, _functionPipe2.default)(_message.lift, flow, _fragment2.default)
   });
 };
 

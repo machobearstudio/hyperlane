@@ -13,7 +13,7 @@ const wrapPromise = input => {
 }
 
 const applicator = func => (...parameters) => input =>
-  wrapPromise(input)
+  wrapPromise(construct(input))
     .then(x => Promise.all(parameters.map(apply(x))))
     .then(params => func(...params))
 

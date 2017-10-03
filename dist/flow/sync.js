@@ -21,7 +21,7 @@ var applicator = function applicator(func) {
     }
 
     return function (input) {
-      return func.apply(undefined, _toConsumableArray(parameters.map(apply(input))));
+      return func.apply(undefined, _toConsumableArray(parameters.map(apply((0, _message.construct)(input)))));
     };
   };
 };

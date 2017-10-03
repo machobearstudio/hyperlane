@@ -1,6 +1,3 @@
-import pipe from 'function-pipe'
-import fragment from './fragment'
-
 import sync from './sync'
 import async from './async'
 
@@ -11,9 +8,6 @@ const createApplicator = flowProvider => func => {
   return handler
 }
 
-const createFlow = type => pipe(
-  createApplicator(type === 'sync' ? sync : async),
-  fragment
-)
+const createFlow = type => createApplicator(type === 'sync' ? sync : async)
 
 export default createFlow
