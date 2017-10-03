@@ -15,16 +15,14 @@ var apply = function apply(arg) {
 };
 
 var wrapPromise = function wrapPromise(input) {
-  var inputMessage = (0, _message.construct)(input);
-
-  if (inputMessage.data instanceof Promise) {
-    return inputMessage.data.next(_message.construct);
+  if (input.data instanceof Promise) {
+    return input.data;
   }
 
-  return Promise.resolve(inputMessage);
+  return Promise.resolve(input);
 };
 
-var flow = function flow(func) {
+var applicator = function applicator(func) {
   return function () {
     for (var _len = arguments.length, parameters = Array(_len), _key = 0; _key < _len; _key++) {
       parameters[_key] = arguments[_key];
@@ -34,10 +32,10 @@ var flow = function flow(func) {
       return wrapPromise(input).then(function (x) {
         return Promise.all(parameters.map(apply(x)));
       }).then(function (params) {
-        return func.arity > parameters.length ? func.apply(undefined, _toConsumableArray(params).concat([input])) : func.apply(undefined, _toConsumableArray(params));
+        return func.apply(undefined, _toConsumableArray(params));
       });
     };
   };
 };
 
-exports.default = flow;
+exports.default = applicator;

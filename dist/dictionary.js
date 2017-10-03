@@ -10,6 +10,12 @@ var _polyMap = require('poly-map');
 
 var _polyMap2 = _interopRequireDefault(_polyMap);
 
+var _functionPipe = require('function-pipe');
+
+var _functionPipe2 = _interopRequireDefault(_functionPipe);
+
+var _message = require('./message');
+
 var _core = require('./core');
 
 var core = _interopRequireWildcard(_core);
@@ -18,31 +24,20 @@ var _essentials = require('./essentials');
 
 var essentials = _interopRequireWildcard(_essentials);
 
-var _message = require('./message');
-
-var message = _interopRequireWildcard(_message);
-
 var _flow = require('./flow');
 
-var builtInFlows = _interopRequireWildcard(_flow);
+var _flow2 = _interopRequireDefault(_flow);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var createDictionary = function createDictionary(conf) {
-  var flowProvider = typeof conf.flow === 'function' ? conf.flow : builtInFlows[conf.flow];
-
-  var flow = function flow(func) {
-    return function () {
-      return flowProvider(func).apply(undefined, arguments);
-    };
-  };
+  var flow = typeof conf.flow === 'function' ? conf.flow : (0, _flow2.default)(conf.flow);
 
   return _extends({}, (0, _polyMap2.default)(flow, core), (0, _polyMap2.default)(flow, essentials), {
-    lift: function lift(func) {
-      return flow(message.lift(func));
-    }
+    fragment: flow,
+    lift: (0, _functionPipe2.default)(_message.lift, flow)
   });
 };
 

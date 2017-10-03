@@ -3,36 +3,62 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.createDictionary = exports.message = exports.or = exports.and = exports.not = exports.lift = exports.set = exports.get = undefined;
-
-var _message = require('./message');
-
-var message = _interopRequireWildcard(_message);
+exports.message = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.all = exports.fragment = exports.lift = exports.set = exports.get = undefined;
 
 var _dictionary = require('./dictionary');
 
 var _dictionary2 = _interopRequireDefault(_dictionary);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _message = require('./message');
+
+var message = _interopRequireWildcard(_message);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var dictionary = (0, _dictionary2.default)({
-  flow: 'sync'
-});
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var get = dictionary.get,
-    set = dictionary.set,
-    lift = dictionary.lift,
-    not = dictionary.not,
-    and = dictionary.and,
-    or = dictionary.or;
+var _createDictionary = (0, _dictionary2.default)({ flow: 'sync' }),
+    get = _createDictionary.get,
+    set = _createDictionary.set,
+    lift = _createDictionary.lift,
+    fragment = _createDictionary.fragment,
+    all = _createDictionary.all,
+    not = _createDictionary.not,
+    and = _createDictionary.and,
+    or = _createDictionary.or,
+    xor = _createDictionary.xor,
+    add = _createDictionary.add,
+    subtract = _createDictionary.subtract,
+    multiply = _createDictionary.multiply,
+    divide = _createDictionary.divide,
+    eq = _createDictionary.eq,
+    neq = _createDictionary.neq,
+    gt = _createDictionary.gt,
+    lt = _createDictionary.lt,
+    gte = _createDictionary.gte,
+    lte = _createDictionary.lte,
+    isDefined = _createDictionary.isDefined,
+    isUndefined = _createDictionary.isUndefined;
+
 exports.get = get;
 exports.set = set;
 exports.lift = lift;
+exports.fragment = fragment;
+exports.all = all;
 exports.not = not;
 exports.and = and;
 exports.or = or;
+exports.xor = xor;
+exports.add = add;
+exports.subtract = subtract;
+exports.multiply = multiply;
+exports.divide = divide;
+exports.eq = eq;
+exports.neq = neq;
+exports.gt = gt;
+exports.lt = lt;
+exports.gte = gte;
+exports.lte = lte;
+exports.isDefined = isDefined;
+exports.isUndefined = isUndefined;
 exports.message = message;
-exports.createDictionary = _dictionary2.default;
-exports.default = dictionary;

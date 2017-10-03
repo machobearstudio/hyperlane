@@ -1,22 +1,21 @@
-import fetch from 'node-fetch';
-import { message, get, set, lift } from '../src/sync'
+import fetch from 'node-fetch'
+import map from 'poly-map'
+import { message, get, set, lift, all, fragment } from '../src/sync'
 import log from './log'
 
 // Test data
-const state = {}
-
-const test = message.construct({ a: 'asd' }, state)
+const test = { a: 'asd' }
 
 const getGithub = lift(() => fetch('https://github.com/').then(res => res.text()))
 
 // Lenses
 const uppercase = lift(x => String(x).toUpperCase())
-const pipe = (...funcs) => message.extend(
-  input => funcs.reduce((acc, next) => next(acc), input)
-)
 
 // Test flows
-const testFlow = pipe(get('a'), uppercase())
+const testFlow = all(
+  get('a'),
+  uppercase(get('a'))
+)
 
 log(test)
 log(testFlow(test))

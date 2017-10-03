@@ -1,22 +1,18 @@
 import map from 'poly-map'
+import pipe from 'function-pipe'
+import { lift } from './message'
 import * as core from './core'
 import * as essentials from './essentials'
-import * as message from './message'
-import * as builtInFlows from './flow'
+import createFlow from './flow'
 
 const createDictionary = conf => {
-  const flowProvider = (
-    typeof conf.flow === 'function'
-      ? conf.flow
-      : builtInFlows[conf.flow]
-  )
-
-  const flow = func => (...params) => flowProvider(func)(...params)
+  const flow = typeof conf.flow === 'function' ? conf.flow : createFlow(conf.flow)
 
   return {
     ...map(flow, core),
     ...map(flow, essentials),
-    lift: func => flow(message.lift(func))
+    fragment: flow,
+    lift: pipe(lift, flow)
   }
 }
 

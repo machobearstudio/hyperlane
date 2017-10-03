@@ -3,28 +3,19 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.or = exports.and = exports.not = undefined;
+exports.xor = exports.or = exports.and = exports.not = undefined;
 
 var _message = require('../message');
 
 var not = exports.not = (0, _message.lift)(function (x) {
   return !x;
 });
-var and = exports.and = (0, _message.lift)(function () {
-  for (var _len = arguments.length, xs = Array(_len), _key = 0; _key < _len; _key++) {
-    xs[_key] = arguments[_key];
-  }
-
-  return xs.reduce(function (acc, next) {
-    return acc && next;
-  }, true);
+var and = exports.and = (0, _message.lift)(function (x, y) {
+  return x && y;
 });
-var or = exports.or = (0, _message.lift)(function () {
-  for (var _len2 = arguments.length, xs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-    xs[_key2] = arguments[_key2];
-  }
-
-  return xs.reduce(function (acc, next) {
-    return acc || next;
-  }, false);
+var or = exports.or = (0, _message.lift)(function (x, y) {
+  return x || y;
+});
+var xor = exports.xor = (0, _message.lift)(function (x, y) {
+  return (x || y) && !(x && y);
 });

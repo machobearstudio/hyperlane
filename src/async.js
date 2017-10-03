@@ -1,16 +1,11 @@
-import * as message from './message'
 import createDictionary from './dictionary'
-
-const dictionary = createDictionary({
-  flow: 'async'
-})
+import * as message from './message'
 
 export const {
-  get, set, lift, not, and, or, xor,
+  get, set, lift, fragment, all,
+  not, and, or, xor,
   add, subtract, multiply, divide,
   eq, neq, gt, lt, gte, lte, isDefined, isUndefined
-} = dictionary
+} = createDictionary({ flow: 'async' })
 
-export { message, createDictionary }
-
-export default dictionary
+export { message }

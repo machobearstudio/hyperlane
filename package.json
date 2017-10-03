@@ -23,6 +23,7 @@
   "dependencies": {
     "array-flatten": "^2.1.1",
     "curry": "^1.2.0",
+    "function-pipe": "^1.0.0",
     "poly-map": "^1.1.0"
   },
   "engines": {

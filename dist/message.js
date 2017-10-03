@@ -52,11 +52,15 @@ var extend = exports.extend = function extend(func) {
 };
 
 var lift = exports.lift = function lift(func) {
-  return extend(function () {
+  var Wrapper = extend(function () {
     for (var _len2 = arguments.length, inputs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
       inputs[_key2] = arguments[_key2];
     }
 
     return func.apply(undefined, _toConsumableArray(inputs.map(extract)));
   });
+
+  Wrapper.arity = func.length;
+
+  return Wrapper;
 };

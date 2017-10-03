@@ -5,22 +5,16 @@ const apply = arg => predicate => (
 )
 
 const wrapPromise = input => {
-  const inputMessage = construct(input)
-
-  if (inputMessage.data instanceof Promise) {
-    return inputMessage.data.then(construct)
+  if (input.data instanceof Promise) {
+    return input.data
   }
 
-  return Promise.resolve(inputMessage)
+  return Promise.resolve(input)
 }
 
-const flow = func => (...parameters) => input =>
+const applicator = func => (...parameters) => input =>
   wrapPromise(input)
     .then(x => Promise.all(parameters.map(apply(x))))
-    .then(params => (
-      func.arity > parameters.length
-        ? func(...params, input)
-        : func(...params)
-    ))
+    .then(params => func(...params))
 
-export default flow
+export default applicator
