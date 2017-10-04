@@ -1,3 +1,4 @@
+import curry from 'curry'
 import pipe from 'function-pipe'
 
 const identity = x => x
@@ -12,17 +13,17 @@ const resolver = predicate => {
   }
 }
 
-const fragment = applicator => func => {
+const fragment = (applicator, reducer) => {
   const Fragment = (...args) => {
     const parameters = args.map(resolver)
-    if (args.length < func.length) {
+    if (args.length < reducer.length) {
       parameters.push(identity)
     }
 
-    return applicator(func, parameters)
+    return applicator(reducer, parameters)
   }
 
   return Fragment
 }
 
-export default fragment
+export default curry(fragment)

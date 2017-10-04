@@ -13,7 +13,8 @@ const createDictionary = conf => {
 
   return {
     ...map(fragment(flow.call), core),
-    call: fragment(flow.call)
+    call: fragment(flow.call),
+    when: fragment(flow.when, extract)
     // ...map(applicator, essentials),
     // lift: func => applicator(lift(func))
   }
