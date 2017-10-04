@@ -25,3 +25,10 @@ export const combine = (input, output) =>
   construct(output.data, { ...input.scope, ...output.scope })
 
 export const extend = func => input => combine(input, construct(func(input)))
+
+export const lift = func => (...args) => {
+  const scope = args.reduce(combine, construct()).scope
+  const parameters = args.map(extract)
+
+  return construct(func.apply(undefined, parameters), scope)
+}

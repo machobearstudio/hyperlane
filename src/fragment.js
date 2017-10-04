@@ -1,5 +1,5 @@
 import curry from 'curry'
-import pipe from 'function-pipe'
+import { extend } from './message'
 
 const identity = x => x
 
@@ -9,7 +9,7 @@ const resolver = predicate => {
   }
 
   if (typeof predicate !== 'object' || predicate === null) {
-    return () => predicate
+    return extend(() => predicate)
   }
 }
 

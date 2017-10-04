@@ -1,7 +1,8 @@
 import map from 'poly-map'
-import { lift, extract } from './message'
+import pipe from 'function-pipe'
+import { lift, extract, construct } from './message'
 import * as core from './core'
-// import * as essentials from './essentials'
+import * as essentials from './essentials'
 import createFlow from './flow'
 import fragment from './fragment'
 
@@ -13,10 +14,11 @@ const createDictionary = conf => {
 
   return {
     ...map(fragment(flow.call), core),
+    ...map(fragment(flow.call), essentials),
     call: fragment(flow.call),
-    when: fragment(flow.when, extract)
-    // ...map(applicator, essentials),
-    // lift: func => applicator(lift(func))
+    when: fragment(flow.when, extract),
+    chain: fragment(flow.chain, construct),
+    lift: pipe(lift, fragment(flow.call))
   }
 }
 
