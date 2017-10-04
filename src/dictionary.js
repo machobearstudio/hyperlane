@@ -15,10 +15,10 @@ const createDictionary = conf => {
   return {
     ...map(fragment(flow.call), core),
     ...map(fragment(flow.call), essentials),
-    call: fragment(flow.call),
+    lift: pipe(lift, fragment(flow.call)),
+    call: (func, ...args) => fragment(flow.call, lift(func))(...args),
     when: fragment(flow.when, extract),
     chain: fragment(flow.chain, construct),
-    lift: pipe(lift, fragment(flow.call))
   }
 }
 

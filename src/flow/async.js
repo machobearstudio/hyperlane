@@ -3,8 +3,11 @@ export const call = (func, args) =>
     .then(x => Promise.all(args.map(arg => arg(x))))
     .then(argValues => func(...argValues))
 
-export const chain = (reducer, funcs) =>
-  input => reducer(funcs.reduce((prev, func) => func(prev), input))
+export const chain = (wrap, funcs) =>
+  input => funcs.reduce((prev, func) => prev.then(func), Promise.resolve(input)).then(wrap)
 
-export const when = (reducer, [condition, yes, no = () => undefined]) =>
-  input => (reducer(condition(input)) ? yes(input) : no(input))
+export const when = (extract, [condition, yes, no = () => undefined]) =>
+  input => Promise.resolve(input)
+    .then(condition)
+    .then(extract)
+    .then(x => x ? yes(input) : no(input))
