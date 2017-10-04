@@ -10,6 +10,5 @@ const set = (location, value, input) =>
       input.scope
     )
   )
-)
 
 export default set
