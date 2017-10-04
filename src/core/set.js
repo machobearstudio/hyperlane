@@ -1,13 +1,13 @@
 import { write } from '../path'
-import { construct, extract, extend } from '../message'
+import { construct, extract } from '../message'
 
-const set = extend((location, value, object) =>
+const set = (location, value, input) =>
   construct(
-    object.data,
+    input.data,
     write(
       extract(location),
       extract(value),
-      object.scope
+      input.scope
     )
   )
 )

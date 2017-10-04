@@ -12,6 +12,6 @@ import log from './log'
 const test = message.construct({ a: 'doge' }, { doge: 'wow' })
 
 // Test flows
-const testFlow = get(get('a'))
+const testFlow = set('b', get(get('a')))
 
 log(testFlow(test))
