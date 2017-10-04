@@ -24,20 +24,4 @@ export const extract = (input) => {
 export const combine = (input, output) =>
   construct(output.data, { ...input.scope, ...output.scope })
 
-export const extend = (func) => {
-  const Wrapper = (...inputs) => inputs
-    .concat([construct(func(...inputs))])
-    .reduce(combine, construct())
-
-  Wrapper.arity = func.length
-
-  return Wrapper
-}
-
-export const lift = (func) => {
-  const Wrapper = extend((...inputs) => func(...inputs.map(extract)))
-
-  Wrapper.arity = func.length
-
-  return Wrapper
-}
+export const extend = func => input => combine(input, construct(func(input)))

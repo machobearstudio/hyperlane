@@ -1,19 +1,20 @@
 import { read } from '../path'
-import { extend, extract } from '../message'
+import { construct, combine, extract } from '../message'
 
-const get = extend((location, object) => {
+const get = (location, object) => {
+  const input = combine(construct(location), construct(object))
   const path = extract(location)
 
   if (path === '') {
-    return object.data
+    return input.data
   }
 
-  let value = read(path, object.data)
+  let value = read(path, input.data)
   if (value === undefined) {
-    value = read(path, object.scope)
+    value = read(path, input.scope)
   }
 
-  return value
-})
+  return construct(value, input.scope)
+}
 
 export default get
