@@ -16,11 +16,11 @@ var call = exports.call = function call(func, args) {
   };
 };
 
-var chain = exports.chain = function chain(wrap, funcs) {
+var chain = exports.chain = function chain(normalize, funcs) {
   return function (input) {
-    return wrap(funcs.reduce(function (prev, func) {
+    return normalize(funcs).reduce(function (prev, func) {
       return func(prev);
-    }, input));
+    }, input);
   };
 };
 
@@ -35,5 +35,13 @@ var when = exports.when = function when(extract, _ref) {
 
   return function (input) {
     return extract(condition(input)) ? yes(input) : no(input);
+  };
+};
+
+var all = exports.all = function all(collect, funcs) {
+  return function (input) {
+    return collect(funcs.map(function (func) {
+      return func(input);
+    }));
   };
 };

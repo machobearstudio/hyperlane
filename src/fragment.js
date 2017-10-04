@@ -1,6 +1,7 @@
 import curry from 'curry'
 import { extend } from './message'
 
+
 const identity = x => x
 
 const resolver = predicate => {
@@ -13,11 +14,17 @@ const resolver = predicate => {
   }
 }
 
-const fragment = (applicator, reducer) => {
-  const Fragment = (...args) =>
-    applicator(reducer, args.map(resolver).concat([identity]))
+export const fragment = curry((applicator, reducer) => {
+  const Fragment = (...args) => {
+    const parameters = args.map(resolver)
+    if (args.length === 0 || args.length < reducer.length) {
+      parameters.push(identity)
+    }
+
+    return applicator(reducer, parameters)
+  }
 
   return Fragment
-}
+})
 
-export default curry(fragment)
+export const defragment = func => (func.name === 'Fragment' ? func() : func)

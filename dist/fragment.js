@@ -3,6 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.defragment = exports.fragment = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -30,16 +31,23 @@ var resolver = function resolver(predicate) {
   }
 };
 
-var fragment = function fragment(applicator, reducer) {
+var fragment = exports.fragment = (0, _curry2.default)(function (applicator, reducer) {
   var Fragment = function Fragment() {
     for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
 
-    return applicator(reducer, args.map(resolver).concat([identity]));
+    var parameters = args.map(resolver);
+    if (args.length === 0 || args.length < reducer.length) {
+      parameters.push(identity);
+    }
+
+    return applicator(reducer, parameters);
   };
 
   return Fragment;
-};
+});
 
-exports.default = (0, _curry2.default)(fragment);
+var defragment = exports.defragment = function defragment(func) {
+  return func.name === 'Fragment' ? func() : func;
+};

@@ -14,8 +14,11 @@ const test = message.construct({ a: 1, b: 2 }, { doge: 'wow' })
 // Test flows
 // const testFlow = add(get('a'), get('b'))
 // const testFlow = getGithub()
-const testFlow = chain(get('doge'), uppercase())
 // const testFlow = when(get('doge'), add(get('a'), get('b')), 'nope')
+const testFlow = all(
+  when(get('doge'), add(get('a'), get('b')), 'nope'),
+  chain(get('doge'), uppercase)
+)
 
 const result = testFlow(test)
 log(result)

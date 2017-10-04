@@ -28,11 +28,15 @@ export const extract = (input) => {
 export const combine = (input, output) =>
   construct(output.data, { ...input.scope, ...output.scope })
 
+export const collect = messages => construct(
+  messages.map(extract),
+  messages.reduce(combine, construct()).scope
+)
+
 export const extend = func => input => combine(input, construct(func(input)))
 
 export const lift = func => (...args) => {
-  const scope = args.reduce(combine, construct()).scope
-  const parameters = args.map(extract)
+  const input = collect(args)
 
-  return construct(func.apply(undefined, parameters), scope)
+  return construct(func.apply(undefined, input.data), input.scope)
 }

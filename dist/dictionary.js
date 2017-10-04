@@ -30,8 +30,6 @@ var _flow2 = _interopRequireDefault(_flow);
 
 var _fragment = require('./fragment');
 
-var _fragment2 = _interopRequireDefault(_fragment);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -39,17 +37,18 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var createDictionary = function createDictionary(conf) {
   var flow = typeof conf.flow === 'function' ? conf.flow : (0, _flow2.default)(conf.flow);
 
-  return _extends({}, (0, _polyMap2.default)((0, _fragment2.default)(flow.call), core), (0, _polyMap2.default)((0, _fragment2.default)(flow.call), essentials), {
-    lift: (0, _functionPipe2.default)(_message.lift, (0, _fragment2.default)(flow.call)),
+  return _extends({}, (0, _polyMap2.default)((0, _fragment.fragment)(flow.call), core), (0, _polyMap2.default)((0, _fragment.fragment)(flow.call), essentials), {
+    lift: (0, _functionPipe2.default)(_message.lift, (0, _fragment.fragment)(flow.call)),
     call: function call(func) {
       for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
         args[_key - 1] = arguments[_key];
       }
 
-      return (0, _fragment2.default)(flow.call, (0, _message.lift)(func)).apply(undefined, args);
+      return (0, _fragment.fragment)(flow.call, (0, _message.lift)(func)).apply(undefined, args);
     },
-    when: (0, _fragment2.default)(flow.when, _message.extract),
-    chain: (0, _fragment2.default)(flow.chain, _message.construct)
+    when: (0, _fragment.fragment)(flow.when, _message.extract),
+    chain: (0, _fragment.fragment)(flow.chain, (0, _polyMap2.default)(_fragment.defragment)),
+    all: (0, _fragment.fragment)(flow.all, _message.collect)
   });
 };
 

@@ -41,6 +41,10 @@ var combine = exports.combine = function combine(input, output) {
   return construct(output.data, _extends({}, input.scope, output.scope));
 };
 
+var collect = exports.collect = function collect(messages) {
+  return construct(messages.map(extract), messages.reduce(combine, construct()).scope);
+};
+
 var extend = exports.extend = function extend(func) {
   return function (input) {
     return combine(input, construct(func(input)));
@@ -53,9 +57,8 @@ var lift = exports.lift = function lift(func) {
       args[_key] = arguments[_key];
     }
 
-    var scope = args.reduce(combine, construct()).scope;
-    var parameters = args.map(extract);
+    var input = collect(args);
 
-    return construct(func.apply(undefined, parameters), scope);
+    return construct(func.apply(undefined, input.data), input.scope);
   };
 };
