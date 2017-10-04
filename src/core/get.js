@@ -1,5 +1,5 @@
 import { read } from '../path'
-import { construct, combine, extract } from '../message'
+import { construct, extract } from '../message'
 
 const get = (location, input) => {
   const path = extract(location)

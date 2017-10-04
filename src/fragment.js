@@ -14,14 +14,8 @@ const resolver = predicate => {
 }
 
 const fragment = (applicator, reducer) => {
-  const Fragment = (...args) => {
-    const parameters = args.map(resolver)
-    if (args.length < reducer.length) {
-      parameters.push(identity)
-    }
-
-    return applicator(reducer, parameters)
-  }
+  const Fragment = (...args) =>
+    applicator(reducer, args.map(resolver).concat([identity]))
 
   return Fragment
 }
