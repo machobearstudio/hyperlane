@@ -8,19 +8,19 @@ var _path = require('../path');
 
 var _message = require('../message');
 
-var get = (0, _message.extend)(function (location, object) {
+var get = function get(location, input) {
   var path = (0, _message.extract)(location);
 
   if (path === '') {
-    return object.data;
+    return input.data;
   }
 
-  var value = (0, _path.read)(path, object.data);
+  var value = (0, _path.read)(path, input.data);
   if (value === undefined) {
-    value = (0, _path.read)(path, object.scope);
+    value = (0, _path.read)(path, input.scope);
   }
 
-  return value;
-});
+  return (0, _message.construct)(value, input.scope);
+};
 
 exports.default = get;

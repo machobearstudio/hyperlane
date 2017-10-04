@@ -3,38 +3,43 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.fragment = exports.isFragment = undefined;
 
-var _functionPipe = require('function-pipe');
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-var _functionPipe2 = _interopRequireDefault(_functionPipe);
+var _curry = require('curry');
+
+var _curry2 = _interopRequireDefault(_curry);
+
+var _message = require('./message');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var identity = function identity(x) {
   return x;
 };
 
-var normalizeArguments = function normalizeArguments(arity, params) {
-  return arity > params.length ? params.concat([identity]) : params;
+var resolver = function resolver(predicate) {
+  if (typeof predicate === 'function') {
+    return predicate;
+  }
+
+  if ((typeof predicate === 'undefined' ? 'undefined' : _typeof(predicate)) !== 'object' || predicate === null) {
+    return (0, _message.extend)(function () {
+      return predicate;
+    });
+  }
 };
 
-var isFragment = exports.isFragment = function isFragment(func) {
-  return typeof func === 'function' && func.type !== undefined;
-};
-
-var fragment = exports.fragment = function fragment(func) {
+var fragment = function fragment(applicator, reducer) {
   var Fragment = function Fragment() {
-    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
-      params[_key] = arguments[_key];
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    return func.apply(undefined, _toConsumableArray(normalizeArguments(func.arity, params)));
+    return applicator(reducer, args.map(resolver).concat([identity]));
   };
-
-  Fragment.type = 'call';
 
   return Fragment;
 };
+
+exports.default = (0, _curry2.default)(fragment);

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.message = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.constant = exports.all = exports.fragment = exports.lift = exports.set = exports.get = undefined;
+exports.message = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.constant = exports.all = exports.chain = exports.when = exports.call = exports.lift = exports.set = exports.get = undefined;
 
 var _dictionary = require('./dictionary');
 
@@ -21,7 +21,9 @@ var _createDictionary = (0, _dictionary2.default)({ flow: 'sync' }),
     get = _createDictionary.get,
     set = _createDictionary.set,
     lift = _createDictionary.lift,
-    fragment = _createDictionary.fragment,
+    call = _createDictionary.call,
+    when = _createDictionary.when,
+    chain = _createDictionary.chain,
     all = _createDictionary.all,
     constant = _createDictionary.constant,
     not = _createDictionary.not,
@@ -44,7 +46,9 @@ var _createDictionary = (0, _dictionary2.default)({ flow: 'sync' }),
 exports.get = get;
 exports.set = set;
 exports.lift = lift;
-exports.fragment = fragment;
+exports.call = call;
+exports.when = when;
+exports.chain = chain;
 exports.all = all;
 exports.constant = constant;
 exports.not = not;

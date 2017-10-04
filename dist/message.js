@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
 function Message(data, scope) {
   this.data = data;
   this.scope = scope || {};
@@ -20,6 +18,12 @@ var isMessage = exports.isMessage = function isMessage(data) {
 var construct = exports.construct = function construct(data, scope) {
   if (data instanceof Message) {
     return data;
+  }
+
+  if (data instanceof Promise) {
+    return data.then(function (resolved) {
+      return construct(resolved, scope);
+    });
   }
 
   return new Message(data, scope);
@@ -38,29 +42,20 @@ var combine = exports.combine = function combine(input, output) {
 };
 
 var extend = exports.extend = function extend(func) {
-  var Wrapper = function Wrapper() {
-    for (var _len = arguments.length, inputs = Array(_len), _key = 0; _key < _len; _key++) {
-      inputs[_key] = arguments[_key];
-    }
-
-    return inputs.concat([construct(func.apply(undefined, inputs))]).reduce(combine, construct());
+  return function (input) {
+    return combine(input, construct(func(input)));
   };
-
-  Wrapper.arity = func.length;
-
-  return Wrapper;
 };
 
 var lift = exports.lift = function lift(func) {
-  var Wrapper = extend(function () {
-    for (var _len2 = arguments.length, inputs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      inputs[_key2] = arguments[_key2];
+  return function () {
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    return func.apply(undefined, _toConsumableArray(inputs.map(extract)));
-  });
+    var scope = args.reduce(combine, construct()).scope;
+    var parameters = args.map(extract);
 
-  Wrapper.arity = func.length;
-
-  return Wrapper;
+    return construct(func.apply(undefined, parameters), scope);
+  };
 };

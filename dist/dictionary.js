@@ -16,8 +16,6 @@ var _functionPipe2 = _interopRequireDefault(_functionPipe);
 
 var _message = require('./message');
 
-var _fragment = require('./fragment');
-
 var _core = require('./core');
 
 var core = _interopRequireWildcard(_core);
@@ -26,19 +24,32 @@ var _essentials = require('./essentials');
 
 var essentials = _interopRequireWildcard(_essentials);
 
-var _applicator = require('./applicator');
+var _flow = require('./flow');
 
-var _applicator2 = _interopRequireDefault(_applicator);
+var _flow2 = _interopRequireDefault(_flow);
+
+var _fragment = require('./fragment');
+
+var _fragment2 = _interopRequireDefault(_fragment);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var createDictionary = function createDictionary(conf) {
-  var applicator = typeof conf.flow === 'function' ? conf.flow : (0, _applicator2.default)(conf.flow);
+  var flow = typeof conf.flow === 'function' ? conf.flow : (0, _flow2.default)(conf.flow);
 
-  return _extends({}, (0, _polyMap2.default)((0, _functionPipe2.default)(applicator, _fragment.fragment), core), (0, _polyMap2.default)((0, _functionPipe2.default)(applicator, _fragment.fragment), essentials), {
-    lift: (0, _functionPipe2.default)(_message.lift, applicator, _fragment.fragment)
+  return _extends({}, (0, _polyMap2.default)((0, _fragment2.default)(flow.call), core), (0, _polyMap2.default)((0, _fragment2.default)(flow.call), essentials), {
+    lift: (0, _functionPipe2.default)(_message.lift, (0, _fragment2.default)(flow.call)),
+    call: function call(func) {
+      for (var _len = arguments.length, args = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        args[_key - 1] = arguments[_key];
+      }
+
+      return (0, _fragment2.default)(flow.call, (0, _message.lift)(func)).apply(undefined, args);
+    },
+    when: (0, _fragment2.default)(flow.when, _message.extract),
+    chain: (0, _fragment2.default)(flow.chain, _message.construct)
   });
 };
 
