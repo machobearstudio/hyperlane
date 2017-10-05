@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.message = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.map = exports.all = exports.chain = exports.when = exports.call = exports.lift = exports.set = exports.get = undefined;
+exports.message = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.map = exports.all = exports.chain = exports.when = exports.call = exports.register = exports.lift = exports.set = exports.get = undefined;
 
 var _dictionary = require('./dictionary');
 
@@ -21,6 +21,7 @@ var _createDictionary = (0, _dictionary2.default)({ flow: 'async' }),
     get = _createDictionary.get,
     set = _createDictionary.set,
     lift = _createDictionary.lift,
+    register = _createDictionary.register,
     call = _createDictionary.call,
     when = _createDictionary.when,
     chain = _createDictionary.chain,
@@ -46,6 +47,7 @@ var _createDictionary = (0, _dictionary2.default)({ flow: 'async' }),
 exports.get = get;
 exports.set = set;
 exports.lift = lift;
+exports.register = register;
 exports.call = call;
 exports.when = when;
 exports.chain = chain;

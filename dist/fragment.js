@@ -15,9 +15,7 @@ var _message = require('./message');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var identity = function identity(x) {
-  return x;
-};
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var resolver = function resolver(predicate) {
   if (typeof predicate === 'function') {
@@ -31,23 +29,19 @@ var resolver = function resolver(predicate) {
   }
 };
 
-var fragment = exports.fragment = (0, _curry2.default)(function (applicator, reducer) {
+var fragment = exports.fragment = function fragment(func) {
   var Fragment = function Fragment() {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
+    for (var _len = arguments.length, parms = Array(_len), _key = 0; _key < _len; _key++) {
+      parms[_key] = arguments[_key];
     }
 
-    var parameters = args.map(resolver);
-    if (args.length === 0 || args.length < reducer.length) {
-      parameters.push(identity);
-    }
-
-    return applicator(reducer, parameters);
+    return func.apply(undefined, _toConsumableArray(parms.map(resolver)));
   };
+  Fragment.$name = 'Fragment';
 
   return Fragment;
-});
+};
 
 var defragment = exports.defragment = function defragment(func) {
-  return func.name === 'Fragment' ? func() : func;
+  return func.$name === 'Fragment' ? func() : func;
 };

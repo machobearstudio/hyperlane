@@ -1,10 +1,21 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.applicator = exports.extend = exports.spread = exports.collect = exports.combine = exports.extract = exports.construct = exports.isMessage = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _polyMap = require('poly-map');
+
+var _polyMap2 = _interopRequireDefault(_polyMap);
+
+var _functionPipe = require('function-pipe');
+
+var _functionPipe2 = _interopRequireDefault(_functionPipe);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Message(data, scope) {
   this.data = data;
@@ -42,7 +53,13 @@ var combine = exports.combine = function combine(input, output) {
 };
 
 var collect = exports.collect = function collect(messages) {
-  return construct(messages.map(extract), messages.reduce(combine, construct()).scope);
+  return construct((0, _polyMap2.default)(extract, messages), Object.values(messages).reduce(combine, construct()).scope);
+};
+
+var spread = exports.spread = function spread(input) {
+  return (0, _polyMap2.default)(function (item) {
+    return construct(item, input.scope);
+  }, extract(input));
 };
 
 var extend = exports.extend = function extend(func) {
@@ -51,14 +68,8 @@ var extend = exports.extend = function extend(func) {
   };
 };
 
-var lift = exports.lift = function lift(func) {
-  return function () {
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    var input = collect(args);
-
-    return construct(func.apply(undefined, input.data), input.scope);
+var applicator = exports.applicator = function applicator(func) {
+  return function (input) {
+    return combine(input, construct(func.apply(undefined, extract(input))));
   };
 };
