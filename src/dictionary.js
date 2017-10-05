@@ -1,27 +1,42 @@
-import map from 'poly-map'
+import polyMap from 'poly-map'
 import pipe from 'function-pipe'
-import { lift, extract, construct, collect, spread } from './message'
+import { extract, construct, collect, spread, combine, applicator } from './message'
 import * as core from './core'
 import * as essentials from './essentials'
 import createFlow from './flow'
 import { fragment, defragment } from './fragment'
 
+const id = x => x
+
 const createDictionary = (conf) => {
-  const flow =
-    typeof conf.flow === 'function'
-      ? conf.flow
-      : createFlow(conf.flow)
+  const flow = typeof conf.flow === 'object' ? conf.flow : createFlow(conf.flow)
+  const { sequential, parallel, apply, call, map } = flow
+
+  const functionCall = func => (...args) => sequential([
+    construct,
+    parallel(args.concat([id])),
+    apply(func)
+  ])
+
+  const liftCall = func => (...args) => sequential([
+    construct,
+    parallel(args.concat([id])),
+    collect,
+    call(applicator(func))
+  ])
+
+  const when = (condition, yes, no) => input => (extract(condition(input)) ? yes(input) : (no && no(input)))
+
+  const iterate = func => sequential([ construct, spread, map(func), collect ])
 
   return {
-    ...map(fragment(flow.call), core),
-    ...map(fragment(flow.call), essentials),
-    register: fragment(flow.call),
-    lift: pipe(lift, fragment(flow.call)),
-    call: (func, ...args) => fragment(flow.call, lift(func))(...args),
-    when: fragment(flow.when, extract),
-    chain: fragment(flow.chain, map(defragment)),
-    all: fragment(flow.all, collect),
-    map: func => input => collect(map(func, spread(input)))
+    ...polyMap(pipe(functionCall, fragment), core),
+    ...polyMap(pipe(liftCall, fragment), essentials),
+    lift: pipe(liftCall, fragment),
+    chain: fragment((...steps) => sequential(steps.map(defragment))),
+    all: fragment((...steps) => sequential([parallel(steps.map(defragment)), collect])),
+    when: fragment(when),
+    map: fragment(func => iterate(defragment(func)))
   }
 }
 

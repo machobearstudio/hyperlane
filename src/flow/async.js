@@ -1,18 +1,5 @@
-export const call = (func, args) =>
-  input => Promise.resolve(input)
-    .then(x => Promise.all(args.map(arg => arg(x))))
-    .then(argValues => func(...argValues))
-
-export const chain = (normalize, funcs) =>
-  input => normalize(funcs).reduce((prev, func) => prev.then(func), Promise.resolve(input))
-
-export const when = (extract, [condition, yes, no = () => undefined]) =>
-  input => Promise.resolve(input)
-    .then(condition)
-    .then(extract)
-    .then(x => x ? yes(input) : no(input))
-
-export const all = (collect, args) =>
-  input => Promise.resolve(input)
-    .then(x => Promise.all(args.map(arg => arg(x))))
-    .then(collect)
+export const sequential = funcs => input  => funcs.reduce((prev, func) => prev.then(func), Promise.resolve(input))
+export const parallel   = funcs => input  => Promise.resolve(input).then(x => Promise.all(funcs.map(func => func(input))))
+export const call       = func  => input  => Promise.resolve(input).then(func)
+export const apply      = func  => inputs => Promise.all(inputs).then(xs => func.apply(undefined, xs))
+export const map        = func  => inputs => Promise.all(inputs.map(call(func)))

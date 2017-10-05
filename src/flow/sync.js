@@ -1,14 +1,5 @@
-import map from 'poly-map'
-import { spread, collect } from '../message'
-
-export const call = (func, args) =>
-  input => func(...args.map(x => x(input)))
-
-export const chain = (normalize, funcs) =>
-  input => normalize(funcs).reduce((prev, func) => func(prev), input)
-
-export const when = (extract, [condition, yes, no = () => undefined]) =>
-  input => (extract(condition(input)) ? yes(input) : no(input))
-
-export const all = (collect, funcs) =>
-  input => collect(funcs.map(func => func(input)))
+export const sequential = funcs => input  => funcs.reduce((prev, func) => func(prev), input)
+export const parallel   = funcs => input  => funcs.map(func => func(input))
+export const call       = func  => input  => func(input)
+export const apply      = func  => inputs => func.apply(undefined, inputs)
+export const map        = func  => inputs => inputs.map(call(func))

@@ -1,10 +1,8 @@
 import { read } from '../path'
 import { construct, extract } from '../message'
 
-const get = (location, data) => {
+const get = (location, input) => {
   const path = extract(location)
-  const input = construct(data)
-
   if (path === '') {
     return input
   }

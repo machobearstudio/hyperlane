@@ -1,24 +1,22 @@
 import fetch from 'node-fetch'
-import iterate from 'poly-map'
 import { message, get, set, lift, all, call, when, chain, add, multiply, map } from '../src/sync'
 import log from './log'
 
-const getGithub = lift(() => fetch('https://github.com/').then(res => typeof res.text()))
-
 // // Lenses
 const uppercase = lift(x => String(x).toUpperCase())
+// const getGithub = lift(() => fetch('https://github.com/').then(res => typeof res.text()))
+// log(getGithub()(test))
 
 // Test data
-const test = message.construct({ a: { z: 'doge' }, b: { z: 'wow!' } }, { doge: 'wow' })
+const test = message.construct({ a: 1, b: 2 }, { doge: 'wow' })
+const testCollection = message.construct([{ z: 'doge' }, { z: 'wow!' }], { doge: 'wow' })
 
 // Test flows
-// const testFlow = add(get('a'), get('b'))
-// const testFlow = getGithub()
-// const testFlow = when(get('doge'), add(get('a'), get('b')), 'nope')
-const testFlow = map(get('z'))
-
-const result = testFlow(test)
-log(result)
-
-// const up = message.lift(x => String(x).toUpperCase())
-// log(up(test))
+log(get('doge')(test))
+log(add(get('a'), get('b'))(test))
+log(uppercase(get('doge'))(test))
+log(chain(get('doge'), uppercase)(test))
+log(all(chain(get('doge'), uppercase), add(get('a'), get('b')))(test))
+log(when(get('doge'), add(get('a'), get('b')), 'nope')(test))
+log(when(get('nothing'), add(get('a'), get('b')), 'nope')(test))
+log(map(get('z'))(testCollection))

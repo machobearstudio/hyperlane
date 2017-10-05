@@ -1,4 +1,5 @@
 import map from 'poly-map'
+import pipe from 'function-pipe'
 
 function Message(data, scope) {
   this.data = data
@@ -39,8 +40,4 @@ export const spread = input => map(item => construct(item, input.scope), extract
 
 export const extend = func => input => combine(input, construct(func(input)))
 
-export const lift = func => (...args) => {
-  const input = collect(args)
-
-  return construct(func.apply(undefined, input.data), input.scope)
-}
+export const applicator = func => input => combine(input, construct(func.apply(undefined, extract(input))))
