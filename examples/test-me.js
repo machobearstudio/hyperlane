@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
-import map from 'poly-map'
-import { message, get, set, lift, all, call, when, chain, add } from '../src'
+import iterate from 'poly-map'
+import { message, get, set, lift, all, call, when, chain, add, multiply, map } from '../src/sync'
 import log from './log'
 
 const getGithub = lift(() => fetch('https://github.com/').then(res => typeof res.text()))
@@ -9,16 +9,13 @@ const getGithub = lift(() => fetch('https://github.com/').then(res => typeof res
 const uppercase = lift(x => String(x).toUpperCase())
 
 // Test data
-const test = message.construct({ a: 1, b: 2 }, { doge: 'wow' })
+const test = message.construct({ a: { z: 'doge' }, b: { z: 'wow!' } }, { doge: 'wow' })
 
 // Test flows
 // const testFlow = add(get('a'), get('b'))
 // const testFlow = getGithub()
 // const testFlow = when(get('doge'), add(get('a'), get('b')), 'nope')
-const testFlow = all(
-  when(get('doge'), add(get('a'), get('b')), 'nope'),
-  chain(get('doge'), uppercase)
-)
+const testFlow = map(get('z'))
 
 const result = testFlow(test)
 log(result)

@@ -1,3 +1,5 @@
+import map from 'poly-map'
+
 function Message(data, scope) {
   this.data = data
   this.scope = scope || {}
@@ -29,9 +31,11 @@ export const combine = (input, output) =>
   construct(output.data, { ...input.scope, ...output.scope })
 
 export const collect = messages => construct(
-  messages.map(extract),
-  messages.reduce(combine, construct()).scope
+  map(extract, messages),
+  Object.values(messages).reduce(combine, construct()).scope
 )
+
+export const spread = input => map(item => construct(item, input.scope), extract(input))
 
 export const extend = func => input => combine(input, construct(func(input)))
 

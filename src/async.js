@@ -2,7 +2,7 @@ import createDictionary from './dictionary'
 import * as message from './message'
 
 export const {
-  get, set, lift,
+  get, set, lift, register,
   call, when, chain, all, map,
   not, and, or, xor,
   add, subtract, multiply, divide,
