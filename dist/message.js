@@ -31,12 +31,6 @@ var construct = exports.construct = function construct(data, scope) {
     return data;
   }
 
-  if (data instanceof Promise) {
-    return data.then(function (resolved) {
-      return construct(resolved, scope);
-    });
-  }
-
   return new Message(data, scope);
 };
 

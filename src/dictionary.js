@@ -1,12 +1,17 @@
 import polyMap from 'poly-map'
 import pipe from 'function-pipe'
-import { extract, construct, collect, spread, combine, applicator } from './message'
+import { extract, construct, collect, spread, combine, applicator, isMessage } from './message'
 import * as core from './core'
 import * as essentials from './essentials'
 import createFlow from './flow'
 import { fragment, defragment } from './fragment'
 
 const id = x => x
+const fixPromise = x => (
+  isMessage(x) && x.data instanceof Promise
+    ? x.data.then(data => construct(data, x.scope))
+    : x
+)
 
 const createDictionary = (conf) => {
   const flow = typeof conf.flow === 'object' ? conf.flow : createFlow(conf.flow)
@@ -22,7 +27,8 @@ const createDictionary = (conf) => {
     construct,
     parallel(args.concat([id])),
     collect,
-    call(applicator(func))
+    call(applicator(func)),
+    fixPromise
   ])
 
   const when = (condition, yes, no) => input => (extract(condition(input)) ? yes(input) : (no && no(input)))

@@ -13,10 +13,6 @@ export const construct = (data, scope) => {
     return data
   }
 
-  if (data instanceof Promise) {
-    return data.then(resolved => construct(resolved, scope))
-  }
-
   return new Message(data, scope)
 }
 

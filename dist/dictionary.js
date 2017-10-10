@@ -39,6 +39,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var id = function id(x) {
   return x;
 };
+var fixPromise = function fixPromise(x) {
+  return (0, _message.isMessage)(x) && x.data instanceof Promise ? x.data.then(function (data) {
+    return (0, _message.construct)(data, x.scope);
+  }) : x;
+};
 
 var createDictionary = function createDictionary(conf) {
   var flow = _typeof(conf.flow) === 'object' ? conf.flow : (0, _flow2.default)(conf.flow);
@@ -65,7 +70,7 @@ var createDictionary = function createDictionary(conf) {
         args[_key2] = arguments[_key2];
       }
 
-      return sequential([_message.construct, parallel(args.concat([id])), _message.collect, call((0, _message.applicator)(func))]);
+      return sequential([_message.construct, parallel(args.concat([id])), _message.collect, call((0, _message.applicator)(func)), fixPromise]);
     };
   };
 
