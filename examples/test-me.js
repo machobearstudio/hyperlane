@@ -18,8 +18,8 @@ log(when(get('doge'), add(get('a'), get('b')), 'nope')(test))
 log(when(get('nothing'), add(get('a'), get('b')), 'nope')(test))
 log(map(get('z'))(testCollection))
 
-// HTTP GET
-const httpGet = lift(url => fetch(url).then(res => typeof res.text()))
+// // HTTP GET
+const httpGet = lift(url => fetch(url).then(res => res.text()).then(x => x.length))
 const getGithub = httpGet('https://github.com/')
 
 log(getGithub(test))

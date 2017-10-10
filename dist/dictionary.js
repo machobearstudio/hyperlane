@@ -36,6 +36,8 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 var id = function id(x) {
   return x;
 };
@@ -76,7 +78,11 @@ var createDictionary = function createDictionary(conf) {
 
   var when = function when(condition, yes, no) {
     return function (input) {
-      return (0, _message.extract)(condition(input)) ? yes(input) : no && no(input);
+      var original = (0, _message.construct)(input);
+
+      return sequential([condition, fixPromise, function (x) {
+        return (0, _message.extract)(x) ? yes(original) : no && no(original);
+      }])(original);
     };
   };
 
@@ -100,7 +106,13 @@ var createDictionary = function createDictionary(conf) {
 
       return sequential([parallel(steps.map(_fragment.defragment)), _message.collect]);
     }),
-    when: (0, _fragment.fragment)(when),
+    when: (0, _fragment.fragment)(function () {
+      for (var _len5 = arguments.length, steps = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
+        steps[_key5] = arguments[_key5];
+      }
+
+      return when.apply(undefined, _toConsumableArray(steps.map(_fragment.defragment)));
+    }),
     map: (0, _fragment.fragment)(function (func) {
       return iterate((0, _fragment.defragment)(func));
     })

@@ -31,7 +31,15 @@ const createDictionary = (conf) => {
     fixPromise
   ])
 
-  const when = (condition, yes, no) => input => (extract(condition(input)) ? yes(input) : (no && no(input)))
+  const when = (condition, yes, no) => input => {
+    const original = construct(input)
+
+    return sequential([
+      condition,
+      fixPromise,
+      x => (extract(x) ? yes(original) : no && no(original))
+    ])(original)
+  }
 
   const iterate = func => sequential([ construct, spread, map(func), collect ])
 
@@ -41,7 +49,7 @@ const createDictionary = (conf) => {
     lift: pipe(liftCall, fragment),
     chain: fragment((...steps) => sequential(steps.map(defragment))),
     all: fragment((...steps) => sequential([parallel(steps.map(defragment)), collect])),
-    when: fragment(when),
+    when: fragment((...steps) => when(...steps.map(defragment))),
     map: fragment(func => iterate(defragment(func)))
   }
 }
