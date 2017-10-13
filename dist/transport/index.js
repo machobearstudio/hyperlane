@@ -14,8 +14,8 @@ var async = _interopRequireWildcard(_async);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-var flow = function flow(type) {
+var createTransport = function createTransport(type) {
   return type === 'sync' ? sync : async;
 };
 
-exports.default = flow;
+exports.default = createTransport;

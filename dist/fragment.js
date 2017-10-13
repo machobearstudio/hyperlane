@@ -11,6 +11,10 @@ var _curry = require('curry');
 
 var _curry2 = _interopRequireDefault(_curry);
 
+var _polyMap = require('poly-map');
+
+var _polyMap2 = _interopRequireDefault(_polyMap);
+
 var _message = require('./message');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -27,6 +31,8 @@ var resolver = function resolver(predicate) {
       return predicate;
     });
   }
+
+  return (0, _polyMap2.default)(resolver, predicate);
 };
 
 var fragment = exports.fragment = function fragment(func) {

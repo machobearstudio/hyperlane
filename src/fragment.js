@@ -1,4 +1,5 @@
 import curry from 'curry'
+import map from 'poly-map'
 import { extend, spread } from './message'
 
 const resolver = predicate => {
@@ -9,6 +10,8 @@ const resolver = predicate => {
   if (typeof predicate !== 'object' || predicate === null) {
     return extend(() => predicate)
   }
+
+  return map(resolver, predicate)
 }
 
 export const fragment = func => {

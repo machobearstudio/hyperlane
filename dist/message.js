@@ -11,10 +11,6 @@ var _polyMap = require('poly-map');
 
 var _polyMap2 = _interopRequireDefault(_polyMap);
 
-var _functionPipe = require('function-pipe');
-
-var _functionPipe2 = _interopRequireDefault(_functionPipe);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Message(data, scope) {

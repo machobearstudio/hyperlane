@@ -5,10 +5,7 @@ const log = object => {
     return object.then(log)
   }
 
-  console.log(util.inspect(object, {
-    depth: null,
-    colors: true
-  }))
+  console.log(util.inspect(object, { depth: null, colors: true }))
 }
 
 export default log

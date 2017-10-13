@@ -6,8 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _polyMap = require('poly-map');
 
 var _polyMap2 = _interopRequireDefault(_polyMap);
@@ -38,85 +36,58 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var id = function id(x) {
-  return x;
-};
-var fixPromise = function fixPromise(x) {
-  return (0, _message.isMessage)(x) && x.data instanceof Promise ? x.data.then(function (data) {
-    return (0, _message.construct)(data, x.scope);
-  }) : x;
-};
-
 var createDictionary = function createDictionary(conf) {
-  var flow = _typeof(conf.flow) === 'object' ? conf.flow : (0, _flow2.default)(conf.flow);
-  var sequential = flow.sequential,
-      parallel = flow.parallel,
-      apply = flow.apply,
-      call = flow.call,
-      map = flow.map;
+  var flow = (0, _flow2.default)(conf.flow || conf.transport);
+  var functionCall = flow.functionCall,
+      liftCall = flow.liftCall,
+      when = flow.when,
+      iterate = flow.iterate,
+      filter = flow.filter,
+      chain = flow.chain,
+      all = flow.all,
+      structure = flow.structure;
 
 
-  var functionCall = function functionCall(func) {
-    return function () {
-      for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-        args[_key] = arguments[_key];
-      }
-
-      return sequential([_message.construct, parallel(args.concat([id])), apply(func)]);
-    };
-  };
-
-  var liftCall = function liftCall(func) {
-    return function () {
-      for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-        args[_key2] = arguments[_key2];
-      }
-
-      return sequential([_message.construct, parallel(args.concat([id])), _message.collect, call((0, _message.applicator)(func)), fixPromise]);
-    };
-  };
-
-  var when = function when(condition, yes, no) {
-    return function (input) {
-      var original = (0, _message.construct)(input);
-
-      return sequential([condition, fixPromise, function (x) {
-        return (0, _message.extract)(x) ? yes(original) : no && no(original);
-      }])(original);
-    };
-  };
-
-  var iterate = function iterate(func) {
-    return sequential([_message.construct, _message.spread, map(func), _message.collect]);
-  };
-
-  return _extends({}, (0, _polyMap2.default)((0, _functionPipe2.default)(functionCall, _fragment.fragment), core), (0, _polyMap2.default)((0, _functionPipe2.default)(liftCall, _fragment.fragment), essentials), {
+  return _extends({
     lift: (0, _functionPipe2.default)(liftCall, _fragment.fragment),
     chain: (0, _fragment.fragment)(function () {
+      for (var _len = arguments.length, steps = Array(_len), _key = 0; _key < _len; _key++) {
+        steps[_key] = arguments[_key];
+      }
+
+      return chain.apply(undefined, _toConsumableArray(steps.map(_fragment.defragment)));
+    }),
+    all: (0, _fragment.fragment)(function () {
+      for (var _len2 = arguments.length, steps = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+        steps[_key2] = arguments[_key2];
+      }
+
+      return all.apply(undefined, _toConsumableArray(steps.map(_fragment.defragment)));
+    }),
+    array: (0, _fragment.fragment)(function () {
       for (var _len3 = arguments.length, steps = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
         steps[_key3] = arguments[_key3];
       }
 
-      return sequential(steps.map(_fragment.defragment));
+      return all.apply(undefined, _toConsumableArray(steps.map(_fragment.defragment)));
     }),
-    all: (0, _fragment.fragment)(function () {
-      for (var _len4 = arguments.length, steps = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-        steps[_key4] = arguments[_key4];
-      }
-
-      return sequential([parallel(steps.map(_fragment.defragment)), _message.collect]);
+    object: (0, _fragment.fragment)(function (items) {
+      return structure(items);
     }),
     when: (0, _fragment.fragment)(function () {
-      for (var _len5 = arguments.length, steps = Array(_len5), _key5 = 0; _key5 < _len5; _key5++) {
-        steps[_key5] = arguments[_key5];
+      for (var _len4 = arguments.length, steps = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+        steps[_key4] = arguments[_key4];
       }
 
       return when.apply(undefined, _toConsumableArray(steps.map(_fragment.defragment)));
     }),
     map: (0, _fragment.fragment)(function (func) {
       return iterate((0, _fragment.defragment)(func));
+    }),
+    filter: (0, _fragment.fragment)(function (func) {
+      return filter((0, _fragment.defragment)(func));
     })
-  });
+  }, (0, _polyMap2.default)((0, _functionPipe2.default)(functionCall, _fragment.fragment), core), (0, _polyMap2.default)((0, _functionPipe2.default)(liftCall, _fragment.fragment), essentials));
 };
 
 exports.default = createDictionary;

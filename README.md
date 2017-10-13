@@ -82,10 +82,108 @@ check({}) // => Message{ data: {}, scope: { says: 'nothing' } }
 const countPosts = chain(httpGet('http://my-site.com/api/posts'), count)
 ```
 
-
 `all(flow1, flow2, flow3, ...)` - control flow fragment for parallel operations. Each sub-flow receives a copy of the original message, results are merged together. Asynchronous sub-flows are executed in parallel, control is passed downstream only when all the parallel tasks are completed.
 
-`map(flow)` - control flow fragment for parallel operations on an array of incoming data. Similar to `all`, except that each sub-flow gets only a single item from the input array.
+`map(flow)` - control flow fragment for parallel operations on a collection (array or hash-map) of incoming data. Similar to `all`, except that each sub-flow gets only a single item from the collection as its input data.
+
+`filter(condition)` - apply `condition` to each item in the input collection and returen new collection with only those items for which the `condition` is truthy
+
+`object({ name1: flow1, name2: flow2, ... })` - similar to `all` and will be merged with it in future versions
+
+`array(flow1, flow2, flow3, ...)` - see `all`, will be merged with it in future versions
+
+`values` - returns an array of values from input collection (array or hash-map)
+```javascript
+const test = values(get(''))
+
+test({ a: 100, b: 200, c: 300, d: 400 }) // => Message{ data: [100, 200, 300, 400], scope: {} }
+```
+
+`keys` - returns an array of keys from input collection (array or hash-map)
+```javascript
+const test = keys(get(''))
+
+test({ a: 100, b: 200, c: 300, d: 400 }) // => Message{ data: ['a', 'b', 'c', 'd'], scope: {} }
+```
+
+`concat` - concatenate two arrays
+```javascript
+const test = concat(get(''), array(300, 400))
+
+test([100, 200]) // => Message{ data: [100, 200, 300, 400], scope: {} }
+```
+
+`push` - push an element into an array
+```javascript
+const test = push(get(''), 300)
+
+test([100, 200]) // => Message{ data: [100, 200, 300], scope: {} }
+```
+
+`head` - takes first element of an array
+```javascript
+const test = head(get(''))
+
+test([100, 200, 300, 400]) // => Message{ data: 100, scope: {} }
+```
+
+`tail` - removes first element from an array
+```javascript
+const test = tail(get(''))
+
+test([100, 200, 300, 400]) // => Message{ data: [200, 300, 400], scope: {} }
+```
+
+`uppercase` - convert string to upper case
+```javascript
+const test = uppercase(get(''))
+
+test('wow!') // => Message{ data: 'WOW!', scope: {} }
+```
+
+`lowercase` - convert string to lower case
+```javascript
+const test = lowercase(get(''))
+
+test('WOW!') // => Message{ data: 'wow!', scope: {} }
+```
+
+`add` - summate two numbers or concatenate two strings
+```javascript
+const test = add(get('a'), get('b'))
+
+test({ a: 1, b: 2 }) // => Message{ data: 3, scope: {} }
+test({ a: 'doge', b: 'wow!' }) // => Message{ data: 'dogewow!, scope: {} }
+```
+
+`add` - summate two numbers or concatenate two strings
+```javascript
+const test = add(get('a'), get('b'))
+
+test({ a: 1, b: 2 }) // => Message{ data: 3, scope: {} }
+test({ a: 'doge', b: 'wow!' }) // => Message{ data: 'dogewow!, scope: {} }
+```
+
+`subtract` - subtract two numbers
+```javascript
+const test = subrtact(get('a'), get('b'))
+
+test({ a: 1, b: 2 }) // => Message{ data: -1, scope: {} }
+```
+
+`multiply` - multiply two numbers
+```javascript
+const test = multiply(get('a'), get('b'))
+
+test({ a: 2, b: 5 }) // => Message{ data: 10, scope: {} }
+```
+
+`divide` - divide numbers
+```javascript
+const test = divide(get('a'), get('b'))
+
+test({ a: 8, b: 2 }) // => Message{ data: 4, scope: {} }
+```
 
 `not(x)` - logical negation
 ```javascript
@@ -121,33 +219,6 @@ test({ a: false, b: true }) // => Message{ data: true, scope: {} }
 test({ a: true, b: true }) // => Message{ data: false, scope: {} }
 ```
 
-`add` - summate two numbers
-```javascript
-const test = add(get('a'), get('b'))
-
-test({ a: 1, b: 2 }) // => Message{ data: 3, scope: {} }
-```
-
-`subtract` - subtract two numbers
-```javascript
-const test = subrtact(get('a'), get('b'))
-
-test({ a: 1, b: 2 }) // => Message{ data: -1, scope: {} }
-```
-
-`multiply` - multiply two numbers
-```javascript
-const test = multiply(get('a'), get('b'))
-
-test({ a: 2, b: 5 }) // => Message{ data: 10, scope: {} }
-```
-
-`divide` - divide numbers
-```javascript
-const test = divide(get('a'), get('b'))
-
-test({ a: 8, b: 2 }) // => Message{ data: 4, scope: {} }
-```
 
 `eq` - strict equality
 ```javascript
@@ -182,9 +253,47 @@ test({ a: 100, b: 2 }) // => Message{ data: false, scope: {} }
 ```
 
 `gte` - greater than or equal
+```javascript
+const test = gte(get('a'), get('b'))
+
+test({ a: 0, b: 2 }) // => Message{ data: false, scope: {} }
+test({ a: 2, b: 2 }) // => Message{ data: true, scope: {} }
+test({ a: 100, b: 2 }) // => Message{ data: true, scope: {} }
+```
 
 `lte` - less than or equal
+```javascript
+const test = gt(get('a'), get('b'))
+
+test({ a: 1, b: 2 }) // => Message{ data: true, scope: {} }
+test({ a: 2, b: 2 }) // => Message{ data: true, scope: {} }
+test({ a: 100, b: 2 }) // => Message{ data: false, scope: {} }
+```
 
 `isDefined` - check if input is defined
+```javascript
+const test = isDefined(get(''))
+
+test(100500) // => Message{ data: true, scope: {} }
+test({ a: 2, b: 2 }) // => Message{ data: true, scope: {} }
+test(undefined) // => Message{ data: false, scope: {} }
+```
 
 `isUndefined` - check if input is undefined
+```javascript
+const test = isUndefined(get(''))
+
+test(100500) // => Message{ data: false, scope: {} }
+test({ a: 2, b: 2 }) // => Message{ data: false, scope: {} }
+test(undefined) // => Message{ data: true, scope: {} }
+```
+
+
+## TODO
+- More fragments (open for suggestions)
+- Unit tests
+- Performance optimization
+
+## License
+
+Apache 2 (see LICENSE file in the package directory)

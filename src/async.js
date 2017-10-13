@@ -3,10 +3,12 @@ import message from './message'
 
 export const {
   get, set, lift, register,
-  call, when, chain, all, map,
+  call, when, chain, all, map, filter, object, array,
   not, and, or, xor,
   add, subtract, multiply, divide,
-  eq, neq, gt, lt, gte, lte, isDefined, isUndefined
+  uppercase, lowercase,
+  eq, neq, gt, lt, gte, lte, isDefined, isUndefined,
+  values, keys, head, tail, zip, concat, push
 } = createDictionary({ flow: 'async' })
 
 export { message }

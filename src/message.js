@@ -1,5 +1,4 @@
 import map from 'poly-map'
-import pipe from 'function-pipe'
 
 function Message(data, scope) {
   this.data = data

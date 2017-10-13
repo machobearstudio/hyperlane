@@ -1,8 +1,16 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.forAll = exports.apply = exports.call = exports.parallel = exports.sequential = undefined;
+
+var _polyMap = require('poly-map');
+
+var _polyMap2 = _interopRequireDefault(_polyMap);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var sequential = exports.sequential = function sequential(funcs) {
   return function (input) {
     return funcs.reduce(function (prev, func) {
@@ -12,9 +20,9 @@ var sequential = exports.sequential = function sequential(funcs) {
 };
 var parallel = exports.parallel = function parallel(funcs) {
   return function (input) {
-    return funcs.map(function (func) {
+    return (0, _polyMap2.default)(function (func) {
       return func(input);
-    });
+    }, funcs);
   };
 };
 var call = exports.call = function call(func) {
@@ -27,8 +35,8 @@ var apply = exports.apply = function apply(func) {
     return func.apply(undefined, inputs);
   };
 };
-var map = exports.map = function map(func) {
+var forAll = exports.forAll = function forAll(func) {
   return function (inputs) {
-    return inputs.map(call(func));
+    return (0, _polyMap2.default)(call(func), inputs);
   };
 };
