@@ -11,9 +11,7 @@ var _dictionary2 = _interopRequireDefault(_dictionary);
 
 var _message = require('./message');
 
-var message = _interopRequireWildcard(_message);
-
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+var _message2 = _interopRequireDefault(_message);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -69,4 +67,4 @@ exports.gte = gte;
 exports.lte = lte;
 exports.isDefined = isDefined;
 exports.isUndefined = isUndefined;
-exports.message = message;
+exports.message = _message2.default;

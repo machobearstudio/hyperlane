@@ -1,5 +1,5 @@
 import createDictionary from './dictionary'
-import * as message from './message'
+import message from './message'
 
 export const {
   get, set, lift, register,
