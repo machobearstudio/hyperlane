@@ -8,6 +8,7 @@ This tool allows to construct computation pipelines heavily inspired by Haskell'
 - Automatically supports synchronous and asyncronous functions
 - Allows for lifting any pure function into computation context
 - Composable structure allows to add other aspects to the pipeline fragments
+- Easy automated testing and fuzzing
 
 ## Installation
 
@@ -17,26 +18,51 @@ npm install hyperlane
 
 ## Usage
 
-### Simple example
+### Simple example: querying JSON APIs
 ```javascript
-import { message, get, set, lift } from '../src'
+import https from 'https'
+import nodeFetch from 'node-fetch'
+import { lift, chain, get, set, map, filter, eq, object } from 'hyperlane'
 
-const summate = (x, y) => x + y
-const sum = lift(summate)
+// Promise logger
+const log = x=> x.then(y => { console.log(y.data); return y })
 
-const testMessage = message({ a: 100, b: 200 }, { some: 'state' })
+// Generic HTTP readers
+const agent = new https.Agent({ rejectUnauthorized: false })
+const fetch = lift(url => nodeFetch(url, { agent }).then(res => res.text()))
+const readJson = lift(data => JSON.parse(String(data)))
 
-// Test flows
-const testFlow = set('summ', sum(get('a'), get('b')))
+// A bit more specific API communication fragments
+const fetchEntity = url => readJson(fetch(url))
+const fetchCollection = url => get('results', readJson(fetch(url)))
 
-testFlow(testMessage).then(x => console.log(x)) // => Message{ data: 300, scope: { summ: 300, such: 'doge!' } }
+// Fetch all people data and then fetch homeworld data
+// for each character from a separate URL
+const peopleHomeworlds = chain(
+  fetchCollection('https://swapi.co/api/people'),
+  map(object({
+    name: get('name'),
+    homeworld: get('name', fetchEntity(get('homeworld')))
+  }))
+)
+
+// Fetch character names and homeworlds and then
+// filter the results by homeworld name
+const whosFrom = chain(
+  set('planet', get('')),
+  peopleHomeworlds,
+  filter(eq(get('homeworld'), get('planet')))
+)
+
+log(peopleHomeworlds()) // lists Star War characters with their homeworlds
+log(whosFrom('Tatooine')) // lists Star War characters from Tatooine
 ```
 
 
 ### Built-in fragments
 `lift(f)` - turn any pure function into a hyperlane fragment:
 ```javascript
-const f = lift((x, y, z) => return x + y / z)
+const f = lift((x, y, z) => x + y / z)
 ```
 
 `message(data, scope)` - wrap data and state (computation context) into a hyperlane message:
@@ -83,8 +109,18 @@ const countPosts = chain(httpGet('http://my-site.com/api/posts'), count)
 ```
 
 `all(flow1, flow2, flow3, ...)` - control flow fragment for parallel operations. Each sub-flow receives a copy of the original message, results are merged together. Asynchronous sub-flows are executed in parallel, control is passed downstream only when all the parallel tasks are completed.
+```javascript
+const test = all(get('doge'), get('such'))
+
+test({ doge: 'here', such: 'much' }) // => Message{ data: ['here', 'much'], scope: {} }
+```
 
 `map(flow)` - control flow fragment for parallel operations on a collection (array or hash-map) of incoming data. Similar to `all`, except that each sub-flow gets only a single item from the collection as its input data.
+```javascript
+const test = map(get('says'))
+
+test({ doge: { says: 'wow!' }, cat: { says: 'meow' } }) // => Message{ data: { doge: 'wow!', cat: 'meow' }, scope: {} }
+```
 
 `filter(condition)` - apply `condition` to each item in the input collection and returen new collection with only those items for which the `condition` is truthy
 
@@ -92,63 +128,63 @@ const countPosts = chain(httpGet('http://my-site.com/api/posts'), count)
 
 `array(flow1, flow2, flow3, ...)` - see `all`, will be merged with it in future versions
 
-`values` - returns an array of values from input collection (array or hash-map)
+`values(collection)` - returns an array of values from input collection (array or hash-map)
 ```javascript
 const test = values(get(''))
 
 test({ a: 100, b: 200, c: 300, d: 400 }) // => Message{ data: [100, 200, 300, 400], scope: {} }
 ```
 
-`keys` - returns an array of keys from input collection (array or hash-map)
+`keys(collection)` - returns an array of keys from input collection (array or hash-map)
 ```javascript
 const test = keys(get(''))
 
 test({ a: 100, b: 200, c: 300, d: 400 }) // => Message{ data: ['a', 'b', 'c', 'd'], scope: {} }
 ```
 
-`concat` - concatenate two arrays
+`concat(array, array)` - concatenate two arrays
 ```javascript
 const test = concat(get(''), array(300, 400))
 
 test([100, 200]) // => Message{ data: [100, 200, 300, 400], scope: {} }
 ```
 
-`push` - push an element into an array
+`push(array, value)` - push an element into an array
 ```javascript
 const test = push(get(''), 300)
 
 test([100, 200]) // => Message{ data: [100, 200, 300], scope: {} }
 ```
 
-`head` - takes first element of an array
+`head(array)` - takes first element of an array
 ```javascript
 const test = head(get(''))
 
 test([100, 200, 300, 400]) // => Message{ data: 100, scope: {} }
 ```
 
-`tail` - removes first element from an array
+`tail(array)` - removes first element from an array
 ```javascript
 const test = tail(get(''))
 
 test([100, 200, 300, 400]) // => Message{ data: [200, 300, 400], scope: {} }
 ```
 
-`uppercase` - convert string to upper case
+`uppercase(string)` - convert string to upper case
 ```javascript
 const test = uppercase(get(''))
 
 test('wow!') // => Message{ data: 'WOW!', scope: {} }
 ```
 
-`lowercase` - convert string to lower case
+`lowercase(string)` - convert string to lower case
 ```javascript
 const test = lowercase(get(''))
 
 test('WOW!') // => Message{ data: 'wow!', scope: {} }
 ```
 
-`add` - summate two numbers or concatenate two strings
+`add(number1, number2)` - summate two numbers or concatenate two strings
 ```javascript
 const test = add(get('a'), get('b'))
 
@@ -156,29 +192,21 @@ test({ a: 1, b: 2 }) // => Message{ data: 3, scope: {} }
 test({ a: 'doge', b: 'wow!' }) // => Message{ data: 'dogewow!, scope: {} }
 ```
 
-`add` - summate two numbers or concatenate two strings
-```javascript
-const test = add(get('a'), get('b'))
-
-test({ a: 1, b: 2 }) // => Message{ data: 3, scope: {} }
-test({ a: 'doge', b: 'wow!' }) // => Message{ data: 'dogewow!, scope: {} }
-```
-
-`subtract` - subtract two numbers
+`subtract(number1, number2)` - subtract two numbers
 ```javascript
 const test = subrtact(get('a'), get('b'))
 
 test({ a: 1, b: 2 }) // => Message{ data: -1, scope: {} }
 ```
 
-`multiply` - multiply two numbers
+`multiply(number1, number2)` - multiply two numbers
 ```javascript
 const test = multiply(get('a'), get('b'))
 
 test({ a: 2, b: 5 }) // => Message{ data: 10, scope: {} }
 ```
 
-`divide` - divide numbers
+`divide(number1, number2)` - divide numbers
 ```javascript
 const test = divide(get('a'), get('b'))
 
@@ -201,7 +229,7 @@ test({ a: true, b: false }) // => Message{ data: false, scope: {} }
 test({ a: true, b: true }) // => Message{ data: true, scope: {} }
 ```
 
-`or` - logical OR
+`or(x, y)` - logical OR
 ```javascript
 const test = or(get('a'), get('b'))
 
@@ -209,7 +237,7 @@ test({ a: true, b: false }) // => Message{ data: true, scope: {} }
 test({ a: false, b: false }) // => Message{ data: false, scope: {} }
 ```
 
-`xor` - logical XOR
+`xor(x, y)` - logical XOR
 ```javascript
 const test = xor(get('a'), get('b'))
 
@@ -220,7 +248,7 @@ test({ a: true, b: true }) // => Message{ data: false, scope: {} }
 ```
 
 
-`eq` - strict equality
+`eq(x, y)` - strict equality
 ```javascript
 const test = eq(get('a'), get('b'))
 
@@ -228,7 +256,7 @@ test({ a: 2, b: 2 }) // => Message{ data: true, scope: {} }
 test({ a: 100, b: 2 }) // => Message{ data: false, scope: {} }
 ```
 
-`neq` - strict non-equality
+`neq(x, y)` - strict non-equality
 ```javascript
 const test = neq(get('a'), get('b'))
 
@@ -236,7 +264,7 @@ test({ a: 2, b: 2 }) // => Message{ data: false, scope: {} }
 test({ a: 100, b: 2 }) // => Message{ data: true, scope: {} }
 ```
 
-`gt` - greater than
+`gt(x, y)` - greater than
 ```javascript
 const test = gt(get('a'), get('b'))
 
@@ -244,7 +272,7 @@ test({ a: 2, b: 2 }) // => Message{ data: false, scope: {} }
 test({ a: 100, b: 2 }) // => Message{ data: true, scope: {} }
 ```
 
-`lt` - less then
+`lt(x, y)` - less then
 ```javascript
 const test = gt(get('a'), get('b'))
 
@@ -252,7 +280,7 @@ test({ a: 1, b: 2 }) // => Message{ data: true, scope: {} }
 test({ a: 100, b: 2 }) // => Message{ data: false, scope: {} }
 ```
 
-`gte` - greater than or equal
+`gte(x, y)` - greater than or equal
 ```javascript
 const test = gte(get('a'), get('b'))
 
@@ -261,7 +289,7 @@ test({ a: 2, b: 2 }) // => Message{ data: true, scope: {} }
 test({ a: 100, b: 2 }) // => Message{ data: true, scope: {} }
 ```
 
-`lte` - less than or equal
+`lte(x, y)` - less than or equal
 ```javascript
 const test = gt(get('a'), get('b'))
 
@@ -270,7 +298,7 @@ test({ a: 2, b: 2 }) // => Message{ data: true, scope: {} }
 test({ a: 100, b: 2 }) // => Message{ data: false, scope: {} }
 ```
 
-`isDefined` - check if input is defined
+`isDefined(x)` - check if input is defined
 ```javascript
 const test = isDefined(get(''))
 
@@ -279,7 +307,7 @@ test({ a: 2, b: 2 }) // => Message{ data: true, scope: {} }
 test(undefined) // => Message{ data: false, scope: {} }
 ```
 
-`isUndefined` - check if input is undefined
+`isUndefined(x)` - check if input is undefined
 ```javascript
 const test = isUndefined(get(''))
 
@@ -291,6 +319,7 @@ test(undefined) // => Message{ data: true, scope: {} }
 
 ## TODO
 - More fragments (open for suggestions)
+- Examples & demos
 - Unit tests
 - Performance optimization
 
