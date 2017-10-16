@@ -2,7 +2,7 @@
   "name": "hyperlane",
   "description": "Context-dependent functional style computation",
   "keywords": "comonad, pipeline, context, composition, continuation, command, point-free style",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
     "example": "babel-node --presets env --plugins transform-object-rest-spread examples/test-me.js"
