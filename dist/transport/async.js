@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.forAll = exports.parallel = exports.apply = exports.call = exports.sequential = undefined;
+exports.forAll = exports.parallel = exports.sequential = exports.apply = exports.call = undefined;
 
 var _zip = require('../utils/zip');
 
@@ -11,13 +11,6 @@ var _zip2 = _interopRequireDefault(_zip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var sequential = exports.sequential = function sequential(funcs) {
-  return function (input) {
-    return funcs.reduce(function (prev, func) {
-      return prev.then(func);
-    }, Promise.resolve(input));
-  };
-};
 var call = exports.call = function call(func) {
   return function (input) {
     return Promise.resolve(input).then(func);
@@ -27,6 +20,16 @@ var apply = exports.apply = function apply(func) {
   return function (inputs) {
     return Promise.all(inputs).then(function (xs) {
       return func.apply(undefined, xs);
+    });
+  };
+};
+
+var sequential = exports.sequential = function sequential(funcs) {
+  return function (input) {
+    return funcs.reduce(function (prev, func) {
+      return prev.then(func);
+    }, Promise.resolve(input)).catch(function (e) {
+      return console.log(e);
     });
   };
 };

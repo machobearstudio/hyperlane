@@ -63,14 +63,3 @@ var applicator = exports.applicator = function applicator(func) {
     return combine(input, construct(func.apply(undefined, extract(input))));
   };
 };
-
-var message = construct;
-message.construct = construct;
-message.extract = extract;
-message.combine = combine;
-message.collect = collect;
-message.spread = spread;
-message.extend = extend;
-message.applicator = applicator;
-
-exports.default = message;

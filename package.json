@@ -5,7 +5,8 @@
   "version": "1.2.1",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
-    "example": "babel-node --presets env --plugins transform-object-rest-spread examples/test-me.js"
+    "example": "babel-node --presets env --plugins transform-object-rest-spread examples/test-me.js",
+    "starwars": "babel-node --presets env --plugins transform-object-rest-spread examples/i-am-your-father.js"
   },
   "main": "dist",
   "repository": {
@@ -23,10 +24,8 @@
   "dependencies": {
     "array-flatten": "^2.1.1",
     "curry": "^1.2.0",
-    "function-pipe": "^1.0.0",
     "poly-filter": "^1.0.2",
-    "poly-map": "^1.1.0",
-    "retransform": "^1.0.0"
+    "poly-map": "^1.1.0"
   },
   "engines": {
     "node": ">=4.0",

@@ -2,12 +2,18 @@
 Context-dependent functional style computation
 
 ## Description
-This tool allows to construct computation pipelines heavily inspired by Haskell's 'do-notation'. All pipeline fragments are pure, computation state (context) is isolated as a part of the data flowing through the pipeline.
+Express your code as functional pipelines and forget the differences between synchronous and asyncronous control flow!
+
+No callbacks, no promises, no sagas or thunks - same control flow fragments for everything:
+- Want to react on debounsed input change events? Sure.
+- Want to decide which API to fetch after some other API response is available? Easy!
+- Want to map a function over an API response? Why not!
 
 ## Features
-- Automatically supports synchronous and asyncronous functions
-- Allows for lifting any pure function into computation context
-- Composable structure allows to add other aspects to the pipeline fragments
+- Simple control flow abstractions
+- Objects, arrays and primitive data doesn't require wrapper functions
+- Dynamic switching between different transport mechanisms
+- Ability to add any pure function to the pipeline with lifting
 - Easy automated testing and fuzzing
 
 ## Installation
@@ -123,10 +129,6 @@ test({ doge: { says: 'wow!' }, cat: { says: 'meow' } }) // => Message{ data: { d
 ```
 
 `filter(condition)` - apply `condition` to each item in the input collection and returen new collection with only those items for which the `condition` is truthy
-
-`object({ name1: flow1, name2: flow2, ... })` - similar to `all` and will be merged with it in future versions
-
-`array(flow1, flow2, flow3, ...)` - see `all`, will be merged with it in future versions
 
 `values(collection)` - returns an array of values from input collection (array or hash-map)
 ```javascript

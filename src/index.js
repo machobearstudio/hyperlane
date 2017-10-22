@@ -1,5 +1,27 @@
-import createDictionary from './dictionary'
+import createTransport from './transport'
+import * as flow from './flow'
+import { construct, extract, combine, collect, spread, extend, applicator } from './message'
 
-export * from './async'
+const message = construct;
+message.construct = construct;
+message.extract = extract;
+message.combine = combine;
+message.collect = collect;
+message.spread = spread;
+message.extend = extend;
+message.applicator = applicator;
 
-export default createDictionary
+export { message }
+
+export const configure = (config) => {
+  const transportProvider = config.flow || conf.transport
+  const transport = typeof transportProvider === 'function'
+    ? transportProvider
+    : createTransport(transportProvider)
+
+  flow.setTransport(transport)
+}
+
+configure({ flow: 'async' })
+
+export * from './dictionary'

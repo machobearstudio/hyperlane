@@ -1,6 +1,6 @@
 import https from 'https'
 import nodeFetch from 'node-fetch'
-import { lift, chain, get, set, map, filter, eq, object } from 'hyperlane'
+import { lift, chain, get, set, map, filter, eq, object } from '../src'
 
 // Promise logger
 const log = x=> x.then(y => { console.log(y.data); return y })
@@ -18,10 +18,10 @@ const fetchCollection = url => get('results', readJson(fetch(url)))
 // for each character from a separate URL
 const peopleHomeworlds = chain(
   fetchCollection('https://swapi.co/api/people'),
-  map(object({
+  map({
     name: get('name'),
     homeworld: get('name', fetchEntity(get('homeworld')))
-  }))
+  })
 )
 
 // Fetch character names and homeworlds and then
