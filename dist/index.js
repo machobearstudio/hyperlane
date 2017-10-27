@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.configure = exports.message = undefined;
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _dictionary = require('./dictionary');
 
 Object.keys(_dictionary).forEach(function (key) {
@@ -42,8 +44,8 @@ message.applicator = _message.applicator;
 
 exports.message = message;
 var configure = exports.configure = function configure(config) {
-  var transportProvider = config.flow || conf.transport;
-  var transport = typeof transportProvider === 'function' ? transportProvider : (0, _transport2.default)(transportProvider);
+  var transportProvider = config.flow || config.transport;
+  var transport = (typeof transportProvider === 'undefined' ? 'undefined' : _typeof(transportProvider)) === 'object' ? transportProvider : (0, _transport2.default)(transportProvider);
 
   flow.setTransport(transport);
 };

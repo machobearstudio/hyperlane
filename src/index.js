@@ -14,8 +14,8 @@ message.applicator = applicator;
 export { message }
 
 export const configure = (config) => {
-  const transportProvider = config.flow || conf.transport
-  const transport = typeof transportProvider === 'function'
+  const transportProvider = config.flow || config.transport
+  const transport = typeof transportProvider === 'object'
     ? transportProvider
     : createTransport(transportProvider)
 
