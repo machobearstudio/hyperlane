@@ -9,6 +9,10 @@ var _polyFilter = require('poly-filter');
 
 var _polyFilter2 = _interopRequireDefault(_polyFilter);
 
+var _functionPipe = require('function-pipe');
+
+var _functionPipe2 = _interopRequireDefault(_functionPipe);
+
 var _message = require('../message');
 
 var _fragment = require('./fragment');
@@ -49,15 +53,10 @@ var apply = function apply() {
 
   return (_getTransport3 = getTransport()).apply.apply(_getTransport3, arguments);
 };
-var call = function call() {
+var forAll = function forAll() {
   var _getTransport4;
 
-  return (_getTransport4 = getTransport()).call.apply(_getTransport4, arguments);
-};
-var forAll = function forAll() {
-  var _getTransport5;
-
-  return (_getTransport5 = getTransport()).forAll.apply(_getTransport5, arguments);
+  return (_getTransport4 = getTransport()).forAll.apply(_getTransport4, arguments);
 };
 
 var when = exports.when = (0, _fragment.fragment)(function (condition, yes, no) {
@@ -105,19 +104,11 @@ var functionCall = exports.functionCall = function functionCall(func) {
       args[_key3] = arguments[_key3];
     }
 
-    return sequential([_message.construct, parallel(args.concat([identity])), apply(func)]);
+    return sequential([_message.construct, parallel(args.concat([identity])), apply(func), fixPromise]);
   });
 };
 
-var lift = exports.lift = function lift(func) {
-  return (0, _fragment.fragment)(function () {
-    for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
-      args[_key4] = arguments[_key4];
-    }
-
-    return sequential([_message.construct, parallel(args.concat([identity])), _message.collect, call((0, _message.applicator)(func)), fixPromise]);
-  });
-};
+var lift = exports.lift = (0, _functionPipe2.default)(_message.applicator, functionCall);
 
 var pass = exports.pass = (0, _fragment.fragment)(function (x) {
   return function (input) {

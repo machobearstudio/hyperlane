@@ -59,7 +59,13 @@ var extend = exports.extend = function extend(func) {
 };
 
 var applicator = exports.applicator = function applicator(func) {
-  return function (input) {
-    return combine(input, construct(func.apply(undefined, extract(input))));
+  return function () {
+    for (var _len = arguments.length, inputs = Array(_len), _key = 0; _key < _len; _key++) {
+      inputs[_key] = arguments[_key];
+    }
+
+    var collected = collect(inputs);
+
+    return combine(collected, construct(func.apply(undefined, extract(collected))));
   };
 };

@@ -35,4 +35,8 @@ export const spread = input => map(item => construct(item, input.scope), extract
 
 export const extend = func => input => combine(input, construct(func(input)))
 
-export const applicator = func => input => combine(input, construct(func.apply(undefined, extract(input))))
+export const applicator = func => (...inputs) => {
+  const collected = collect(inputs)
+
+  return combine(collected, construct(func.apply(undefined, extract(collected))))
+}

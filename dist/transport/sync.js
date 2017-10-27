@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.forAll = exports.apply = exports.call = exports.parallel = exports.sequential = undefined;
+exports.forAll = exports.apply = exports.parallel = exports.sequential = undefined;
 
 var _polyMap = require('poly-map');
 
@@ -25,11 +25,6 @@ var parallel = exports.parallel = function parallel(funcs) {
     }, funcs);
   };
 };
-var call = exports.call = function call(func) {
-  return function (input) {
-    return func(input);
-  };
-};
 var apply = exports.apply = function apply(func) {
   return function (inputs) {
     return func.apply(undefined, inputs);
@@ -37,6 +32,8 @@ var apply = exports.apply = function apply(func) {
 };
 var forAll = exports.forAll = function forAll(func) {
   return function (inputs) {
-    return (0, _polyMap2.default)(call(func), inputs);
+    return (0, _polyMap2.default)(function (input) {
+      return func(input);
+    }, inputs);
   };
 };

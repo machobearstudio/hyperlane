@@ -1,4 +1,5 @@
 import polyFilter from 'poly-filter'
+import pipe from 'function-pipe'
 import { extract, extend, construct, collect, spread, applicator, isMessage } from '../message'
 import { fragment } from './fragment'
 
@@ -20,7 +21,6 @@ export const setTransport = newTransport => {
 const sequential = (...args) => getTransport().sequential(...args)
 const parallel   = (...args) => getTransport().parallel(...args)
 const apply      = (...args) => getTransport().apply(...args)
-const call       = (...args) => getTransport().call(...args)
 const forAll     = (...args) => getTransport().forAll(...args)
 
 export const when = fragment((condition, yes, no) => input => {
@@ -63,15 +63,10 @@ export const all = fragment((...steps) => sequential([
 export const functionCall = func => fragment((...args) => sequential([
   construct,
   parallel(args.concat([identity])),
-  apply(func)
-]))
-
-export const lift = func => fragment((...args) => sequential([
-  construct,
-  parallel(args.concat([identity])),
-  collect,
-  call(applicator(func)),
+  apply(func),
   fixPromise
 ]))
+
+export const lift = pipe(applicator, functionCall)
 
 export const pass = fragment(x => input => x(input))
