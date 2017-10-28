@@ -4,7 +4,7 @@ import { getTransport } from './index'
 
 const constant = x => extend(() => x)
 
-const defragment = func => (func.$name === 'Fragment' ? func() : func)
+const defragment = func => (func.$class === 'Fragment' ? func() : func)
 
 const structure = items => {
   const resolvers = map(resolver, items)
@@ -29,8 +29,15 @@ const resolver = predicate => {
 }
 
 export const fragment = func => {
-  const Fragment = (...parms) => func(...parms.map(resolver))
-  Fragment.$name = 'Fragment'
+  const Fragment = (...params) => {
+    const Step = func(...params.map(resolver))
+    Step.$class = 'Step'
+    Step.$params = params
+
+    return Step
+  }
+
+  Fragment.$class = 'Fragment'
 
   return Fragment
 }

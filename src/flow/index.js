@@ -35,14 +35,12 @@ export const when = fragment((condition, yes, no) => input => {
 })
 
 export const map = fragment(func => sequential([
-  construct,
   spread,
   forAll(func),
   collect
 ]))
 
 export const filter = fragment(func => sequential([
-  construct,
   spread,
   forAll(when(func, identity, () => undefined)),
   polyFilter(x => x !== undefined),

@@ -71,11 +71,11 @@ var when = exports.when = (0, _fragment.fragment)(function (condition, yes, no) 
 });
 
 var map = exports.map = (0, _fragment.fragment)(function (func) {
-  return sequential([_message.construct, _message.spread, forAll(func), _message.collect]);
+  return sequential([_message.spread, forAll(func), _message.collect]);
 });
 
 var filter = exports.filter = (0, _fragment.fragment)(function (func) {
-  return sequential([_message.construct, _message.spread, forAll(when(func, identity, function () {
+  return sequential([_message.spread, forAll(when(func, identity, function () {
     return undefined;
   })), (0, _polyFilter2.default)(function (x) {
     return x !== undefined;

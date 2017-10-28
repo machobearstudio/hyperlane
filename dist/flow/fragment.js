@@ -26,7 +26,7 @@ var constant = function constant(x) {
 };
 
 var defragment = function defragment(func) {
-  return func.$name === 'Fragment' ? func() : func;
+  return func.$class === 'Fragment' ? func() : func;
 };
 
 var structure = function structure(items) {
@@ -49,13 +49,18 @@ var resolver = function resolver(predicate) {
 
 var fragment = exports.fragment = function fragment(func) {
   var Fragment = function Fragment() {
-    for (var _len = arguments.length, parms = Array(_len), _key = 0; _key < _len; _key++) {
-      parms[_key] = arguments[_key];
+    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
+      params[_key] = arguments[_key];
     }
 
-    return func.apply(undefined, _toConsumableArray(parms.map(resolver)));
+    var Step = func.apply(undefined, _toConsumableArray(params.map(resolver)));
+    Step.$class = 'Step';
+    Step.$params = params;
+
+    return Step;
   };
-  Fragment.$name = 'Fragment';
+
+  Fragment.$class = 'Fragment';
 
   return Fragment;
 };
