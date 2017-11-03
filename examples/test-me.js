@@ -4,11 +4,11 @@ import log from './log'
 
 // Test data
 const test = message({ a: 1, b: 2 }, { doge: 'wow' })
-const testCollection = message([{ z: 'doge' }, { z: 'wow!' }], { doge: 'wow' })
-const testHashmap = message({ a: { z: 'doge' }, b: { z: 'wow!' } }, { doge: 'wow' })
+const testCollection = [{ z: 'doge' }, { z: 'wow!' }]
+const testHashmap = { a: { z: 'doge' }, b: { z: 'wow!' } }
 
 // Basic flows
-configure({ flow: 'sync' })
+configure({ transport: 'sync' })
 
 log(get('doge')(test))
 log(add(get('a'), get('b'))(test))
@@ -29,7 +29,7 @@ log(filter(eq(get('z'), 'doge'))(testCollection))
 log(filter(eq(get('z'), 'doge'))(testHashmap))
 
 // HTTP GET
-configure({ flow: 'async' })
+configure({ transport: 'async' })
 
 const httpGet = lift(url => fetch(url).then(res => res.text()).then(x => x.length))
 const getGithub = httpGet('https://github.com/')

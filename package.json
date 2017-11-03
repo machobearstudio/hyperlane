@@ -5,6 +5,7 @@
   "version": "1.3.1",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
+    "bus": "babel-node --presets env --plugins transform-object-rest-spread examples/bus.js",
     "example": "babel-node --presets env --plugins transform-object-rest-spread examples/test-me.js",
     "starwars": "babel-node --presets env --plugins transform-object-rest-spread examples/i-am-your-father.js"
   },

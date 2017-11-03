@@ -1,20 +1,15 @@
 import map from 'poly-map'
-import { extend, construct, collect } from '../message'
-import { getTransport } from './index'
-
-const constant = x => extend(() => x)
+import { construct, collect } from '../message'
+import { sequential, parallel } from '../transport'
 
 const defragment = func => (func.$class === 'Fragment' ? func() : func)
 
-const structure = items => {
-  const resolvers = map(resolver, items)
+export const constant = x => () => construct(x)
 
-  return getTransport().sequential([
-    construct,
-    getTransport().parallel(resolvers),
-    collect
-  ])
-}
+export const structure = items => sequential([
+  parallel(map(resolver, items)),
+  collect
+])
 
 const resolver = predicate => {
   if (typeof predicate === 'function') {
@@ -30,7 +25,8 @@ const resolver = predicate => {
 
 export const fragment = func => {
   const Fragment = (...params) => {
-    const Step = func(...params.map(resolver))
+    const handler = func(...params.map(resolver))
+    const Step = input => handler(construct(input))
     Step.$class = 'Step'
     Step.$params = params
 

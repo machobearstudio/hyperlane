@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.pass = exports.lift = exports.functionCall = exports.all = exports.chain = exports.filter = exports.map = exports.when = exports.setTransport = exports.getTransport = undefined;
+exports.pass = exports.lift = exports.functionCall = exports.all = exports.chain = exports.filter = exports.map = exports.when = undefined;
 
 var _polyFilter = require('poly-filter');
 
@@ -15,6 +15,8 @@ var _functionPipe2 = _interopRequireDefault(_functionPipe);
 
 var _message = require('../message');
 
+var _transport = require('../transport');
+
 var _fragment = require('./fragment');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -22,47 +24,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var identity = function identity(x) {
   return x;
 };
-var fixPromise = function fixPromise(x) {
-  return (0, _message.isMessage)(x) && x.data instanceof Promise ? x.data.then(function (data) {
-    return (0, _message.construct)(data, x.scope);
-  }) : x;
-};
 
-var transport = {};
-
-var getTransport = exports.getTransport = function getTransport() {
-  return transport;
-};
-
-var setTransport = exports.setTransport = function setTransport(newTransport) {
-  transport = newTransport;
-};
-
-var sequential = function sequential() {
-  var _getTransport;
-
-  return (_getTransport = getTransport()).sequential.apply(_getTransport, arguments);
-};
-var parallel = function parallel() {
-  var _getTransport2;
-
-  return (_getTransport2 = getTransport()).parallel.apply(_getTransport2, arguments);
-};
-var apply = function apply() {
-  var _getTransport3;
-
-  return (_getTransport3 = getTransport()).apply.apply(_getTransport3, arguments);
-};
-var forAll = function forAll() {
-  var _getTransport4;
-
-  return (_getTransport4 = getTransport()).forAll.apply(_getTransport4, arguments);
+var log = function log(x) {
+  console.log('boooooo', x);return x;
 };
 
 var when = exports.when = (0, _fragment.fragment)(function (condition, yes, no) {
   return function (input) {
     var original = (0, _message.construct)(input);
-    var flow = sequential([condition, fixPromise, function (x) {
+    var flow = (0, _transport.sequential)([condition, function (x) {
       return (0, _message.extract)(x) ? yes(original) : no && no(original);
     }]);
 
@@ -71,11 +41,11 @@ var when = exports.when = (0, _fragment.fragment)(function (condition, yes, no) 
 });
 
 var map = exports.map = (0, _fragment.fragment)(function (func) {
-  return sequential([_message.spread, forAll(func), _message.collect]);
+  return (0, _transport.sequential)([_message.spread, (0, _transport.forAll)(func), _message.collect]);
 });
 
 var filter = exports.filter = (0, _fragment.fragment)(function (func) {
-  return sequential([_message.spread, forAll(when(func, identity, function () {
+  return (0, _transport.sequential)([_message.spread, (0, _transport.forAll)(when(func, identity, function () {
     return undefined;
   })), (0, _polyFilter2.default)(function (x) {
     return x !== undefined;
@@ -87,7 +57,7 @@ var chain = exports.chain = (0, _fragment.fragment)(function () {
     steps[_key] = arguments[_key];
   }
 
-  return sequential([_message.construct].concat(steps));
+  return (0, _transport.sequential)(steps);
 });
 
 var all = exports.all = (0, _fragment.fragment)(function () {
@@ -95,7 +65,7 @@ var all = exports.all = (0, _fragment.fragment)(function () {
     steps[_key2] = arguments[_key2];
   }
 
-  return sequential([_message.construct, parallel(steps), _message.collect]);
+  return (0, _transport.sequential)([(0, _transport.parallel)(steps), _message.collect]);
 });
 
 var functionCall = exports.functionCall = function functionCall(func) {
@@ -104,7 +74,7 @@ var functionCall = exports.functionCall = function functionCall(func) {
       args[_key3] = arguments[_key3];
     }
 
-    return sequential([_message.construct, parallel(args.concat([identity])), apply(func), fixPromise]);
+    return (0, _transport.sequential)([(0, _transport.parallel)(args.concat([identity])), (0, _transport.apply)(func)]);
   });
 };
 

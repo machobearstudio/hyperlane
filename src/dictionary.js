@@ -11,8 +11,8 @@ export const when   = flow.when
 export const map    = flow.map
 export const filter = flow.filter
 
-export const get = flow.functionCall(core.get)
-export const set = flow.functionCall(core.set)
+export const get         = flow.functionCall(core.get)
+export const set         = flow.functionCall(core.set)
 
 export const not         = flow.lift(essentials.not)
 export const and         = flow.lift(essentials.and)

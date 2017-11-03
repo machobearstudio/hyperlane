@@ -1,33 +1,17 @@
 import polyFilter from 'poly-filter'
 import pipe from 'function-pipe'
-import { extract, extend, construct, collect, spread, applicator, isMessage } from '../message'
-import { fragment } from './fragment'
+import { extract, construct, collect, spread, applicator } from '../message'
+import { sequential, parallel, apply, forAll } from '../transport'
+import { fragment, resolver } from './fragment'
 
 const identity = x => x
-const fixPromise = x => (
-  isMessage(x) && x.data instanceof Promise
-    ? x.data.then(data => construct(data, x.scope))
-    : x
-)
 
-let transport = {}
-
-export const getTransport = () => transport
-
-export const setTransport = newTransport => {
-  transport = newTransport
-}
-
-const sequential = (...args) => getTransport().sequential(...args)
-const parallel   = (...args) => getTransport().parallel(...args)
-const apply      = (...args) => getTransport().apply(...args)
-const forAll     = (...args) => getTransport().forAll(...args)
+const log = x => { console.log('boooooo', x); return x }
 
 export const when = fragment((condition, yes, no) => input => {
   const original = construct(input)
   const flow = sequential([
     condition,
-    fixPromise,
     x => (extract(x) ? yes(original) : no && no(original))
   ])
 
@@ -47,22 +31,16 @@ export const filter = fragment(func => sequential([
   collect
 ]))
 
-export const chain = fragment((...steps) => sequential([
-  construct,
-  ...steps
-]))
+export const chain = fragment((...steps) => sequential(steps))
 
 export const all = fragment((...steps) => sequential([
-  construct,
   parallel(steps),
   collect
 ]))
 
 export const functionCall = func => fragment((...args) => sequential([
-  construct,
   parallel(args.concat([identity])),
-  apply(func),
-  fixPromise
+  apply(func)
 ]))
 
 export const lift = pipe(applicator, functionCall)
