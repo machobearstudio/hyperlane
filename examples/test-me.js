@@ -8,17 +8,16 @@ const testCollection = [{ z: 'doge' }, { z: 'wow!' }]
 const testHashmap = { a: { z: 'doge' }, b: { z: 'wow!' } }
 
 // Basic flows
-configure({ transport: 'sync' })
+// configure({ transport: 'sync' })
 
 log(get('doge')(test))
 log(add(get('a'), get('b'))(test))
 log(add('a', 'b')(test))
 log(uppercase(get('doge'))(test))
-log(chain(get('doge'), uppercase)(test))
-log(all(chain(get('doge'), uppercase), add(get('a'), get('b')))(test))
-log(pass({ doge: get('doge'), summ: add(get('a'), get('b')) })(test))
+log(chain(get('doge'), uppercase())(test))
+log(all(chain(get('doge'), uppercase()), add(get('a'), get('b')))(test))
 log(when(get('doge'), add(get('a'), get('b')), 'nope')(test))
-log(when(get('nothing'), add(get('a'), get('b')), 'nope')(test))
+log(when(get('nothing'), add(get('a'), get('b')), get('a'))(test))
 log(map(get('z'))(testCollection))
 log(map(get('z'))(testHashmap))
 log(push(get(''), { z: 100500 })(testCollection))

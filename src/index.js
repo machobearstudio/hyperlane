@@ -15,6 +15,6 @@ export const configure = (config) => {
   transport.setTransport(config)
 }
 
-configure({ transport: 'async' })
+configure({ transport: 'bus' })
 
 export * from './dictionary'
