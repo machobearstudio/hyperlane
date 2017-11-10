@@ -15,7 +15,7 @@ var summarize = function summarize(results) {
   }, { passed: 0, failed: 0 });
 };
 
-var testCase = function testCase(description, flow) {
+var useCase = function useCase(description, flow) {
   for (var _len = arguments.length, assertions = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
     assertions[_key - 2] = arguments[_key];
   }
@@ -32,4 +32,4 @@ var testCase = function testCase(description, flow) {
   };
 };
 
-exports.default = testCase;
+exports.default = useCase;

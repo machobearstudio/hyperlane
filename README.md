@@ -1,5 +1,5 @@
 # hyperlane
-Context-dependent functional style computation
+Context-dependent continuations
 
 ## Description
 Express your code as functional pipelines and forget the differences between synchronous and asyncronous control flow!

@@ -3,7 +3,7 @@ const summarize = results => results.reduce((acc, { success }) => {
   return acc
 }, { passed: 0, failed: 0 })
 
-const testCase = (description, flow, ...assertions) => () => Promise
+const useCase = (description, flow, ...assertions) => () => Promise
   .all(assertions.map(assertion => assertion(flow)))
   .then(summarize)
   .then(summary => ({
@@ -12,4 +12,4 @@ const testCase = (description, flow, ...assertions) => () => Promise
     ...summary
   }))
 
-export default testCase
+export default useCase
