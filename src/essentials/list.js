@@ -12,4 +12,3 @@ export const push    = (xs, y) => xs.concat([y])
 export const select  = (y, xs) => polySelect(y, xs)
 export const exclude = (y, xs) => polyExclude(y, xs)
 export const merge   = (xs, ys) => Object.assign(xs, ys)
-export const expose  = (name, value, data) => { data[name] = value; return data }

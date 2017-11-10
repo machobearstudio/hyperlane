@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.state = exports.data = exports.expose = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.tail = exports.head = exports.keys = exports.values = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.set = exports.get = exports.filter = exports.map = exports.when = exports.call = exports.all = exports.chain = exports.lift = undefined;
+exports.scope = exports.data = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.tail = exports.head = exports.keys = exports.values = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.lense = exports.set = exports.get = exports.filter = exports.map = exports.either = exports.choice = exports.when = exports.call = exports.all = exports.chain = exports.lift = undefined;
 
 var _fragment = require('./fragment');
 
@@ -35,13 +35,26 @@ var chain = exports.chain = (0, _fragment2.default)(flow.chain);
 var all = exports.all = (0, _fragment2.default)(flow.all);
 var call = exports.call = (0, _fragment2.default)(flow.functionCall);
 var when = exports.when = (0, _fragment2.default)(flow.when);
+var choice = exports.choice = (0, _fragment2.default)(flow.choice);
+var either = exports.either = (0, _fragment2.default)(flow.either);
 var map = exports.map = (0, _fragment2.default)(flow.map);
 var filter = exports.filter = (0, _fragment2.default)(flow.filter);
 
-// Transformer fragments
+// Lenses
 var get = exports.get = (0, _fragment2.default)(flow.functionCall(core.get));
 var set = exports.set = (0, _fragment2.default)(flow.functionCall(core.set));
 
+var lense = exports.lense = function lense(location) {
+  var Lense = get(location);
+  Lense.get = get(location);
+  Lense.set = function (value) {
+    return set(location, value);
+  };
+
+  return Lense;
+};
+
+// Transformer fragments
 var not = exports.not = lift(essentials.not);
 var and = exports.and = lift(essentials.and);
 var or = exports.or = lift(essentials.or);
@@ -72,17 +85,16 @@ var push = exports.push = lift(essentials.push);
 var select = exports.select = lift(essentials.select);
 var exclude = exports.exclude = lift(essentials.exclude);
 var merge = exports.merge = lift(essentials.merge);
-var expose = exports.expose = lift(essentials.expose);
 
 // Shorthands
 var data = exports.data = function data(x) {
   return get('')(x);
 };
-data.get = get;
-data.set = expose;
+data.get = (0, _fragment2.default)(flow.functionCall(core.getData));
+data.set = (0, _fragment2.default)(flow.functionCall(core.setData));
 
-var state = exports.state = function state(x) {
-  return get('')(x);
-};
-state.get = get;
-state.set = set;
+var scope = exports.scope = (0, _fragment2.default)(flow.functionCall(function (input) {
+  return input.scope;
+}));
+scope.get = (0, _fragment2.default)(flow.functionCall(core.getScope));
+scope.set = set;

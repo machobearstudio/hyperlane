@@ -11,13 +11,24 @@ export const chain  = fragment(flow.chain)
 export const all    = fragment(flow.all)
 export const call   = fragment(flow.functionCall)
 export const when   = fragment(flow.when)
+export const choice = fragment(flow.choice)
+export const either = fragment(flow.either)
 export const map    = fragment(flow.map)
 export const filter = fragment(flow.filter)
 
-// Transformer fragments
-export const get         = fragment(flow.functionCall(core.get))
-export const set         = fragment(flow.functionCall(core.set))
+// Lenses
+export const get    = fragment(flow.functionCall(core.get))
+export const set    = fragment(flow.functionCall(core.set))
 
+export const lense = location => {
+  const Lense = get(location)
+  Lense.get = get(location)
+  Lense.set = value => set(location, value)
+
+  return Lense
+}
+
+// Transformer fragments
 export const not         = lift(essentials.not)
 export const and         = lift(essentials.and)
 export const or          = lift(essentials.or)
@@ -48,13 +59,12 @@ export const push        = lift(essentials.push)
 export const select      = lift(essentials.select)
 export const exclude     = lift(essentials.exclude)
 export const merge       = lift(essentials.merge)
-export const expose      = lift(essentials.expose)
 
 // Shorthands
 export const data = x => get('')(x)
-data.get = get
-data.set = expose
+data.get = fragment(flow.functionCall(core.getData))
+data.set = fragment(flow.functionCall(core.setData))
 
-export const state = x => get('')(x)
-state.get = get
-state.set = set
+export const scope = fragment(flow.functionCall(input => input.scope))
+scope.get = fragment(flow.functionCall(core.getScope))
+scope.set = set

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-import { configure, message, get, set, lift, pass, all, object, array, call, when, chain, add, multiply, map, eq, filter, head, tail, uppercase, concat, push } from '../src'
+import { configure, message, either, lense, scope, get, set, lift, pass, all, object, array, call, when, chain, add, multiply, map, eq, filter, head, tail, uppercase, concat, push } from '../src'
 import log from './log'
 
 // Test data
@@ -8,8 +8,13 @@ const testCollection = [{ z: 'doge' }, { z: 'wow!' }]
 const testHashmap = { a: { z: 'doge' }, b: { z: 'wow!' } }
 
 // Basic flows
-// configure({ transport: 'sync' })
+configure({ transport: 'sync' })
 
+const doge = lense('doge')
+
+log(either(get('a'), doge)(test))
+log(either(get('f'), doge)(test))
+log(doge.set('such much!!!!')(test))
 log(get('doge')(test))
 log(add(get('a'), get('b'))(test))
 log(add('a', 'b')(test))

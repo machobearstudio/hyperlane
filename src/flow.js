@@ -5,9 +5,25 @@ import { sequential, parallel, apply, forAll } from './transport'
 
 const identity = x => x
 
-export const when = (condition, yes, no) => input => {
+export const when = (condition, yes, no = identity) => input => {
   const original = construct(input)
-  const branch = x => (extract(x) ? yes(original) : no && no(original))
+  const branch = x => (extract(x) ? yes(original) : no(original))
+  const flow = sequential([ condition, branch ])
+
+  return flow(original)
+}
+
+export const either = (left, right) => input => {
+  const original = construct(input)
+  const branch = x => (extract(x) === undefined ? right(original) : x)
+  const flow = sequential([ left, branch ])
+
+  return flow(original)
+}
+
+export const choice = (condition, options, defaultOption = identity) => input => {
+  const original = construct(input)
+  const branch = x => (options[extract(x)] || defaultOption)(original)
   const flow = sequential([ condition, branch ])
 
   return flow(original)
