@@ -19,3 +19,4 @@ export const configure = (config) => {
 configure({ transport: 'async' })
 
 export * from './dictionary'
+export * from './testing'

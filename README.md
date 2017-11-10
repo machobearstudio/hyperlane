@@ -22,13 +22,23 @@ No callbacks, no promises, no sagas or thunks - same control flow fragments for 
 npm install hyperlane
 ```
 
+## Testing
+
+```
+// To run built-in unit-tests
+npm test
+
+// To run example flow
+npm run example
+```
+
 ## Usage
 
 ### Simple example: querying JSON APIs
 ```javascript
 import https from 'https'
 import nodeFetch from 'node-fetch'
-import { lift, chain, get, set, map, filter, eq, object } from 'hyperlane'
+import { lift, chain, get, set, map, filter, eq } from 'hyperlane'
 
 // Promise logger
 const log = x=> x.then(y => { console.log(y.data); return y })
@@ -46,10 +56,10 @@ const fetchCollection = url => get('results', readJson(fetch(url)))
 // for each character from a separate URL
 const peopleHomeworlds = chain(
   fetchCollection('https://swapi.co/api/people'),
-  map(object({
+  map({
     name: get('name'),
     homeworld: get('name', fetchEntity(get('homeworld')))
-  }))
+  })
 )
 
 // Fetch character names and homeworlds and then
@@ -107,6 +117,16 @@ const check = when(get('doge'), set('says', 'wow'), set('says', 'nothing'))
 
 check({ doge: 'here' }) // => Message{ data: { doge: 'here' }, scope: { says: 'wow!' } }
 check({}) // => Message{ data: {}, scope: { says: 'nothing' } }
+```
+
+`either(main, default)` - default value abstraction (think ||). Evaluates `main` and if it's value is undefined evaluates `default` instead
+```javascript
+const safe = either(get('doge'), 'here')
+
+// All following cases produce => Message{ data: 'here', scope: { says: 'wow!' } }
+safe({ doge: 'here' })
+safe({})
+safe()
 ```
 
 `chain(flow1, flow2, flow3, ...)` - control flow fragment for sequential operations:
@@ -248,7 +268,6 @@ test({ a: true, b: false }) // => Message{ data: true, scope: {} }
 test({ a: false, b: true }) // => Message{ data: true, scope: {} }
 test({ a: true, b: true }) // => Message{ data: false, scope: {} }
 ```
-
 
 `eq(x, y)` - strict equality
 ```javascript

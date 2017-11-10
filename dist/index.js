@@ -17,6 +17,18 @@ Object.keys(_dictionary).forEach(function (key) {
   });
 });
 
+var _testing = require('./testing');
+
+Object.keys(_testing).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function get() {
+      return _testing[key];
+    }
+  });
+});
+
 var _transport = require('./transport');
 
 var transport = _interopRequireWildcard(_transport);

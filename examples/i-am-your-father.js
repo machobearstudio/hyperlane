@@ -1,9 +1,6 @@
 import https from 'https'
 import nodeFetch from 'node-fetch'
-import { lift, chain, get, set, map, filter, eq, object } from '../src'
-
-// Promise logger
-const log = x=> x.then(y => { console.log(y.data); return y })
+import { lift, chain, get, set, map, filter, eq, object, log } from '../src'
 
 // Generic HTTP readers
 const agent = new https.Agent({ rejectUnauthorized: false })
