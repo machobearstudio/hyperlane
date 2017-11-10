@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.push = exports.concat = exports.zip = exports.tail = exports.head = exports.keys = exports.values = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.set = exports.get = exports.filter = exports.map = exports.when = exports.call = exports.all = exports.chain = exports.lift = undefined;
+exports.state = exports.data = exports.expose = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.tail = exports.head = exports.keys = exports.values = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.set = exports.get = exports.filter = exports.map = exports.when = exports.call = exports.all = exports.chain = exports.lift = undefined;
 
-var _functionPipe = require('function-pipe');
+var _fragment = require('./fragment');
 
-var _functionPipe2 = _interopRequireDefault(_functionPipe);
+var _fragment2 = _interopRequireDefault(_fragment);
 
 var _flow = require('./flow');
 
@@ -21,16 +21,16 @@ var _essentials = require('./essentials');
 
 var essentials = _interopRequireWildcard(_essentials);
 
-var _fragment = require('./fragment');
-
-var _fragment2 = _interopRequireDefault(_fragment);
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var lift = exports.lift = (0, _functionPipe2.default)(flow.lift, _fragment2.default);
+// The lift
+var lift = exports.lift = function lift(func) {
+  return (0, _fragment2.default)(flow.lift(func));
+};
 
+// Control flow fragments
 var chain = exports.chain = (0, _fragment2.default)(flow.chain);
 var all = exports.all = (0, _fragment2.default)(flow.all);
 var call = exports.call = (0, _fragment2.default)(flow.functionCall);
@@ -38,33 +38,51 @@ var when = exports.when = (0, _fragment2.default)(flow.when);
 var map = exports.map = (0, _fragment2.default)(flow.map);
 var filter = exports.filter = (0, _fragment2.default)(flow.filter);
 
+// Transformer fragments
 var get = exports.get = (0, _fragment2.default)(flow.functionCall(core.get));
 var set = exports.set = (0, _fragment2.default)(flow.functionCall(core.set));
 
-var not = exports.not = (0, _fragment2.default)(flow.lift(essentials.not));
-var and = exports.and = (0, _fragment2.default)(flow.lift(essentials.and));
-var or = exports.or = (0, _fragment2.default)(flow.lift(essentials.or));
-var xor = exports.xor = (0, _fragment2.default)(flow.lift(essentials.xor));
-var add = exports.add = (0, _fragment2.default)(flow.lift(essentials.add));
-var subtract = exports.subtract = (0, _fragment2.default)(flow.lift(essentials.subtract));
-var multiply = exports.multiply = (0, _fragment2.default)(flow.lift(essentials.multiply));
-var divide = exports.divide = (0, _fragment2.default)(flow.lift(essentials.divide));
-var uppercase = exports.uppercase = (0, _fragment2.default)(flow.lift(essentials.uppercase));
-var lowercase = exports.lowercase = (0, _fragment2.default)(flow.lift(essentials.lowercase));
-var join = exports.join = (0, _fragment2.default)(flow.lift(essentials.join));
-var split = exports.split = (0, _fragment2.default)(flow.lift(essentials.split));
-var eq = exports.eq = (0, _fragment2.default)(flow.lift(essentials.eq));
-var neq = exports.neq = (0, _fragment2.default)(flow.lift(essentials.neq));
-var gt = exports.gt = (0, _fragment2.default)(flow.lift(essentials.gt));
-var lt = exports.lt = (0, _fragment2.default)(flow.lift(essentials.lt));
-var gte = exports.gte = (0, _fragment2.default)(flow.lift(essentials.gte));
-var lte = exports.lte = (0, _fragment2.default)(flow.lift(essentials.lte));
-var isDefined = exports.isDefined = (0, _fragment2.default)(flow.lift(essentials.isDefined));
-var isUndefined = exports.isUndefined = (0, _fragment2.default)(flow.lift(essentials.isUndefined));
-var values = exports.values = (0, _fragment2.default)(flow.lift(essentials.values));
-var keys = exports.keys = (0, _fragment2.default)(flow.lift(essentials.keys));
-var head = exports.head = (0, _fragment2.default)(flow.lift(essentials.head));
-var tail = exports.tail = (0, _fragment2.default)(flow.lift(essentials.tail));
-var zip = exports.zip = (0, _fragment2.default)(flow.lift(essentials.zip));
-var concat = exports.concat = (0, _fragment2.default)(flow.lift(essentials.concat));
-var push = exports.push = (0, _fragment2.default)(flow.lift(essentials.push));
+var not = exports.not = lift(essentials.not);
+var and = exports.and = lift(essentials.and);
+var or = exports.or = lift(essentials.or);
+var xor = exports.xor = lift(essentials.xor);
+var add = exports.add = lift(essentials.add);
+var subtract = exports.subtract = lift(essentials.subtract);
+var multiply = exports.multiply = lift(essentials.multiply);
+var divide = exports.divide = lift(essentials.divide);
+var uppercase = exports.uppercase = lift(essentials.uppercase);
+var lowercase = exports.lowercase = lift(essentials.lowercase);
+var join = exports.join = lift(essentials.join);
+var split = exports.split = lift(essentials.split);
+var eq = exports.eq = lift(essentials.eq);
+var neq = exports.neq = lift(essentials.neq);
+var gt = exports.gt = lift(essentials.gt);
+var lt = exports.lt = lift(essentials.lt);
+var gte = exports.gte = lift(essentials.gte);
+var lte = exports.lte = lift(essentials.lte);
+var isDefined = exports.isDefined = lift(essentials.isDefined);
+var isUndefined = exports.isUndefined = lift(essentials.isUndefined);
+var values = exports.values = lift(essentials.values);
+var keys = exports.keys = lift(essentials.keys);
+var head = exports.head = lift(essentials.head);
+var tail = exports.tail = lift(essentials.tail);
+var zip = exports.zip = lift(essentials.zip);
+var concat = exports.concat = lift(essentials.concat);
+var push = exports.push = lift(essentials.push);
+var select = exports.select = lift(essentials.select);
+var exclude = exports.exclude = lift(essentials.exclude);
+var merge = exports.merge = lift(essentials.merge);
+var expose = exports.expose = lift(essentials.expose);
+
+// Shorthands
+var data = exports.data = function data(x) {
+  return get('')(x);
+};
+data.get = get;
+data.set = expose;
+
+var state = exports.state = function state(x) {
+  return get('')(x);
+};
+state.get = get;
+state.set = set;

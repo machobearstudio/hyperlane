@@ -3,7 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.push = exports.concat = exports.tail = exports.head = exports.zip = exports.keys = exports.values = undefined;
+exports.expose = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.tail = exports.head = exports.zip = exports.keys = exports.values = undefined;
+
+var _polySelect = require('poly-select');
+
+var _polySelect2 = _interopRequireDefault(_polySelect);
+
+var _polyExclude = require('poly-exclude');
+
+var _polyExclude2 = _interopRequireDefault(_polyExclude);
 
 var _zip = require('../utils/zip');
 
@@ -31,4 +39,16 @@ var concat = exports.concat = function concat(xs, ys) {
 };
 var push = exports.push = function push(xs, y) {
   return xs.concat([y]);
+};
+var select = exports.select = function select(y, xs) {
+  return (0, _polySelect2.default)(y, xs);
+};
+var exclude = exports.exclude = function exclude(y, xs) {
+  return (0, _polyExclude2.default)(y, xs);
+};
+var merge = exports.merge = function merge(xs, ys) {
+  return Object.assign(xs, ys);
+};
+var expose = exports.expose = function expose(name, value, data) {
+  data[name] = value;return data;
 };

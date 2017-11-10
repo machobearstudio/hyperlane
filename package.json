@@ -1,7 +1,7 @@
 {
   "name": "hyperlane",
   "description": "Context-dependent functional style computation",
-  "keywords": "comonad, pipeline, context, composition, continuation, command, point-free style",
+  "keywords": "comonad, pipeline, context, composition, continuation, control flow, point-free style",
   "version": "1.3.1",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
@@ -25,10 +25,10 @@
     "array-flatten": "^2.1.1",
     "curry": "^1.2.0",
     "function-pipe": "^1.0.0",
+    "poly-exclude": "^1.0.4",
     "poly-filter": "^1.0.2",
     "poly-map": "^1.1.0",
-    "simple-event": "^1.0.6",
-    "uuid": "^3.1.0"
+    "poly-select": "^1.0.0"
   },
   "engines": {
     "node": ">=4.0",
