@@ -1,4 +1,5 @@
 import * as transport from './transport'
+import fragment from './fragment'
 import { construct, extract, combine, collect, spread, applicator } from './message'
 
 const message = construct;
@@ -9,12 +10,12 @@ message.collect = collect;
 message.spread = spread;
 message.applicator = applicator;
 
-export { message, transport }
+export { message, transport, fragment }
 
 export const configure = (config) => {
   transport.setTransport(config)
 }
 
-configure({ transport: 'bus' })
+configure({ transport: 'async' })
 
 export * from './dictionary'

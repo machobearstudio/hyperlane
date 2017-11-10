@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.configure = exports.transport = exports.message = undefined;
+exports.configure = exports.fragment = exports.transport = exports.message = undefined;
 
 var _dictionary = require('./dictionary');
 
@@ -21,7 +21,13 @@ var _transport = require('./transport');
 
 var transport = _interopRequireWildcard(_transport);
 
+var _fragment = require('./fragment');
+
+var _fragment2 = _interopRequireDefault(_fragment);
+
 var _message = require('./message');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -35,6 +41,7 @@ message.applicator = _message.applicator;
 
 exports.message = message;
 exports.transport = transport;
+exports.fragment = _fragment2.default;
 var configure = exports.configure = function configure(config) {
   transport.setTransport(config);
 };

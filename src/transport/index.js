@@ -1,10 +1,9 @@
 import * as sync from './sync'
 import * as async from './async'
-import * as bus from './bus'
 
 let transport = {}
 
-const createTransport = type => type === 'sync' ? sync : (type === 'async' ? async : bus)
+const createTransport = type => type === 'sync' ? sync : async
 
 export const getTransport = () => transport
 
