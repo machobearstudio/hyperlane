@@ -1,11 +1,12 @@
-import { log } from '../src'
-import testEither from './either.test.js'
+import { get, set, constraints, given, samples, test, assert } from '../src'
 
-const show = results => log(results.then(xs => xs.reduce(
-  (acc, { description, success, failed }) => ({
-    ...acc, [description]: (success ? 'PASS' : 'FAIL')
-  }), {})
-))
+const transparentLense = test(
+  given(samples.anything),
+  assert(
+    constraints.messageOutput,
+    constraints.scopeInvariant,
+    constraints.dataInvariant
+  )
+)
 
-show(testEither({ transport: 'sync' }))
-show(testEither({ transport: 'async' }))
+transparentLense(get('')).then(x => console.log(x ? 'PASS' : 'FAIL'))

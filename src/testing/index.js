@@ -1,6 +1,10 @@
-import equal from 'deep-equal'
-import { configure } from '../index'
+import * as samples from './samples'
+import * as constraints from './constraints'
+
+export { samples, constraints }
+
 export { default as log } from './log'
 export { default as assert } from './assert'
-export { default as useCase } from './use-case'
-export { default as suite } from './suite'
+export { default as test } from './test'
+export { default as given } from './given'
+

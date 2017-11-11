@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.suite = exports.useCase = exports.assert = exports.log = undefined;
+exports.given = exports.test = exports.assert = exports.log = exports.constraints = exports.samples = undefined;
 
 var _log = require('./log');
 
@@ -23,28 +23,35 @@ Object.defineProperty(exports, 'assert', {
   }
 });
 
-var _useCase = require('./use-case');
+var _test = require('./test');
 
-Object.defineProperty(exports, 'useCase', {
+Object.defineProperty(exports, 'test', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_useCase).default;
+    return _interopRequireDefault(_test).default;
   }
 });
 
-var _suite = require('./suite');
+var _given = require('./given');
 
-Object.defineProperty(exports, 'suite', {
+Object.defineProperty(exports, 'given', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_suite).default;
+    return _interopRequireDefault(_given).default;
   }
 });
 
-var _deepEqual = require('deep-equal');
+var _samples = require('./samples');
 
-var _deepEqual2 = _interopRequireDefault(_deepEqual);
+var samples = _interopRequireWildcard(_samples);
 
-var _index = require('../index');
+var _constraints = require('./constraints');
+
+var constraints = _interopRequireWildcard(_constraints);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.samples = samples;
+exports.constraints = constraints;

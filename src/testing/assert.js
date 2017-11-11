@@ -1,10 +1,5 @@
-import curry from 'curry'
-import equal from 'deep-equal'
+const assert = (...constraints) => flow => input => Promise
+  .resolve(flow(input))
+  .then(output => constraints.map(f => f(input, output)))
 
-const assert = (given, expected, flow) => Promise
-  .resolve(flow(given))
-  .then(result => ({
-    success: equal(result, expected)
-  }))
-
-export default curry(assert)
+export default assert
