@@ -1,12 +1,8 @@
-import { get, set, constraints, given, samples, test, assert } from '../src'
+import equal from 'deep-equal'
+import { get, set, given, assert } from '../src'
+import { anything, data } from './samples'
+import { messageOutput, scopeInvariant, dataInvariant, dataIs, dataEquivalentTo } from './constraints'
 
-const transparentLense = test(
-  given(samples.anything),
-  assert(
-    constraints.messageOutput,
-    constraints.scopeInvariant,
-    constraints.dataInvariant
-  )
-)
+import testGet from './get.test'
 
-transparentLense(get('')).then(x => console.log(x ? 'PASS' : 'FAIL'))
+testGet().then(x => console.log(x))

@@ -1,5 +1,5 @@
 const assert = (...constraints) => flow => input => Promise
-  .resolve(flow(input))
-  .then(output => constraints.map(f => f(input, output)))
+  .all([input, flow(input)])
+  .then(results => constraints.map(f => f(...results)))
 
 export default assert

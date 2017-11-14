@@ -24,7 +24,6 @@
   "dependencies": {
     "array-flatten": "^2.1.1",
     "curry": "^1.2.0",
-    "deep-equal": "^1.0.1",
     "function-pipe": "^1.0.0",
     "poly-exclude": "^1.0.4",
     "poly-filter": "^1.0.2",
@@ -40,6 +39,7 @@
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-object-rest-spread": "^6.23.0",
     "babel-preset-env": "^1.6.0",
+    "deep-equal": "^1.0.1",
     "node-fetch": "^1.7.3"
   }
 }

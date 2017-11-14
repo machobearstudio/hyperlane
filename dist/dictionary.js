@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.scope = exports.data = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.tail = exports.head = exports.keys = exports.values = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.lense = exports.set = exports.get = exports.filter = exports.map = exports.either = exports.choice = exports.when = exports.call = exports.all = exports.chain = exports.lift = undefined;
+exports.scope = exports.data = exports.id = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.tail = exports.head = exports.keys = exports.values = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.lens = exports.set = exports.get = exports.filter = exports.map = exports.either = exports.choice = exports.when = exports.call = exports.all = exports.chain = exports.lift = undefined;
 
 var _fragment = require('./fragment');
 
@@ -44,14 +44,14 @@ var filter = exports.filter = (0, _fragment2.default)(flow.filter);
 var get = exports.get = (0, _fragment2.default)(flow.functionCall(core.get));
 var set = exports.set = (0, _fragment2.default)(flow.functionCall(core.set));
 
-var lense = exports.lense = function lense(location) {
-  var Lense = get(location);
-  Lense.get = get(location);
-  Lense.set = function (value) {
+var lens = exports.lens = function lens(location) {
+  var Lens = get(location);
+  Lens.get = get(location);
+  Lens.set = function (value) {
     return set(location, value);
   };
 
-  return Lense;
+  return Lens;
 };
 
 // Transformer fragments
@@ -87,6 +87,10 @@ var exclude = exports.exclude = lift(essentials.exclude);
 var merge = exports.merge = lift(essentials.merge);
 
 // Shorthands
+var id = exports.id = function id(x) {
+  return get('')(x);
+};
+
 var data = exports.data = function data(x) {
   return get('')(x);
 };

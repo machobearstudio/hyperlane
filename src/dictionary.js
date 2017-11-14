@@ -20,12 +20,12 @@ export const filter = fragment(flow.filter)
 export const get    = fragment(flow.functionCall(core.get))
 export const set    = fragment(flow.functionCall(core.set))
 
-export const lense = location => {
-  const Lense = get(location)
-  Lense.get = get(location)
-  Lense.set = value => set(location, value)
+export const lens = location => {
+  const Lens = get(location)
+  Lens.get = get(location)
+  Lens.set = value => set(location, value)
 
-  return Lense
+  return Lens
 }
 
 // Transformer fragments
@@ -61,6 +61,8 @@ export const exclude     = lift(essentials.exclude)
 export const merge       = lift(essentials.merge)
 
 // Shorthands
+export const id = x => get('')(x)
+
 export const data = x => get('')(x)
 data.get = fragment(flow.functionCall(core.getData))
 data.set = fragment(flow.functionCall(core.setData))
