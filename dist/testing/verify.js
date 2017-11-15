@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-var assert = function assert() {
+var verify = function verify() {
   for (var _len = arguments.length, constraints = Array(_len), _key = 0; _key < _len; _key++) {
     constraints[_key] = arguments[_key];
   }
@@ -22,4 +22,4 @@ var assert = function assert() {
   };
 };
 
-exports.default = assert;
+exports.default = verify;

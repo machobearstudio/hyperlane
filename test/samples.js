@@ -14,5 +14,6 @@ const booleans = [true, false]
 const primitives = [...numbers, ...strings, ...booleans]
 const any = [null, undefined, ...primitives, ...objects, ...arrays]
 
-export const anything =  sample({ data: any, scope: objects })
-export const data = x => sample({ data: [x], scope: objects })
+export const anything  =  sample({ data: any, scope: objects })
+export const data  = x => sample({ data: [x], scope: objects })
+export const scope = x => sample({ data: any, scope: [x] })

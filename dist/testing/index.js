@@ -13,12 +13,12 @@ Object.defineProperty(exports, 'log', {
   }
 });
 
-var _assert = require('./assert');
+var _verify = require('./verify');
 
-Object.defineProperty(exports, 'assert', {
+Object.defineProperty(exports, 'verify', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_assert).default;
+    return _interopRequireDefault(_verify).default;
   }
 });
 
