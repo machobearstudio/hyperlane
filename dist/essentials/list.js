@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.tail = exports.head = exports.zip = exports.keys = exports.values = undefined;
+exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.tail = exports.head = exports.zip = exports.keys = exports.values = exports.join = undefined;
 
 var _polySelect = require('poly-select');
 
@@ -19,6 +19,9 @@ var _zip2 = _interopRequireDefault(_zip);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var join = exports.join = function join(x, ys) {
+  return ys.join(x);
+};
 var values = exports.values = function values(xs) {
   return Object.values(xs);
 };

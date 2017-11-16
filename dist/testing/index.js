@@ -3,7 +3,6 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.suite = exports.useCase = exports.assert = exports.log = undefined;
 
 var _log = require('./log');
 
@@ -14,37 +13,22 @@ Object.defineProperty(exports, 'log', {
   }
 });
 
-var _assert = require('./assert');
+var _verify = require('./verify');
 
-Object.defineProperty(exports, 'assert', {
+Object.defineProperty(exports, 'verify', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_assert).default;
+    return _interopRequireDefault(_verify).default;
   }
 });
 
-var _useCase = require('./use-case');
+var _given = require('./given');
 
-Object.defineProperty(exports, 'useCase', {
+Object.defineProperty(exports, 'given', {
   enumerable: true,
   get: function get() {
-    return _interopRequireDefault(_useCase).default;
+    return _interopRequireDefault(_given).default;
   }
 });
-
-var _suite = require('./suite');
-
-Object.defineProperty(exports, 'suite', {
-  enumerable: true,
-  get: function get() {
-    return _interopRequireDefault(_suite).default;
-  }
-});
-
-var _deepEqual = require('deep-equal');
-
-var _deepEqual2 = _interopRequireDefault(_deepEqual);
-
-var _index = require('../index');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }

@@ -1,17 +1,21 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var add = exports.add = function add(x, y) {
+exports.divide = exports.multiply = exports.subtract = exports.add = undefined;
+
+var _maybe = require('./maybe');
+
+var add = exports.add = (0, _maybe.maybe2)(function (x, y) {
   return x + y;
-};
-var subtract = exports.subtract = function subtract(x, y) {
+});
+var subtract = exports.subtract = (0, _maybe.maybe2)(function (x, y) {
   return x - y;
-};
-var multiply = exports.multiply = function multiply(x, y) {
+});
+var multiply = exports.multiply = (0, _maybe.maybe2)(function (x, y) {
   return x * y;
-};
-var divide = exports.divide = function divide(x, y) {
+});
+var divide = exports.divide = (0, _maybe.maybe2)(function (x, y) {
   return x / y;
-};
+});

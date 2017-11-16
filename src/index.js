@@ -1,8 +1,9 @@
 import * as transport from './transport'
 import fragment from './fragment'
-import { construct, extract, combine, collect, spread, applicator } from './message'
+import { construct, extract, combine, collect, spread, applicator, isMessage } from './message'
 
 const message = construct;
+message.isMessage = isMessage;
 message.construct = construct;
 message.extract = extract;
 message.combine = combine;
