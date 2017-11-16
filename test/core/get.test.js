@@ -1,16 +1,16 @@
 import { get, given, verify } from '../../src'
 import { anything, data, scope, sample } from '../samples'
 import { scopeInvariant, dataInvariant, dataIs } from '../constraints'
-import scenario from '../scenario'
+import test from '../test'
 
 const identity = given(anything, verify(scopeInvariant, dataInvariant))
 
-scenario(
+test(
   "get('')",
   ["acts as identity", get(''), identity]
 )
 
-scenario(
+test(
   "get(location: string)",
 
   ["reads data by name", get('doge'),
@@ -36,7 +36,7 @@ scenario(
   ]
 )
 
-scenario(
+test(
   "get(location: array)",
 
   ["reads data by deep path", get(['doge', 'such', 'much']),
