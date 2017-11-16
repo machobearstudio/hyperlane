@@ -6,16 +6,6 @@ import * as essentials from './essentials'
 // The lift
 export const lift   = func => fragment(flow.lift(func))
 
-// Control flow fragments
-export const chain  = fragment(flow.chain)
-export const all    = fragment(flow.all)
-export const call   = fragment(flow.functionCall)
-export const when   = fragment(flow.when)
-export const choice = fragment(flow.choice)
-export const either = fragment(flow.either)
-export const map    = fragment(flow.map)
-export const filter = fragment(flow.filter)
-
 // Lenses
 export const get    = fragment(flow.functionCall(core.get))
 export const set    = fragment(flow.functionCall(core.set))
@@ -27,6 +17,16 @@ export const lens = location => {
 
   return Lens
 }
+
+export const id = x => get('')(x)
+
+export const data = x => get('')(x)
+data.get = fragment(flow.functionCall(core.getData))
+data.set = fragment(flow.functionCall(core.setData))
+
+export const scope = x => fragment(flow.functionCall(core.getScope))('')(x)
+scope.get = fragment(flow.functionCall(core.getScope))
+scope.set = set
 
 // Transformer fragments
 export const not         = lift(essentials.not)
@@ -60,13 +60,12 @@ export const select      = lift(essentials.select)
 export const exclude     = lift(essentials.exclude)
 export const merge       = lift(essentials.merge)
 
-// Shorthands
-export const id = x => get('')(x)
-
-export const data = x => get('')(x)
-data.get = fragment(flow.functionCall(core.getData))
-data.set = fragment(flow.functionCall(core.setData))
-
-export const scope = fragment(flow.functionCall(input => input.scope))
-scope.get = fragment(flow.functionCall(core.getScope))
-scope.set = set
+// Control flow fragments
+export const chain  = fragment(flow.chain)
+export const all    = fragment(flow.all)
+export const call   = fragment(flow.functionCall)
+export const when   = fragment(flow.when)
+export const choice = fragment(flow.choice)
+export const either = fragment(flow.either)
+export const map    = fragment(flow.map)
+export const filter = fragment(flow.filter)

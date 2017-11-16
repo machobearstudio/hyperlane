@@ -2,6 +2,7 @@ import polySelect from 'poly-select'
 import polyExclude from 'poly-exclude'
 import objectZip from '../utils/zip'
 
+export const join    = (x, ys) => ys.join(x)
 export const values  = xs => Object.values(xs)
 export const keys    = xs => Object.keys(xs)
 export const zip     = (keys, values) => objectZip(kes, values)
