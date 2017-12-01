@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.lift = exports.functionCall = exports.all = exports.chain = exports.filter = exports.map = exports.choice = exports.either = exports.when = undefined;
+exports.lift = exports.functionCall = exports.all = exports.chain = exports.filter = exports.map = exports.either = exports.when = undefined;
 
 var _polyFilter = require('poly-filter');
 
@@ -48,25 +48,14 @@ var either = exports.either = function either(left, right) {
   };
 };
 
-var choice = exports.choice = function choice(condition, options) {
-  var defaultOption = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : identity;
-  return function (input) {
-    var original = (0, _message.construct)(input);
-    var branch = function branch(x) {
-      return (options[(0, _message.extract)(x)] || defaultOption)(original);
-    };
-    var flow = (0, _transport.sequential)([condition, branch]);
-
-    return flow(original);
-  };
-};
-
 var map = exports.map = function map(func) {
-  return (0, _transport.sequential)([_message.spread, (0, _transport.forAll)(func), _message.collect]);
+  var iterator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : identity;
+  return (0, _transport.sequential)([iterator, _message.spread, (0, _transport.forAll)(func), _message.collect]);
 };
 
 var filter = exports.filter = function filter(func) {
-  return (0, _transport.sequential)([_message.spread, (0, _transport.forAll)(when(func, identity, function () {
+  var iterator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : identity;
+  return (0, _transport.sequential)([iterator, _message.spread, (0, _transport.forAll)(when(func, identity, function () {
     return undefined;
   })), (0, _polyFilter2.default)(function (x) {
     return x !== undefined;

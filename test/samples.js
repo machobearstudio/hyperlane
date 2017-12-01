@@ -12,8 +12,11 @@ const strings  = ['', 'doge wow such much!', '12345', '0']
 const booleans = [true, false]
 
 const primitives = [...numbers, ...strings, ...booleans]
-const any = [null, undefined, ...primitives, ...objects, ...arrays]
+const definedValues = [null, ...primitives, ...objects, ...arrays]
+const any = [...definedValues, undefined]
 
 export const anything  =  sample({ data: any, scope: objects })
+export const defined   =  sample({ data: definedValues, scope: objects })
+export const unDefined =  sample({ data: [undefined], scope: objects })
 export const data  = x => sample({ data: [x], scope: objects })
 export const scope = x => sample({ data: any, scope: [x] })

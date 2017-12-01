@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.filter = exports.map = exports.either = exports.choice = exports.when = exports.call = exports.all = exports.chain = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.tail = exports.head = exports.keys = exports.values = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.scope = exports.data = exports.id = exports.lens = exports.set = exports.get = exports.lift = undefined;
+exports.filter = exports.map = exports.either = exports.when = exports.all = exports.chain = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.count = exports.tail = exports.head = exports.keys = exports.values = exports.array = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.scope = exports.data = exports.end = exports.id = exports.lens = exports.set = exports.get = exports.call = exports.lift = undefined;
 
 var _fragment = require('./fragment');
 
@@ -29,6 +29,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var lift = exports.lift = function lift(func) {
   return (0, _fragment2.default)(flow.lift(func));
 };
+var call = exports.call = (0, _fragment2.default)(flow.functionCall);
 
 // Lenses
 var get = exports.get = (0, _fragment2.default)(flow.functionCall(core.get));
@@ -47,6 +48,9 @@ var lens = exports.lens = function lens(location) {
 var id = exports.id = function id(x) {
   return get('')(x);
 };
+var end = exports.end = lift(function () {
+  return undefined;
+});
 
 var data = exports.data = function data(x) {
   return get('')(x);
@@ -81,10 +85,12 @@ var gte = exports.gte = lift(essentials.gte);
 var lte = exports.lte = lift(essentials.lte);
 var isDefined = exports.isDefined = lift(essentials.isDefined);
 var isUndefined = exports.isUndefined = lift(essentials.isUndefined);
+var array = exports.array = lift(essentials.array);
 var values = exports.values = lift(essentials.values);
 var keys = exports.keys = lift(essentials.keys);
 var head = exports.head = lift(essentials.head);
 var tail = exports.tail = lift(essentials.tail);
+var count = exports.count = lift(essentials.count);
 var zip = exports.zip = lift(essentials.zip);
 var concat = exports.concat = lift(essentials.concat);
 var push = exports.push = lift(essentials.push);
@@ -92,12 +98,10 @@ var select = exports.select = lift(essentials.select);
 var exclude = exports.exclude = lift(essentials.exclude);
 var merge = exports.merge = lift(essentials.merge);
 
-// Control flow fragments
+// Base control flow fragments
 var chain = exports.chain = (0, _fragment2.default)(flow.chain);
 var all = exports.all = (0, _fragment2.default)(flow.all);
-var call = exports.call = (0, _fragment2.default)(flow.functionCall);
 var when = exports.when = (0, _fragment2.default)(flow.when);
-var choice = exports.choice = (0, _fragment2.default)(flow.choice);
 var either = exports.either = (0, _fragment2.default)(flow.either);
 var map = exports.map = (0, _fragment2.default)(flow.map);
 var filter = exports.filter = (0, _fragment2.default)(flow.filter);

@@ -19,8 +19,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var constant = function constant(x) {
-  return function () {
-    return (0, _message.construct)(x);
+  return function (input) {
+    return (0, _message.construct)(x, input.scope);
   };
 };
 
@@ -46,8 +46,9 @@ var fragment = function fragment(func) {
       args[_key] = arguments[_key];
     }
 
-    return func.apply(undefined, _toConsumableArray(args.map(resolver)));
+    return (0, _message.isMessage)(args[0]) ? func()(args[0]) : func.apply(undefined, _toConsumableArray(args.map(resolver)));
   };
+
   Fragment.$class = 'Fragment';
 
   return Fragment;
