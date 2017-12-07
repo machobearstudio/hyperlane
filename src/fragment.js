@@ -1,8 +1,9 @@
 import polyMap from 'poly-map'
-import { extract, construct, collect, spread, applicator } from './message'
+import { construct, isInstance, extend } from './store'
+import { collect } from './state'
 import { sequential, parallel } from './transport'
 
-const constant = x => () => construct(x)
+const constant = x => extend(() => x)
 
 const structure = items => sequential([ parallel(polyMap(resolver, items)), collect ])
 
@@ -19,7 +20,12 @@ const resolver = predicate => {
 }
 
 const fragment = func => {
-  const Fragment = (...args) => func(...args.map(resolver))
+  const Fragment = (...args) => (
+    isInstance(args[0])
+      ? func()(args[0])
+      : func(...args.map(resolver))
+  )
+
   Fragment.$class = 'Fragment'
 
   return Fragment

@@ -1,23 +1,19 @@
 import * as transport from './transport'
 import fragment from './fragment'
-import { construct, extract, combine, collect, spread, applicator, isMessage } from './message'
+import * as store from './store'
 
-const message = construct;
-message.isMessage = isMessage;
-message.construct = construct;
-message.extract = extract;
-message.combine = combine;
-message.collect = collect;
-message.spread = spread;
-message.applicator = applicator;
-
-export { message, transport, fragment }
+const message = store.message
 
 export const configure = (config) => {
   transport.setTransport(config)
+  store.setStore(config)
 }
 
-configure({ transport: 'async' })
+configure({
+  transport: 'async',
+  store: 'message'
+})
 
+export { message, transport, fragment }
 export * from './dictionary'
 export * from './testing'

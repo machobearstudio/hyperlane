@@ -1,14 +1,16 @@
+import pipe from 'function-pipe'
 import fragment from './fragment'
 import * as flow from './flow'
-import * as core from './core'
+import * as state from './state'
 import * as essentials from './essentials'
 
 // The lift
-export const lift   = func => fragment(flow.lift(func))
+export const lift = pipe(state.lift, flow.functionCall, fragment)
+export const call = pipe(flow.functionCall, fragment)
 
 // Lenses
-export const get    = fragment(flow.functionCall(core.get))
-export const set    = fragment(flow.functionCall(core.set))
+export const get = call(state.get)
+export const set = call(state.set)
 
 export const lens = location => {
   const Lens = get(location)
@@ -18,15 +20,9 @@ export const lens = location => {
   return Lens
 }
 
-export const id = x => get('')(x)
-
-export const data = x => get('')(x)
-data.get = fragment(flow.functionCall(core.getData))
-data.set = fragment(flow.functionCall(core.setData))
-
-export const scope = x => fragment(flow.functionCall(core.getScope))('')(x)
-scope.get = fragment(flow.functionCall(core.getScope))
-scope.set = set
+export const data = x => lens('')(x)
+export const id   = x => get('')(x)
+export const end  = lift(() => undefined)
 
 // Transformer fragments
 export const not         = lift(essentials.not)
@@ -49,10 +45,12 @@ export const gte         = lift(essentials.gte)
 export const lte         = lift(essentials.lte)
 export const isDefined   = lift(essentials.isDefined)
 export const isUndefined = lift(essentials.isUndefined)
+export const array       = lift(essentials.array)
 export const values      = lift(essentials.values)
 export const keys        = lift(essentials.keys)
 export const head        = lift(essentials.head)
 export const tail        = lift(essentials.tail)
+export const count       = lift(essentials.count)
 export const zip         = lift(essentials.zip)
 export const concat      = lift(essentials.concat)
 export const push        = lift(essentials.push)
@@ -60,12 +58,10 @@ export const select      = lift(essentials.select)
 export const exclude     = lift(essentials.exclude)
 export const merge       = lift(essentials.merge)
 
-// Control flow fragments
+// Base control flow fragments
 export const chain  = fragment(flow.chain)
 export const all    = fragment(flow.all)
-export const call   = fragment(flow.functionCall)
 export const when   = fragment(flow.when)
-export const choice = fragment(flow.choice)
 export const either = fragment(flow.either)
 export const map    = fragment(flow.map)
 export const filter = fragment(flow.filter)

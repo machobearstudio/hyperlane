@@ -1,6 +1,6 @@
 import { not, get } from '../../src'
 import { given, verify } from '../../src'
-import { anything, data, scope, sample } from '../samples'
+import { anything, data, scope, unDefined, defined } from '../samples'
 import { messageOutput, scopeInvariant, dataInvariant, dataIs } from '../constraints'
 import test from '../test'
 
@@ -11,5 +11,6 @@ test(
 
   ["negates constants", not(true), given(anything, verify(scopeInvariant, dataIs(false)))],
   ["negates constants", not(false), given(anything, verify(scopeInvariant, dataIs(true)))],
-  ["negates input data", not(get('')), given(anything, verify(scopeInvariant, dataNegated))],
+  ["negates input data", not(get('')), given(defined, verify(scopeInvariant, dataNegated))],
+  ["preserves undefined", not(get('')), given(unDefined, verify(scopeInvariant, dataInvariant))],
 )

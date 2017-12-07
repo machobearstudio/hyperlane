@@ -1,12 +1,13 @@
 {
   "name": "hyperlane",
   "description": "Context-dependent continuations",
-  "keywords": "comonad, pipeline, context, composition, continuation, control flow, point-free style",
+  "keywords": "comonad, store, lens, pipeline, context, composition, continuation, control flow, point-free style",
   "version": "1.4.0",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
     "test": "mocha --require babel-register test/**/*.test.js",
-    "example": "babel-node --presets env --plugins transform-object-rest-spread examples/i-am-your-father.js"
+    "example": "babel-node --presets env --plugins transform-object-rest-spread examples/i-am-your-father.js",
+    "genetic": "babel-node --presets env --plugins transform-object-rest-spread examples/genetic.js"
   },
   "main": "dist",
   "repository": {
@@ -33,6 +34,7 @@
     "array-flatten": "^2.1.1",
     "curry": "^1.2.0",
     "function-pipe": "^1.0.0",
+    "object-path": "^0.11.4",
     "poly-exclude": "^1.0.4",
     "poly-filter": "^1.0.2",
     "poly-map": "^1.1.0",

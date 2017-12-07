@@ -1,6 +1,7 @@
 import polyFilter from 'poly-filter'
 import pipe from 'function-pipe'
-import { extract, construct, collect, spread, applicator } from './message'
+import { extract, construct, combine } from './store'
+import { collect, spread } from './state'
 import { sequential, parallel, apply, forAll } from './transport'
 
 const identity = x => x
@@ -21,17 +22,15 @@ export const either = (left, right) => input => {
   return flow(original)
 }
 
-export const choice = (condition, options, defaultOption = identity) => input => {
-  const original = construct(input)
-  const branch = x => (options[extract(x)] || defaultOption)(original)
-  const flow = sequential([ condition, branch ])
+export const map = (func, iterator = identity) => sequential([
+  iterator,
+  spread,
+  forAll(func),
+  collect
+])
 
-  return flow(original)
-}
-
-export const map = func => sequential([ spread, forAll(func), collect ])
-
-export const filter = func => sequential([
+export const filter = (func, iterator = identity) => sequential([
+  iterator,
   spread,
   forAll(when(func, identity, () => undefined)),
   polyFilter(x => x !== undefined),
@@ -47,5 +46,3 @@ export const functionCall = func => (...args) => sequential([
   parallel(args.concat([identity])),
   apply(func)
 ])
-
-export const lift = pipe(applicator, functionCall)
