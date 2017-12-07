@@ -2,7 +2,7 @@
   "name": "hyperlane",
   "description": "Context-dependent computation pipelines",
   "keywords": "comonad, store, continuation, lens, pipeline, context, composition, control flow",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
     "test": "mocha --require babel-register test/**/*.test.js",
