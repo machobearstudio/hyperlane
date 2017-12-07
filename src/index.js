@@ -1,9 +1,12 @@
 import * as transport from './transport'
 import fragment from './fragment'
-import message from './store'
+import * as store from './store'
+
+const message = store.message
 
 export const configure = (config) => {
   transport.setTransport(config)
+  store.setStore(config)
 }
 
 configure({
@@ -12,6 +15,5 @@ configure({
 })
 
 export { message, transport, fragment }
-
 export * from './dictionary'
 export * from './testing'

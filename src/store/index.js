@@ -30,4 +30,4 @@ message.combine = combine
 message.get = get
 message.set = set
 
-export default message
+export { message }
