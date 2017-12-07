@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.lift = exports.functionCall = exports.all = exports.chain = exports.filter = exports.map = exports.either = exports.when = undefined;
+exports.functionCall = exports.all = exports.chain = exports.filter = exports.map = exports.either = exports.when = undefined;
 
 var _polyFilter = require('poly-filter');
 
@@ -14,6 +14,8 @@ var _functionPipe = require('function-pipe');
 var _functionPipe2 = _interopRequireDefault(_functionPipe);
 
 var _message = require('./message');
+
+var _state = require('./state');
 
 var _transport = require('./transport');
 
@@ -50,16 +52,16 @@ var either = exports.either = function either(left, right) {
 
 var map = exports.map = function map(func) {
   var iterator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : identity;
-  return (0, _transport.sequential)([iterator, _message.spread, (0, _transport.forAll)(func), _message.collect]);
+  return (0, _transport.sequential)([iterator, _state.spread, (0, _transport.forAll)(func), _state.collect]);
 };
 
 var filter = exports.filter = function filter(func) {
   var iterator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : identity;
-  return (0, _transport.sequential)([iterator, _message.spread, (0, _transport.forAll)(when(func, identity, function () {
+  return (0, _transport.sequential)([iterator, _state.spread, (0, _transport.forAll)(when(func, identity, function () {
     return undefined;
   })), (0, _polyFilter2.default)(function (x) {
     return x !== undefined;
-  }), _message.collect]);
+  }), _state.collect]);
 };
 
 var chain = exports.chain = function chain() {
@@ -75,7 +77,7 @@ var all = exports.all = function all() {
     steps[_key2] = arguments[_key2];
   }
 
-  return (0, _transport.sequential)([(0, _transport.parallel)(steps), _message.collect]);
+  return (0, _transport.sequential)([(0, _transport.parallel)(steps), _state.collect]);
 };
 
 var functionCall = exports.functionCall = function functionCall(func) {
@@ -87,5 +89,3 @@ var functionCall = exports.functionCall = function functionCall(func) {
     return (0, _transport.sequential)([_message.construct, (0, _transport.parallel)(args.concat([identity])), (0, _transport.apply)(func)]);
   };
 };
-
-var lift = exports.lift = (0, _functionPipe2.default)(_message.applicator, functionCall);

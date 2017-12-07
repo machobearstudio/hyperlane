@@ -12,6 +12,8 @@ var _polyMap2 = _interopRequireDefault(_polyMap);
 
 var _message = require('./message');
 
+var _state = require('./state');
+
 var _transport = require('./transport');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -19,13 +21,13 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var constant = function constant(x) {
-  return function (input) {
-    return (0, _message.construct)(x, input.scope);
-  };
+  return (0, _message.extend)(function () {
+    return x;
+  });
 };
 
 var structure = function structure(items) {
-  return (0, _transport.sequential)([(0, _transport.parallel)((0, _polyMap2.default)(resolver, items)), _message.collect]);
+  return (0, _transport.sequential)([(0, _transport.parallel)((0, _polyMap2.default)(resolver, items)), _state.collect]);
 };
 
 var resolver = function resolver(predicate) {
@@ -46,7 +48,7 @@ var fragment = function fragment(func) {
       args[_key] = arguments[_key];
     }
 
-    return (0, _message.isMessage)(args[0]) ? func()(args[0]) : func.apply(undefined, _toConsumableArray(args.map(resolver)));
+    return (0, _message.isInstance)(args[0]) ? func()(args[0]) : func.apply(undefined, _toConsumableArray(args.map(resolver)));
   };
 
   Fragment.$class = 'Fragment';

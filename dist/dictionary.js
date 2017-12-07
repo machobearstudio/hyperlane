@@ -3,7 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.filter = exports.map = exports.either = exports.when = exports.all = exports.chain = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.count = exports.tail = exports.head = exports.keys = exports.values = exports.array = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.scope = exports.data = exports.end = exports.id = exports.lens = exports.set = exports.get = exports.call = exports.lift = undefined;
+exports.filter = exports.map = exports.either = exports.when = exports.all = exports.chain = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.count = exports.tail = exports.head = exports.keys = exports.values = exports.array = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.end = exports.id = exports.data = exports.lens = exports.set = exports.get = exports.call = exports.lift = undefined;
+
+var _functionPipe = require('function-pipe');
+
+var _functionPipe2 = _interopRequireDefault(_functionPipe);
 
 var _fragment = require('./fragment');
 
@@ -13,9 +17,13 @@ var _flow = require('./flow');
 
 var flow = _interopRequireWildcard(_flow);
 
-var _core = require('./core');
+var _state = require('./state');
 
-var core = _interopRequireWildcard(_core);
+var state = _interopRequireWildcard(_state);
+
+var _message = require('./message');
+
+var message = _interopRequireWildcard(_message);
 
 var _essentials = require('./essentials');
 
@@ -26,14 +34,12 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // The lift
-var lift = exports.lift = function lift(func) {
-  return (0, _fragment2.default)(flow.lift(func));
-};
+var lift = exports.lift = (0, _functionPipe2.default)(state.lift, flow.functionCall, _fragment2.default);
 var call = exports.call = (0, _fragment2.default)(flow.functionCall);
 
 // Lenses
-var get = exports.get = (0, _fragment2.default)(flow.functionCall(core.get));
-var set = exports.set = (0, _fragment2.default)(flow.functionCall(core.set));
+var get = exports.get = (0, _fragment2.default)(flow.functionCall(message.get));
+var set = exports.set = (0, _fragment2.default)(flow.functionCall(message.set));
 
 var lens = exports.lens = function lens(location) {
   var Lens = get(location);
@@ -45,24 +51,15 @@ var lens = exports.lens = function lens(location) {
   return Lens;
 };
 
+var data = exports.data = function data(x) {
+  return lens('')(x);
+};
 var id = exports.id = function id(x) {
   return get('')(x);
 };
 var end = exports.end = lift(function () {
   return undefined;
 });
-
-var data = exports.data = function data(x) {
-  return get('')(x);
-};
-data.get = (0, _fragment2.default)(flow.functionCall(core.getData));
-data.set = (0, _fragment2.default)(flow.functionCall(core.setData));
-
-var scope = exports.scope = function scope(x) {
-  return (0, _fragment2.default)(flow.functionCall(core.getScope))('')(x);
-};
-scope.get = (0, _fragment2.default)(flow.functionCall(core.getScope));
-scope.set = set;
 
 // Transformer fragments
 var not = exports.not = lift(essentials.not);

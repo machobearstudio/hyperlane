@@ -1,6 +1,7 @@
 import polyFilter from 'poly-filter'
 import pipe from 'function-pipe'
-import { extract, construct, collect, spread, applicator } from './message'
+import { extract, construct, combine } from './message'
+import { collect, spread } from './state'
 import { sequential, parallel, apply, forAll } from './transport'
 
 const identity = x => x
@@ -45,5 +46,3 @@ export const functionCall = func => (...args) => sequential([
   parallel(args.concat([identity])),
   apply(func)
 ])
-
-export const lift = pipe(applicator, functionCall)

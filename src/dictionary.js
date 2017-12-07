@@ -1,15 +1,17 @@
+import pipe from 'function-pipe'
 import fragment from './fragment'
 import * as flow from './flow'
-import * as core from './core'
+import * as state from './state'
+import * as message from './message'
 import * as essentials from './essentials'
 
 // The lift
-export const lift   = func => fragment(flow.lift(func))
-export const call   = fragment(flow.functionCall)
+export const lift = pipe(state.lift, flow.functionCall, fragment)
+export const call = fragment(flow.functionCall)
 
 // Lenses
-export const get    = fragment(flow.functionCall(core.get))
-export const set    = fragment(flow.functionCall(core.set))
+export const get = fragment(flow.functionCall(message.get))
+export const set = fragment(flow.functionCall(message.set))
 
 export const lens = location => {
   const Lens = get(location)
@@ -19,16 +21,9 @@ export const lens = location => {
   return Lens
 }
 
-export const id = x => get('')(x)
-export const end = lift(() => undefined)
-
-export const data = x => get('')(x)
-data.get = fragment(flow.functionCall(core.getData))
-data.set = fragment(flow.functionCall(core.setData))
-
-export const scope = x => fragment(flow.functionCall(core.getScope))('')(x)
-scope.get = fragment(flow.functionCall(core.getScope))
-scope.set = set
+export const data = x => lens('')(x)
+export const id   = x => get('')(x)
+export const end  = lift(() => undefined)
 
 // Transformer fragments
 export const not         = lift(essentials.not)
