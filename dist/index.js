@@ -37,9 +37,9 @@ var _fragment = require('./fragment');
 
 var _fragment2 = _interopRequireDefault(_fragment);
 
-var _message = require('./message');
+var _store = require('./store');
 
-var _message2 = _interopRequireDefault(_message);
+var _store2 = _interopRequireDefault(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -49,8 +49,11 @@ var configure = exports.configure = function configure(config) {
   transport.setTransport(config);
 };
 
-configure({ transport: 'async' });
+configure({
+  transport: 'async',
+  store: 'message'
+});
 
-exports.message = _message2.default;
+exports.message = _store2.default;
 exports.transport = transport;
 exports.fragment = _fragment2.default;

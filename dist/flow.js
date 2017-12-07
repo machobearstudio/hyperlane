@@ -13,7 +13,7 @@ var _functionPipe = require('function-pipe');
 
 var _functionPipe2 = _interopRequireDefault(_functionPipe);
 
-var _message = require('./message');
+var _store = require('./store');
 
 var _state = require('./state');
 
@@ -28,9 +28,9 @@ var identity = function identity(x) {
 var when = exports.when = function when(condition, yes) {
   var no = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : identity;
   return function (input) {
-    var original = (0, _message.construct)(input);
+    var original = (0, _store.construct)(input);
     var branch = function branch(x) {
-      return (0, _message.extract)(x) ? yes(original) : no(original);
+      return (0, _store.extract)(x) ? yes(original) : no(original);
     };
     var flow = (0, _transport.sequential)([condition, branch]);
 
@@ -40,9 +40,9 @@ var when = exports.when = function when(condition, yes) {
 
 var either = exports.either = function either(left, right) {
   return function (input) {
-    var original = (0, _message.construct)(input);
+    var original = (0, _store.construct)(input);
     var branch = function branch(x) {
-      return (0, _message.extract)(x) === undefined ? right(original) : x;
+      return (0, _store.extract)(x) === undefined ? right(original) : x;
     };
     var flow = (0, _transport.sequential)([left, branch]);
 
@@ -86,6 +86,6 @@ var functionCall = exports.functionCall = function functionCall(func) {
       args[_key3] = arguments[_key3];
     }
 
-    return (0, _transport.sequential)([_message.construct, (0, _transport.parallel)(args.concat([identity])), (0, _transport.apply)(func)]);
+    return (0, _transport.sequential)([_store.construct, (0, _transport.parallel)(args.concat([identity])), (0, _transport.apply)(func)]);
   };
 };

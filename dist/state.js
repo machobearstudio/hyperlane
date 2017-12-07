@@ -3,26 +3,26 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.lift = exports.spread = exports.collect = undefined;
+exports.set = exports.get = exports.lift = exports.spread = exports.collect = undefined;
 
 var _polyMap = require('poly-map');
 
 var _polyMap2 = _interopRequireDefault(_polyMap);
 
-var _message = require('./message');
+var _store = require('./store');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var collect = exports.collect = function collect(messages) {
-  var inputs = (0, _polyMap2.default)(_message.construct, messages);
+  var inputs = (0, _polyMap2.default)(_store.construct, messages);
 
-  return (0, _message.combine)(Object.values(inputs).reduce(_message.combine, (0, _message.construct)()), (0, _message.construct)((0, _polyMap2.default)(_message.extract, inputs)));
+  return (0, _store.combine)(Object.values(inputs).reduce(_store.combine, (0, _store.construct)()), (0, _store.construct)((0, _polyMap2.default)(_store.extract, inputs)));
 };
 
 var spread = exports.spread = function spread(input) {
   return (0, _polyMap2.default)(function (item) {
-    return (0, _message.combine)(input, (0, _message.construct)(item));
-  }, (0, _message.extract)(input));
+    return (0, _store.combine)(input, (0, _store.construct)(item));
+  }, (0, _store.extract)(input));
 };
 
 var lift = exports.lift = function lift(func) {
@@ -31,11 +31,14 @@ var lift = exports.lift = function lift(func) {
       inputs[_key] = arguments[_key];
     }
 
-    var collected = collect(inputs.map(_message.construct));
-    var output = (0, _message.combine)(collected, (0, _message.construct)(func.apply(undefined, (0, _message.extract)(collected))));
+    var collected = collect(inputs.map(_store.construct));
+    var output = (0, _store.combine)(collected, (0, _store.construct)(func.apply(undefined, (0, _store.extract)(collected))));
 
-    return (0, _message.extract)(output) instanceof Promise ? (0, _message.extract)(output).then(function (data) {
-      return (0, _message.combine)(output, (0, _message.construct)(data));
+    return (0, _store.extract)(output) instanceof Promise ? (0, _store.extract)(output).then(function (data) {
+      return (0, _store.combine)(output, (0, _store.construct)(data));
     }) : output;
   };
 };
+
+exports.get = _store.get;
+exports.set = _store.set;

@@ -2,16 +2,15 @@ import pipe from 'function-pipe'
 import fragment from './fragment'
 import * as flow from './flow'
 import * as state from './state'
-import * as message from './message'
 import * as essentials from './essentials'
 
 // The lift
 export const lift = pipe(state.lift, flow.functionCall, fragment)
-export const call = fragment(flow.functionCall)
+export const call = pipe(flow.functionCall, fragment)
 
 // Lenses
-export const get = fragment(flow.functionCall(message.get))
-export const set = fragment(flow.functionCall(message.set))
+export const get = call(state.get)
+export const set = call(state.set)
 
 export const lens = location => {
   const Lens = get(location)

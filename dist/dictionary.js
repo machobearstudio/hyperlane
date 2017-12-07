@@ -21,10 +21,6 @@ var _state = require('./state');
 
 var state = _interopRequireWildcard(_state);
 
-var _message = require('./message');
-
-var message = _interopRequireWildcard(_message);
-
 var _essentials = require('./essentials');
 
 var essentials = _interopRequireWildcard(_essentials);
@@ -35,11 +31,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 // The lift
 var lift = exports.lift = (0, _functionPipe2.default)(state.lift, flow.functionCall, _fragment2.default);
-var call = exports.call = (0, _fragment2.default)(flow.functionCall);
+var call = exports.call = (0, _functionPipe2.default)(flow.functionCall, _fragment2.default);
 
 // Lenses
-var get = exports.get = (0, _fragment2.default)(flow.functionCall(message.get));
-var set = exports.set = (0, _fragment2.default)(flow.functionCall(message.set));
+var get = exports.get = call(state.get);
+var set = exports.set = call(state.set);
 
 var lens = exports.lens = function lens(location) {
   var Lens = get(location);

@@ -1,5 +1,5 @@
 import polyMap from 'poly-map'
-import { construct, isInstance, extend } from './message'
+import { construct, isInstance, extend } from './store'
 import { collect } from './state'
 import { sequential, parallel } from './transport'
 

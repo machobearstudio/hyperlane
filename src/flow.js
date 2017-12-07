@@ -1,6 +1,6 @@
 import polyFilter from 'poly-filter'
 import pipe from 'function-pipe'
-import { extract, construct, combine } from './message'
+import { extract, construct, combine } from './store'
 import { collect, spread } from './state'
 import { sequential, parallel, apply, forAll } from './transport'
 

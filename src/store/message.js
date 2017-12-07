@@ -23,9 +23,11 @@ export const extract = (input) => {
   return input
 }
 
-export const combine = (input, output) => construct(output.data, { ...input.scope, ...output.scope })
+export const combine = (input, output) =>
+  construct(output.data, { ...input.scope, ...output.scope })
 
-export const extend = func => input => combine(input, construct(func(input)))
+export const extend = func => input =>
+  combine(input, construct(func(input)))
 
 export const get = (location, input) => {
   const path = extract(location)

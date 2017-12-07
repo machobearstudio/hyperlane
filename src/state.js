@@ -1,5 +1,5 @@
 import map from 'poly-map'
-import { extract, construct, combine } from './message'
+import { extract, construct, combine, get, set } from './store'
 
 export const collect = messages => {
   const inputs = map(construct, messages)
@@ -21,3 +21,5 @@ export const lift = func => (...inputs) => {
     : output
   )
 }
+
+export { get, set }

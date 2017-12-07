@@ -10,7 +10,7 @@ var _polyMap = require('poly-map');
 
 var _polyMap2 = _interopRequireDefault(_polyMap);
 
-var _message = require('./message');
+var _store = require('./store');
 
 var _state = require('./state');
 
@@ -21,7 +21,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
 var constant = function constant(x) {
-  return (0, _message.extend)(function () {
+  return (0, _store.extend)(function () {
     return x;
   });
 };
@@ -48,7 +48,7 @@ var fragment = function fragment(func) {
       args[_key] = arguments[_key];
     }
 
-    return (0, _message.isInstance)(args[0]) ? func()(args[0]) : func.apply(undefined, _toConsumableArray(args.map(resolver)));
+    return (0, _store.isInstance)(args[0]) ? func()(args[0]) : func.apply(undefined, _toConsumableArray(args.map(resolver)));
   };
 
   Fragment.$class = 'Fragment';
