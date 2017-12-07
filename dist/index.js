@@ -39,14 +39,17 @@ var _fragment2 = _interopRequireDefault(_fragment);
 
 var _store = require('./store');
 
-var _store2 = _interopRequireDefault(_store);
+var store = _interopRequireWildcard(_store);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+var message = store.message;
+
 var configure = exports.configure = function configure(config) {
   transport.setTransport(config);
+  store.setStore(config);
 };
 
 configure({
@@ -54,6 +57,6 @@ configure({
   store: 'message'
 });
 
-exports.message = _store2.default;
+exports.message = message;
 exports.transport = transport;
 exports.fragment = _fragment2.default;

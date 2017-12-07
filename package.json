@@ -1,7 +1,7 @@
 {
   "name": "hyperlane",
-  "description": "Context-dependent continuations",
-  "keywords": "comonad, store, lens, pipeline, context, composition, continuation, control flow, point-free style",
+  "description": "Context-dependent computation pipelines",
+  "keywords": "comonad, store, continuation, lens, pipeline, context, composition, control flow",
   "version": "1.4.0",
   "scripts": {
     "compile": "rm -rf dist/* && babel --presets env --plugins transform-object-rest-spread -d dist/ src/",
