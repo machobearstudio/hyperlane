@@ -9,7 +9,7 @@ const structure = items => sequential([ parallel(polyMap(resolver, items)), coll
 
 const resolver = predicate => {
   if (typeof predicate === 'function') {
-    return (predicate.$class === 'Fragment' ? predicate() : predicate)
+    return predicate
   }
 
   if (typeof predicate !== 'object' || predicate === null) {
@@ -20,11 +20,15 @@ const resolver = predicate => {
 }
 
 const fragment = func => {
-  const Fragment = (...args) => (
-    isStore(args[0])
-      ? func()(args[0])
-      : func(...args.map(resolver))
-  )
+  const Fragment = (...args) => {
+    if (isStore(args[0])) {
+      return func()(args[0])
+    }
+
+    const Flow = func(...args.map(resolver))
+
+    return Flow
+  }
 
   Fragment.$class = 'Fragment'
 

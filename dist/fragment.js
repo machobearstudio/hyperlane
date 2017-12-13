@@ -32,7 +32,7 @@ var structure = function structure(items) {
 
 var resolver = function resolver(predicate) {
   if (typeof predicate === 'function') {
-    return predicate.$class === 'Fragment' ? predicate() : predicate;
+    return predicate;
   }
 
   if ((typeof predicate === 'undefined' ? 'undefined' : _typeof(predicate)) !== 'object' || predicate === null) {
@@ -48,7 +48,13 @@ var fragment = function fragment(func) {
       args[_key] = arguments[_key];
     }
 
-    return (0, _store.isInstance)(args[0]) ? func()(args[0]) : func.apply(undefined, _toConsumableArray(args.map(resolver)));
+    if ((0, _store.isInstance)(args[0])) {
+      return func()(args[0]);
+    }
+
+    var Flow = func.apply(undefined, _toConsumableArray(args.map(resolver)));
+
+    return Flow;
   };
 
   Fragment.$class = 'Fragment';
