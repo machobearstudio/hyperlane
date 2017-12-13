@@ -1,5 +1,5 @@
 import polyMap from 'poly-map'
-import { construct, isInstance, extend } from './store'
+import { construct, isInstance as isStore, extend } from './store'
 import { collect } from './state'
 import { sequential, parallel } from './transport'
 
@@ -21,7 +21,7 @@ const resolver = predicate => {
 
 const fragment = func => {
   const Fragment = (...args) => (
-    isInstance(args[0])
+    isStore(args[0])
       ? func()(args[0])
       : func(...args.map(resolver))
   )

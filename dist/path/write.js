@@ -18,7 +18,8 @@ var write = function write(path, value, data) {
   }
 
   var location = (0, _normalize2.default)(path);
-  var target = _extends({}, data);
+  var copy = _extends({}, data);
+  var target = copy;
   var i = void 0;
 
   for (i = 0; i < location.length - 1; i++) {
@@ -33,7 +34,7 @@ var write = function write(path, value, data) {
 
   target[location[i]] = value;
 
-  return target;
+  return copy;
 };
 
 exports.default = write;

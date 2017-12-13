@@ -6,7 +6,8 @@ const write = (path, value, data) => {
   }
 
   const location = normalize(path)
-  let target = { ...data }
+  const copy = { ...data }
+  let target = copy
   let i
 
   for (i = 0; i < location.length - 1; i++) {
@@ -21,7 +22,7 @@ const write = (path, value, data) => {
 
   target[location[i]] = value
 
-  return target
+  return copy
 }
 
 export default write
