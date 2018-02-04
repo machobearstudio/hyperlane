@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.filter = exports.map = exports.either = exports.when = exports.all = exports.chain = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.count = exports.tail = exports.head = exports.keys = exports.values = exports.array = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.end = exports.id = exports.data = exports.lens = exports.set = exports.get = exports.call = exports.lift = undefined;
+exports.filter = exports.map = exports.either = exports.when = exports.all = exports.chain = exports.slice = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.zip = exports.count = exports.tail = exports.head = exports.keys = exports.values = exports.array = exports.isUndefined = exports.isDefined = exports.lte = exports.gte = exports.lt = exports.gt = exports.neq = exports.eq = exports.split = exports.join = exports.lowercase = exports.uppercase = exports.divide = exports.multiply = exports.subtract = exports.add = exports.xor = exports.or = exports.and = exports.not = exports.end = exports.id = exports.data = exports.lens = exports.set = exports.get = exports.call = exports.lift = undefined;
 
 var _functionPipe = require('function-pipe');
 
@@ -90,6 +90,7 @@ var push = exports.push = lift(essentials.push);
 var select = exports.select = lift(essentials.select);
 var exclude = exports.exclude = lift(essentials.exclude);
 var merge = exports.merge = lift(essentials.merge);
+var slice = exports.slice = lift(essentials.slice);
 
 // Base control flow fragments
 var chain = exports.chain = (0, _fragment2.default)(flow.chain);

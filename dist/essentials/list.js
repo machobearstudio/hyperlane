@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.tail = exports.head = exports.count = exports.zip = exports.keys = exports.values = exports.join = exports.array = undefined;
+exports.slice = exports.merge = exports.exclude = exports.select = exports.push = exports.concat = exports.tail = exports.head = exports.count = exports.zip = exports.keys = exports.values = exports.join = exports.array = undefined;
 
 var _polySelect = require('poly-select');
 
@@ -61,4 +61,7 @@ var exclude = exports.exclude = function exclude(y, xs) {
 };
 var merge = exports.merge = function merge(xs, ys) {
   return Object.assign(xs, ys);
+};
+var slice = exports.slice = function slice(b, e, xs) {
+  return Array.isArray(e) ? e.slice(b) : xs.slice(b, e);
 };
