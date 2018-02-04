@@ -192,6 +192,16 @@ const test = tail(get(''))
 test([100, 200, 300, 400]) // => Message{ data: [200, 300, 400], scope: {} }
 ```
 
+`slice(array)` - extracts a range of elements from an array
+```javascript
+const test1 = slice(1, get(''))
+const test2 = slice(1, 3, get(''))
+
+test1([100, 200, 300, 400]) // => Message{ data: [200, 300, 400], scope: {} }
+test2([100, 200, 300, 400]) // => Message{ data: [200, 300], scope: {} }
+
+```
+
 `uppercase(string)` - convert string to upper case
 ```javascript
 const test = uppercase(get(''))

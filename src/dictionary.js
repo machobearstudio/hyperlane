@@ -57,6 +57,7 @@ export const push        = lift(essentials.push)
 export const select      = lift(essentials.select)
 export const exclude     = lift(essentials.exclude)
 export const merge       = lift(essentials.merge)
+export const slice       = lift(essentials.slice)
 
 // Base control flow fragments
 export const chain  = fragment(flow.chain)

@@ -1,4 +1,4 @@
-import { get, array, when, all, count, message, head, tail, push, concat, join } from '../../src'
+import { get, array, when, all, count, message, head, tail, push, concat, join, slice } from '../../src'
 import { given, verify } from '../../src'
 import { anything, data, scope, sample } from '../samples'
 import { messageOutput, scopeInvariant, dataInvariant, dataIs } from '../constraints'
@@ -71,5 +71,13 @@ test(
       count(['wow!!', 'such much', 'nice']) ],
 
     given(list, verify(scopeInvariant, dataIs(3)))
-  ]
+  ],
+
+  ["slice(1, xs) and slice(1, 3, xs) -> [y, z]",
+    [ slice(1, array(get('a'), get('b'), get('z'))),
+      slice(1, 3, array(get('a'), get('b'), get('z'))),
+      slice(1, -1, array(get('a'), get('b'), get('z'), 'so respect')) ],
+
+    given(list, verify(scopeInvariant, dataIs(['such much', 'nice'])))
+  ],
 )
