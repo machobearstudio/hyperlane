@@ -6,7 +6,8 @@ import test from '../test'
 
 const list = [
   ...data({ a: 'wow!!', b: 'such much', z: 'nice' }),
-  ...scope({ a: 'wow!!', b: 'such much', z: 'nice' })
+  ...scope({ a: 'wow!!', b: 'such much', z: 'nice' }),
+  { a: 'wow!!', b: 'such much', z: 'nice' }
 ]
 
 test(

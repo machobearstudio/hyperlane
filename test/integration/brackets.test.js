@@ -1,7 +1,7 @@
 import { chain, lift } from '../../src'
 import { given, verify } from '../../src'
 import { anything, data, scope, sample } from '../samples'
-import { messageOutput, scopeInvariant, dataInvariant, dataIs } from '../constraints'
+import { messageOutput, scopeInvariant, dataIs } from '../constraints'
 import test from '../test'
 
 const f = lift(x => x)
@@ -24,6 +24,6 @@ test(
       chain(f(), f(), f),
       chain(f, f(), f()) ],
 
-    given(input, verify(dataIs(['a', 'b', 'c'])))
+    given(input, verify(messageOutput, scopeInvariant, dataIs(['a', 'b', 'c'])))
   ]
 )

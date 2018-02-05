@@ -6,7 +6,8 @@ import test from '../test'
 
 const validData = [
   ...data({ doge: 'wow', b: 'such much' }),
-  ...scope({ doge: 'wow', b: 'such much' })
+  ...scope({ doge: 'wow', b: 'such much' }),
+  { doge: 'wow', b: 'such much' }
 ]
 
 const flowsToTest = [
