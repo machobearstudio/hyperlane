@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _polyMap = require('poly-map');
 
 var _polyMap2 = _interopRequireDefault(_polyMap);
@@ -30,16 +28,20 @@ var structure = function structure(items) {
   return (0, _transport.sequential)([(0, _transport.parallel)((0, _polyMap2.default)(resolver, items)), _state.collect]);
 };
 
+var isObject = function isObject(x) {
+  return x !== null && x !== undefined && x.constructor && x.constructor.name === 'Object';
+};
+
 var resolver = function resolver(predicate) {
   if (typeof predicate === 'function') {
     return predicate;
   }
 
-  if ((typeof predicate === 'undefined' ? 'undefined' : _typeof(predicate)) !== 'object' || predicate === null) {
-    return constant(predicate);
+  if (isObject(predicate) || predicate instanceof Array) {
+    return structure(predicate);
   }
 
-  return structure(predicate);
+  return constant(predicate);
 };
 
 var fragment = function fragment(func) {
@@ -52,7 +54,9 @@ var fragment = function fragment(func) {
       return func()(args[0]);
     }
 
-    var Flow = func.apply(undefined, _toConsumableArray(args.map(resolver)));
+    var Flow = func.apply(undefined, _toConsumableArray(args.map(resolver).map(function (f) {
+      return f.$class === 'Fragment' ? f() : f;
+    })));
 
     return Flow;
   };
