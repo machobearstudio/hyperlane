@@ -5,18 +5,27 @@ import { sequential, parallel } from './transport'
 
 const constant = x => extend(() => x)
 
-const structure = items => sequential([ parallel(polyMap(resolver, items)), collect ])
+const structure = items => sequential([
+  parallel(polyMap(resolver, items)),
+  collect
+])
+
+const isObject = x => (
+  x !== null &&
+  x.constructor &&
+  x.constructor.name === 'Object'
+)
 
 const resolver = predicate => {
   if (typeof predicate === 'function') {
     return predicate
   }
 
-  if (typeof predicate !== 'object' || predicate === null) {
-    return constant(predicate)
+  if (isObject(predicate) || predicate instanceof Array) {
+    return structure(predicate)
   }
 
-  return structure(predicate)
+  return constant(predicate)
 }
 
 const fragment = func => {
