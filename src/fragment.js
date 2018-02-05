@@ -25,7 +25,10 @@ const fragment = func => {
       return func()(args[0])
     }
 
-    const Flow = func(...args.map(resolver))
+    const Flow = func(...args
+      .map(resolver)
+      .map(f => (f.$class === 'Fragment' ? f() : f))
+    )
 
     return Flow
   }
