@@ -14,7 +14,7 @@ test(
   "Basic sequential operations",
 
   ["get value, get another value, summate", testFlows,
-    given([ ...data({ x: 1, y: 2 }), ...scope({ x: 1, y: 2 })], verify(dataIs(3)))
+    given([ { x: 1, y: 2 }, ...data({ x: 1, y: 2 }), ...scope({ x: 1, y: 2 })], verify(dataIs(3)))
   ],
 
   ["doesn't break when provided invalid data", testFlows,

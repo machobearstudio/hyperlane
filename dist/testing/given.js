@@ -18,7 +18,7 @@ var foldAnd = function foldAnd(xs) {
 
 var given = function given(inputs, check) {
   return function (flow) {
-    return Promise.all((0, _arrayFlatten2.default)(inputs).map(check(flow))).then(_arrayFlatten2.default).then(foldAnd);
+    return Promise.all(inputs.map(check(flow))).then(_arrayFlatten2.default).then(foldAnd);
   };
 };
 

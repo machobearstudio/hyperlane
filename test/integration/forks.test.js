@@ -6,7 +6,8 @@ import test from '../test'
 
 const wow = [
   ...data({ doge: 'wow!!', b: 'such much', z: 'nice' }),
-  ...scope({ doge: 'wow!!', b: 'such much', z: 'nice' })
+  ...scope({ doge: 'wow!!', b: 'such much', z: 'nice' }),
+  { doge: 'wow!!', b: 'such much', z: 'nice' }
 ]
 
 test(
