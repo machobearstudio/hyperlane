@@ -1,23 +1,21 @@
-import { get, array, when, all, count, message, head, tail, push, concat, join, slice } from '../../src'
+import { get, array, when, all, count, head, tail, push, concat, join, slice } from '../../src'
 import { given, verify } from '../../src'
 import { anything, data, scope, sample } from '../samples'
 import { messageOutput, scopeInvariant, dataInvariant, dataIs } from '../constraints'
 import test from '../test'
 
-const list = [
-  ...data({ a: 'wow!!', b: 'such much', z: 'nice' }),
-  ...scope({ a: 'wow!!', b: 'such much', z: 'nice' }),
+const wow = [
   { a: 'wow!!', b: 'such much', z: 'nice' }
 ]
 
 test(
   "list operations",
 
-  ["array(x, y, z) -> [x, y, z]; all the same",
+  ["array(x, y, z) -> [x, y, z]; all(x, y, z) -> [x, y, z]",
     [ array(get('a'), get('b'), get('z')),
       all(get('a'), get('b'), get('z')) ],
 
-    given(list, verify(scopeInvariant, dataIs(['wow!!', 'such much', 'nice'])))
+    given(wow, verify(scopeInvariant, dataIs(['wow!!', 'such much', 'nice'])))
   ],
 
   ["head [x, y, z] -> x",
@@ -26,7 +24,7 @@ test(
       head([get('a'), get('b'), get('z')]),
       head(['wow!!', 'such much', 'nice']) ],
 
-    given(list, verify(scopeInvariant, dataIs('wow!!')))
+    given(wow, verify(scopeInvariant, dataIs('wow!!')))
   ],
 
   ["tail [x, y, z] -> [y, z]",
@@ -35,7 +33,7 @@ test(
       tail([get('a'), get('b'), get('z')]),
       tail(['wow!!', 'such much', 'nice']) ],
 
-    given(list, verify(scopeInvariant, dataIs(['such much', 'nice'])))
+    given(wow, verify(scopeInvariant, dataIs(['such much', 'nice'])))
   ],
 
   ["join(',', [x, y, z]) -> 'x,y,z'",
@@ -44,7 +42,7 @@ test(
       join(',', [get('a'), get('b'), get('z')]),
       join(',', ['wow!!', 'such much', 'nice']) ],
 
-    given(list, verify(scopeInvariant, dataIs('wow!!,such much,nice')))
+    given(wow, verify(scopeInvariant, dataIs('wow!!,such much,nice')))
   ],
 
   ["concat([x, y], [z]) -> [x, y, z]",
@@ -53,7 +51,7 @@ test(
       concat([get('a'), get('b')], [get('z')]),
       concat(['wow!!', 'such much'], ['nice']) ],
 
-    given(list, verify(scopeInvariant, dataIs(['wow!!', 'such much', 'nice'])))
+    given(wow, verify(scopeInvariant, dataIs(['wow!!', 'such much', 'nice'])))
   ],
 
   ["push([x, y], z) -> [x, y, z]",
@@ -62,7 +60,7 @@ test(
       push([get('a'), get('b')], get('z')),
       push(['wow!!', 'such much'], 'nice') ],
 
-    given(list, verify(scopeInvariant, dataIs(['wow!!', 'such much', 'nice'])))
+    given(wow, verify(scopeInvariant, dataIs(['wow!!', 'such much', 'nice'])))
   ],
 
   ["count(xs) counts items in the array",
@@ -71,7 +69,7 @@ test(
       count([get('a'), get('b'), get('z')]),
       count(['wow!!', 'such much', 'nice']) ],
 
-    given(list, verify(scopeInvariant, dataIs(3)))
+    given(wow, verify(scopeInvariant, dataIs(3)))
   ],
 
   ["slice(1, xs) and slice(1, 3, xs) -> [y, z]",
@@ -79,6 +77,6 @@ test(
       slice(1, 3, array(get('a'), get('b'), get('z'))),
       slice(1, -1, array(get('a'), get('b'), get('z'), 'so respect')) ],
 
-    given(list, verify(scopeInvariant, dataIs(['such much', 'nice'])))
+    given(wow, verify(scopeInvariant, dataIs(['such much', 'nice'])))
   ],
 )

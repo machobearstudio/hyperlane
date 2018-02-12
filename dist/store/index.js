@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.message = exports.set = exports.get = exports.combine = exports.extend = exports.extract = exports.construct = exports.isInstance = exports.setStore = exports.getStore = undefined;
+exports.message = exports.set = exports.get = exports.combine = exports.extend = exports.collapse = exports.extract = exports.construct = exports.isInstance = exports.setStore = exports.getStore = undefined;
 
 var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
@@ -42,25 +42,30 @@ var extract = exports.extract = function extract() {
 
   return (_getStore3 = getStore()).extract.apply(_getStore3, arguments);
 };
-var extend = exports.extend = function extend() {
+var collapse = exports.collapse = function collapse() {
   var _getStore4;
 
-  return (_getStore4 = getStore()).extend.apply(_getStore4, arguments);
+  return (_getStore4 = getStore()).collapse.apply(_getStore4, arguments);
 };
-var combine = exports.combine = function combine() {
+var extend = exports.extend = function extend() {
   var _getStore5;
 
-  return (_getStore5 = getStore()).combine.apply(_getStore5, arguments);
+  return (_getStore5 = getStore()).extend.apply(_getStore5, arguments);
 };
-var get = exports.get = function get() {
+var combine = exports.combine = function combine() {
   var _getStore6;
 
-  return (_getStore6 = getStore()).get.apply(_getStore6, arguments);
+  return (_getStore6 = getStore()).combine.apply(_getStore6, arguments);
 };
-var set = exports.set = function set() {
+var get = exports.get = function get() {
   var _getStore7;
 
-  return (_getStore7 = getStore()).set.apply(_getStore7, arguments);
+  return (_getStore7 = getStore()).get.apply(_getStore7, arguments);
+};
+var set = exports.set = function set() {
+  var _getStore8;
+
+  return (_getStore8 = getStore()).set.apply(_getStore8, arguments);
 };
 
 var message = construct;

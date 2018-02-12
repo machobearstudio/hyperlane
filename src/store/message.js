@@ -15,13 +15,12 @@ export const construct = (data, scope) => {
   return new Message(data, scope)
 }
 
-export const extract = (input) => {
-  if (input instanceof Message) {
-    return input.data
-  }
+export const extract = input => (isInstance(input) ? input.data : input)
 
-  return input
-}
+export const collapse = input => (isInstance(input)
+  ?  ({ data: input.data, scope: input.scope })
+  :  ({ data: input, scope: {} })
+)
 
 export const combine = (input, output) =>
   construct(output.data, { ...input.scope, ...output.scope })

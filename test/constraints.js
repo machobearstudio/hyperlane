@@ -1,9 +1,13 @@
 import equal from 'deep-equal'
-import { message } from '../src'
+import { message, collapse } from '../src'
+
+const data = (...args) => collapse(message(...args)).data
+const scope = (...args) => collapse(message(...args)).scope
 
 export const messageOutput  =  (input, output) => message.isInstance(output)
-export const scopeInvariant =  (input, output) => message.isInstance(output) && equal(input.scope || {}, output.scope)
-export const dataInvariant  =  (input, output) => message.isInstance(output) && equal(input.data, output.data)
-export const dataIs   = x   => (input, output) => message.isInstance(output) && equal(output.data, x)
-export const scopeIs  = x   => (input, output) => message.isInstance(output) && equal(output.scope, x)
-export const scopeHas = (n, v) => (_, output) => message.isInstance(output) && equal(output.scope[n], v)
+export const scopeInvariant =  (input, output) => equal(scope(input), scope(output))
+export const dataInvariant  =  (input, output) => equal(data(input), data(output))
+export const dataIs   = x   => (input, output) => equal(data(output), x)
+export const dataHas = (n, v) => (_, output) => equal(scope(output)[n], v)
+export const scopeIs  = x   => (input, output) => equal(scope(output), x)
+export const scopeHas = (n, v) => (_, output) => equal(scope(output)[n], v)

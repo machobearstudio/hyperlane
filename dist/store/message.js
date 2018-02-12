@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.set = exports.get = exports.extend = exports.combine = exports.extract = exports.construct = exports.isInstance = undefined;
+exports.set = exports.get = exports.extend = exports.combine = exports.collapse = exports.extract = exports.construct = exports.isInstance = undefined;
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -27,11 +27,11 @@ var construct = exports.construct = function construct(data, scope) {
 };
 
 var extract = exports.extract = function extract(input) {
-  if (input instanceof Message) {
-    return input.data;
-  }
+  return isInstance(input) ? input.data : input;
+};
 
-  return input;
+var collapse = exports.collapse = function collapse(input) {
+  return isInstance(input) ? { data: input.data, scope: input.scope } : { data: input, scope: {} };
 };
 
 var combine = exports.combine = function combine(input, output) {

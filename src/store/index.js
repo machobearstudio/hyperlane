@@ -16,6 +16,7 @@ export const setStore = (conf) => {
 export const isInstance = (...args) => getStore().isInstance(...args)
 export const construct  = (...args) => getStore().construct(...args)
 export const extract    = (...args) => getStore().extract(...args)
+export const collapse   = (...args) => getStore().collapse(...args)
 export const extend     = (...args) => getStore().extend(...args)
 export const combine    = (...args) => getStore().combine(...args)
 export const get        = (...args) => getStore().get(...args)
